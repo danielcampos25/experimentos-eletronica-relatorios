@@ -1,0 +1,36 @@
+MODELO DE RELATORIO
+ENE0046 - Laboratorio de Eletronica - 2026/2
+
+Arquivos desta pasta
+  modelo-relatorio.tex   e o arquivo que voce edita
+  estilo-relatorio.tex   formatacao; nao precisa abrir
+  logo-unb.png           usado no cabecalho; nao apague
+
+Os tres precisam ficar na MESMA pasta.
+
+Compile SEMPRE o modelo-relatorio.tex. O estilo-relatorio.tex nao compila
+sozinho: ele e' um pedaco do outro. Se o seu editor tentar compilar o estilo,
+voce vera erros como "usepackage before documentclass" ou "Undefined control
+sequence \newtcolorbox". Nao e' defeito do modelo, e' o arquivo errado.
+No TeXstudio, abra o modelo-relatorio.tex e use
+Opcoes > Definir documento atual como mestre.
+
+Como compilar
+  Overleaf   crie um projeto em branco, envie os tres arquivos e defina
+             modelo-relatorio.tex como documento principal.
+  No seu PC  instale uma distribuicao LaTeX (TeX Live ou MiKTeX) e rode
+             na pasta:   latexmk -pdf modelo-relatorio.tex
+             ou entao:   pdflatex modelo-relatorio.tex   (duas vezes)
+
+Autores
+  Preencha \autorum, \autordois e \autortres no inicio do arquivo.
+  Deixe comentados os que nao existirem: um autor fica centralizado,
+  dois dividem a linha, tres ocupam tercos.
+
+Figuras
+  Coloque as imagens na mesma pasta e troque a caixa cinza pelo comando
+  \includegraphics{nome-do-arquivo}.
+
+Roteiro 1
+  Nao tem bancada. Use apenas as subsecoes 4.1 e 5.1, e compare o calculo
+  analitico com a simulacao de projeto.
