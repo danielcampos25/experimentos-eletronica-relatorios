@@ -1,6 +1,9 @@
-# Tutorial: configurando o LaTeX Live
+# Tutorial: configurando o LaTeX Localmente
 
-O **LaTeX Live** é uma distribuição completa do LaTeX, usada para criar documentos científicos, acadêmicos e técnicos.
+As duas principais libs para compilar latex são:
+
+- [MikTEX](https://miktex.org/download)
+- [TEXLive](https://www.tug.org/texlive/)
 
 ## Linux
 
