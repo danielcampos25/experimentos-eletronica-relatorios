@@ -1,5 +1,3 @@
-# Lab eletronica 2026/2
-
 # Tutorial: configurando o LaTeX Live
 
 O **LaTeX Live** é uma distribuição completa do LaTeX, usada para criar documentos científicos, acadêmicos e técnicos.
