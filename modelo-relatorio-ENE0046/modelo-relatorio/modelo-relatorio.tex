@@ -1,0 +1,225 @@
+% ===========================================================================
+% MODELO DE RELATORIO  ·  ENE0046 Laboratorio de Eletronica  ·  2026/2
+%
+% Como usar
+%   1. Preencha o bloco IDENTIFICACAO logo abaixo.
+%   2. Deixe comentados os autores que nao existirem. Um autor fica centralizado,
+%      dois dividem a linha, tres ocupam tercos.
+%   3. Substitua o texto de cada secao pelo seu. As orientacoes que estao la
+%      dizem o que se espera em cada uma.
+%   4. Compile com pdflatex duas vezes, ou com latexmk -pdf.
+%
+% Estrutura
+%   Roteiro 1 nao tem bancada: use so a subsecao 4.1 e a 5.1, e compare o calculo
+%   analitico com a simulacao de projeto.
+%   Roteiros 2 a 7 usam a estrutura inteira.
+%
+% O arquivo estilo-relatorio.tex deve estar na mesma pasta deste arquivo. A logo
+% e as figuras ficam organizadas na subpasta imgs/, como no relatorio preenchido.
+% ===========================================================================
+\documentclass[11pt,a4paper]{article}
+\input{estilo-relatorio}
+
+% --------------------------- IDENTIFICACAO ---------------------------------
+\roteiro{1}{Simulação de Circuitos: Introdução ao LTspice}
+\aturma{03}
+
+\autorum{Lurian Correia Lima}{22/2005395} 
+\autordois{Guilherme Cardoso Oliveira da Silva Júnior}{23/1038626}
+\autortres{Daniel Campos Silva}{23/1036775}
+% ---------------------------------------------------------------------------
+
+\begin{document}
+\capa
+
+\begin{resumo}
+Escreva este parágrafo por último, com 100 a 150 palavras. Diga o que você projetou, sob
+qual especificação, o que simulou ou mediu, o principal resultado numérico e a que
+conclusão chegou. Quem ler só este parágrafo deve saber o que você fez e o que encontrou.
+\end{resumo}
+
+\section{Introdução}
+
+Comece pelo problema, e não pelo circuito. Que necessidade de engenharia deu origem a esta
+topologia, onde você a encontraria em um equipamento real e o que aconteceria sem ela. Duas
+ou três referências ajudam aqui.
+
+Depois estreite o foco: que aspecto você vai investigar, sob quais condições, e por que
+vale a pena verificá-lo. Se o roteiro impõe alguma restrição de projeto que parece
+arbitrária, aproveite para explicar a razão dela.
+
+No último parágrafo, diga qual é o objetivo deste relatório e como o texto está
+organizado, seção a seção.
+
+\section{Fundamentação teórica}
+
+Deduza as expressões que você vai usar mais adiante, partindo das leis de circuito.
+Numere as equações que forem retomadas no restante do texto.
+
+\begin{equation}
+H(j\omega) = \frac{1}{1+j\omega RC}
+\label{eq:exemplo}
+\end{equation}
+
+Toda grandeza que aparecer nos resultados precisa ter sido apresentada aqui. Explique o que
+cada termo significa fisicamente, não apenas o que a letra representa. Registre as hipóteses
+que você está assumindo, como linearidade ou idealidade dos componentes: se alguma delas
+não se sustentar no experimento, você vai retomá-la na discussão.
+
+Se o circuito tiver regimes de funcionamento distintos, apresente cada um e diga o que os
+separa.
+
+\section{Especificação e projeto}
+
+Transcreva os parâmetros que a sua matrícula determina, mostrando a conta a partir dos
+dígitos.
+
+\begin{espec}
+Matrícula \mat{00/0000000}. \\
+Preencha aqui os parâmetros calculados a partir dos dígitos, conforme o roteiro.
+\end{espec}
+
+Leve cada parâmetro até o valor de componente, deixando visível a expressão que você
+inverteu para chegar lá. Depois escolha o valor na série comercial e calcule o quanto essa
+escolha afasta você do valor ideal. A tabela abaixo organiza isso, e é ela que depois
+permite separar o que veio do projeto do que veio da montagem.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} & \textbf{Desvio} \\
+\midrule
+& & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Se mais de uma combinação atender à especificação, diga por que escolheu esta, mostrando
+que as outras ficavam mais distantes.
+
+\section{Metodologia}
+
+Conte o que você fez e com quais parâmetros, de modo que um colega consiga repetir sem
+precisar perguntar nada. Explique as escolhas que não são evidentes: por que essa faixa de
+varredura, por que esse passo de integração, por que esse intervalo de gravação.
+
+Inclua a figura do esquemático, com legenda que descreva o que ela mostra, e cite-a no
+texto, como na Figura~\ref{fig:exemplo}. Se uma figura não for mencionada em nenhum
+parágrafo, ela provavelmente não precisa estar aqui.
+
+\subsection{Simulação de projeto, uma por integrante}
+
+Cada integrante recebeu uma especificação diferente da própria matrícula, e portanto chegou
+a um dimensionamento diferente. Traga aqui \textbf{uma simulação por integrante}, cada uma
+com os componentes que aquela pessoa projetou. São elas que mostram se cada projeto cumpre
+o que foi pedido.
+
+\subsection{Montagem em bancada}
+
+A equipe monta um circuito só. Diga \textbf{de quem} é a especificação que vocês montaram e
+por que escolheram essa. Informe os valores \textbf{medidos} de cada componente que vocês
+usaram, e não os valores nominais impressos no corpo da peça, porque a diferença entre os
+dois explica boa parte do que vocês vão observar.
+
+\subsection{Simulação da montagem}
+
+Refaça a simulação usando os valores medidos dos componentes que estavam na bancada. Ela
+não substitui a simulação de projeto: é a comparação entre as duas que separa o efeito da
+tolerância dos componentes do restante.
+
+\begin{nota}{Três comparações, três causas diferentes}
+Ao longo do relatório vocês vão confrontar três pares de resultados. Cada um responde a uma
+pergunta distinta, e vale mantê-los separados na hora de discutir.
+
+\smallskip
+\textbf{Cálculo analítico contra simulação de projeto.} A conta está certa? Se aqui houver
+diferença, procure na álgebra ou no esquemático.
+
+\smallskip
+\textbf{Simulação de projeto contra simulação da montagem.} Quanto custou a tolerância dos
+componentes? A diferença aqui é a distância entre o valor nominal e o valor real da peça
+que vocês pegaram.
+
+\smallskip
+\textbf{Simulação da montagem contra medição.} O modelo descreve o circuito real? Diferença
+aqui aponta algo que o modelo não representa, como a resistência série do indutor, a
+impedância da ponta de prova ou a banda do instrumento.
+\end{nota}
+
+\begin{figure}[htb]
+\centering
+% \includegraphics[width=0.8\linewidth]{arquivo.png}
+\fbox{\parbox[c][3.2cm][c]{0.8\linewidth}{\centering\color{cinza}
+  substitua por \texttt{\textbackslash includegraphics}}}
+\caption{Legenda descritiva. Diga o que a figura mostra e o que nela é relevante, e não
+apenas o nome do circuito.}
+\label{fig:exemplo}
+\end{figure}
+
+\section{Resultados}
+
+Apresente o que vocês obtiveram, em tabela sempre que houver mais de dois números. Use o
+número de algarismos significativos que a medição sustenta, e não todos os que o programa
+imprime. Para cada leitura de bancada, informe o instrumento e a incerteza.
+
+Guarde a interpretação para a seção seguinte: aqui vocês mostram o que encontraram.
+
+\subsection{Projeto de cada integrante}
+
+Uma tabela por integrante, ou uma tabela única com uma coluna por integrante, confrontando
+o valor analítico e o simulado para cada grandeza pedida no roteiro.
+
+\subsection{Circuito montado}
+
+Para cada grandeza, o que o projeto do integrante montado previa, o que a simulação com os
+valores medidos devolveu, e o que vocês mediram na bancada. É desta tabela que sai a
+discussão.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Projeto} & \textbf{Sim. montagem} & \textbf{Medido} &
+\textbf{Erro} \\
+\midrule
+& & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Discussão}
+
+Percorra as três comparações na ordem em que aparecem no quadro da Seção~4: a conta contra
+a simulação de projeto, esta contra a simulação da montagem, e esta contra a medição. Cada
+passo isola uma causa, e a discussão fica bem mais curta quando eles não se misturam.
+
+Compare também os projetos dos integrantes entre si. Como as especificações são diferentes,
+os resultados diferem, e mostrar que essa diferença é a que a teoria previa vale mais do
+que repetir três vezes a mesma análise.
+
+Sempre que uma divergência for maior do que a incerteza esperada, aponte uma causa concreta
+e diga como ela poderia ser reduzida. Vale, por exemplo, a tolerância do componente, a
+resistência série do indutor, a impedância de entrada do osciloscópio, a banda do
+amplificador ou a resolução da varredura.
+
+Quando previsto e obtido coincidirem, explique por que era esperado que coincidissem, e o
+que essa coincidência não permite concluir.
+
+Por fim, retome as hipóteses que vocês declararam na fundamentação e diga quais se
+confirmaram. Se algo observado contrariar a previsão, resolva a contradição aqui.
+
+\section{Conclusão}
+
+Retome o objetivo que vocês anunciaram na introdução e responda se ele foi atingido,
+apoiando a resposta em um número. Aponte a principal limitação do que foi feito e o que
+ela impede de afirmar. Evite trazer resultado novo nesta seção.
+
+\section{Referências}
+
+\begin{referencias}
+\item SEDRA, A.~S.; SMITH, K.~C. \emph{Microeletrônica}. 5.~ed. São Paulo: Pearson
+      Prentice Hall, 2007.
+\item BOYLESTAD, R.~L.; NASHELSKY, L. \emph{Dispositivos Eletrônicos e Teoria de
+      Circuitos}. 11.~ed. São Paulo: Pearson Education do Brasil, 2013.
+\end{referencias}
+
+\end{document}

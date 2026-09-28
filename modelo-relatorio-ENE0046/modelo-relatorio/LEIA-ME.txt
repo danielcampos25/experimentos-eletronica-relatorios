@@ -4,9 +4,15 @@ ENE0046 - Laboratorio de Eletronica - 2026/2
 Arquivos desta pasta
   modelo-relatorio.tex   e o arquivo que voce edita
   estilo-relatorio.tex   formatacao; nao precisa abrir
-  logo-unb.png           usado no cabecalho; nao apague
+  imgs/logo-unb.png      usado no cabecalho; nao apague
 
-Os tres precisam ficar na MESMA pasta.
+Organizacao de figuras
+  Crie subpastas dentro de imgs/ para separar esquematicos, simulacoes,
+  resultados e fotos de bancada. Use esses caminhos nos comandos
+  \includegraphics, como em Roteiro_3.
+
+Os dois arquivos .tex precisam ficar na MESMA pasta. A pasta imgs/ fica ao lado
+deles.
 
 Compile SEMPRE o modelo-relatorio.tex. O estilo-relatorio.tex nao compila
 sozinho: ele e' um pedaco do outro. Se o seu editor tentar compilar o estilo,
@@ -28,8 +34,8 @@ Autores
   dois dividem a linha, tres ocupam tercos.
 
 Figuras
-  Coloque as imagens na mesma pasta e troque a caixa cinza pelo comando
-  \includegraphics{nome-do-arquivo}.
+  Coloque as imagens em imgs/ ou em uma subpasta de imgs/ e troque a caixa cinza
+  pelo comando \includegraphics{imgs/nome-do-arquivo}.
 
 Roteiro 1
   Nao tem bancada. Use apenas as subsecoes 4.1 e 5.1, e compare o calculo

@@ -1,0 +1,160 @@
+% !TeX root = modelo-relatorio.tex
+% Formatacao do relatorio. Compile o modelo-relatorio.tex, nao este arquivo.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[a4paper,top=1.6cm,bottom=1.8cm,left=2.1cm,right=2.1cm]{geometry}
+\usepackage[default]{lato}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{booktabs,array,longtable,colortbl}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{etoolbox}
+\usepackage[colorlinks=true,linkcolor=azul,urlcolor=azul,citecolor=azul]{hyperref}
+\tcbuselibrary{skins,breakable}
+
+\definecolor{azul}{HTML}{0A4B8C}
+\definecolor{azulclaro}{HTML}{E8F0F8}
+\definecolor{verde}{HTML}{0B7A4B}
+\definecolor{cinza}{HTML}{5B6672}
+\definecolor{cinzaclaro}{HTML}{F4F6F8}
+\definecolor{vinho}{HTML}{B04A4A}
+\definecolor{vinhoclaro}{HTML}{FBF2F2}
+
+\sisetup{output-decimal-marker={,}, per-mode=symbol}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 1pt}
+\setlist{itemsep=3pt, topsep=4pt, parsep=0pt, leftmargin=1.3em}
+\renewcommand{\arraystretch}{1.25}
+\linespread{1.06}
+
+% ---- secoes numeradas com marcador colorido -------------------------------
+\titleformat{\section}[hang]
+  {\Large\bfseries\color{azul}}
+  {\raisebox{-1pt}{\tikz\node[fill=azul,text=white,rounded corners=2pt,
+     inner sep=3pt,minimum width=20pt,align=center]{\bfseries\thesection};}}
+  {10pt}{}
+\titlespacing*{\section}{0pt}{16pt plus 3pt}{6pt}
+\titleformat{\subsection}{\large\bfseries\color{cinza}}{\thesubsection}{8pt}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt}{3pt}
+
+% ---- legendas -------------------------------------------------------------
+\captionsetup{font=small,labelfont={bf,color=azul},labelsep=period,skip=6pt}
+
+% ---- identificacao --------------------------------------------------------
+\newcommand{\autorA}{}\newcommand{\matA}{}
+\newcommand{\autorB}{}\newcommand{\matB}{}
+\newcommand{\autorC}{}\newcommand{\matC}{}
+\newcommand{\autorum}[2]{\renewcommand{\autorA}{#1}\renewcommand{\matA}{#2}}
+\newcommand{\autordois}[2]{\renewcommand{\autorB}{#1}\renewcommand{\matB}{#2}}
+\newcommand{\autortres}[2]{\renewcommand{\autorC}{#1}\renewcommand{\matC}{#2}}
+
+\newcommand{\disciplina}{ENE0046 · Laboratório de Eletrônica}
+\newcommand{\semestre}{2026/2}
+\newcommand{\turma}{}
+\newcommand{\roteironum}{}
+\newcommand{\roteirotema}{}
+\newcommand{\aturma}[1]{\renewcommand{\turma}{#1}}
+\newcommand{\roteiro}[2]{\renewcommand{\roteironum}{#1}\renewcommand{\roteirotema}{#2}}
+
+\newcommand{\umautor}[2]{%
+  \begin{minipage}[t]{\dimexpr\linewidth-4pt\relax}\centering
+    \parbox[t][30pt][t]{\linewidth}{\centering
+      {\fontsize{10.5}{12.5}\selectfont #1}}\\[-2pt]
+    {\color{cinza}\fontsize{9}{11}\selectfont\texttt{#2}}
+  \end{minipage}}
+
+\newcounter{nautores}
+\newcommand{\blocoautores}{%
+  \setcounter{nautores}{0}%
+  \ifdefempty{\autorA}{}{\stepcounter{nautores}}%
+  \ifdefempty{\autorB}{}{\stepcounter{nautores}}%
+  \ifdefempty{\autorC}{}{\stepcounter{nautores}}%
+  \ifnum\value{nautores}=0
+    \begin{center}\color{vinho}\bfseries
+      Preencha ao menos um autor no preâmbulo do arquivo.
+    \end{center}
+  \else
+    \begin{center}
+    \ifcase\value{nautores}\or
+      % --- um autor: ocupa o centro
+      \begin{minipage}{0.5\textwidth}\umautor{\autorA}{\matA}\end{minipage}%
+    \or
+      % --- dois autores: metades
+      \begin{minipage}{0.42\textwidth}\umautor{\autorA}{\matA}\end{minipage}\hspace{0.04\textwidth}%
+      \begin{minipage}{0.42\textwidth}\umautor{\autorB}{\matB}\end{minipage}%
+    \or
+      % --- tres autores: tercos
+      \begin{minipage}{0.31\textwidth}\umautor{\autorA}{\matA}\end{minipage}\hspace{0.015\textwidth}%
+      \begin{minipage}{0.31\textwidth}\umautor{\autorB}{\matB}\end{minipage}\hspace{0.015\textwidth}%
+      \begin{minipage}{0.31\textwidth}\umautor{\autorC}{\matC}\end{minipage}%
+    \fi
+    \end{center}
+  \fi}
+
+% ---- cabecalho do relatorio -----------------------------------------------
+\newcommand{\capa}{%
+\begin{tcolorbox}[colback=azul,colframe=azul,boxrule=0pt,arc=4pt,
+  left=16pt,right=16pt,top=13pt,bottom=13pt]
+\color{white}
+\begin{minipage}{0.76\textwidth}
+  {\fontsize{9}{11}\selectfont\textbf{\MakeUppercase{\disciplina{} · \semestre{}}}}\\[6pt]
+  {\fontsize{22}{25}\selectfont\bfseries Relatório do Roteiro \roteironum}\\[3pt]
+  {\fontsize{12.5}{15}\selectfont \roteirotema}
+\end{minipage}\hfill
+\begin{minipage}{0.2\textwidth}\raggedleft
+  \colorbox{white}{\hspace{2pt}\raisebox{-2pt}{\includegraphics[height=30pt]{imgs/logo-unb.png}}\hspace{2pt}}
+\end{minipage}
+\end{tcolorbox}
+\vspace{10pt}
+\blocoautores
+\ifdefempty{\turma}{}{%
+  \begin{center}{\color{cinza}\fontsize{9}{11}\selectfont Turma \turma}\end{center}}
+\vspace{4pt}
+{\color{azulclaro}\hrule height 2pt}
+\vspace{2pt}}
+
+% ---- caixas auxiliares ----------------------------------------------------
+\newtcolorbox{formula}{colback=azulclaro,colframe=azul,boxrule=0.8pt,arc=3pt,
+  left=12pt,right=12pt,top=9pt,bottom=9pt}
+\newtcolorbox{nota}[1]{colback=cinzaclaro,colframe=cinza,boxrule=0.8pt,arc=3pt,
+  left=10pt,right=10pt,top=7pt,bottom=7pt,
+  title={\textbf{#1}},fonttitle=\small\bfseries,coltitle=white,colbacktitle=cinza}
+\newenvironment{resumo}
+  {\vspace{6pt}\begin{center}\begin{minipage}{0.92\textwidth}
+   \begin{tcolorbox}[colback=cinzaclaro,colframe=cinzaclaro,boxrule=0pt,arc=3pt,
+     left=14pt,right=14pt,top=10pt,bottom=10pt,
+     borderline west={2.5pt}{0pt}{azul}]
+   {\color{azul}\fontsize{8}{10}\selectfont\textbf{RESUMO}}\\[4pt]
+   \small}
+  {\end{tcolorbox}\end{minipage}\end{center}\vspace{2pt}}
+
+\newtcolorbox{espec}{colback=azulclaro,colframe=azul,boxrule=0.8pt,arc=3pt,
+  left=12pt,right=12pt,top=9pt,bottom=9pt,
+  title={\textbf{Especificação da matrícula}},fonttitle=\bfseries,
+  coltitle=white,colbacktitle=azul}
+
+\newtcolorbox{especbancada}{colback=azulclaro,colframe=azul,boxrule=0.8pt,arc=3pt,
+  left=12pt,right=12pt,top=9pt,bottom=9pt,
+  title={\textbf{Especificação da Equipe}},fonttitle=\bfseries,
+  coltitle=white,colbacktitle=azul}
+
+% ---- rodape ---------------------------------------------------------------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[L]{\color{cinza}\fontsize{8}{10}\selectfont \disciplina{} · \semestre{} · Roteiro \roteironum}
+\fancyfoot[R]{\color{cinza}\fontsize{8}{10}\selectfont \thepage}
+
+\newlist{referencias}{itemize}{1}
+\setlist[referencias]{label={}, leftmargin=1.1em, itemindent=-1.1em,
+                     itemsep=3pt, topsep=2pt, parsep=0pt}
+
+\newcommand{\mat}[1]{\texttt{\textbf{#1}}}
