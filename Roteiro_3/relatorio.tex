@@ -457,7 +457,7 @@ Os componentes E12 correspondentes para a especificação da equipe apresentada 
 
 \begin{itemize}
 
-    \item \textbf{Seção 3.5 (Resposta em Frequência):} A partir da Equação~\ref{eq:ganho_nao_inversor}, para obter o ganho $G = 13$, a razão $R_f/R_g$ deve ser exatamente $12$. Adotando o valor comercial $R_g = 820\text{ }\Omega$, determina-se $R_f = 10\text{ k}\Omega$. O ganho prático realizado é $G_{\text{real}} = 1 + \frac{10\text{k}}{820\text{}} = 13{,}195$, alcançando a especificação com desvio de ($1{,}50\%$).
+    \item \textbf{Seção 3.5 (Resposta em Frequência):} A partir da expressão do ganho do amplificador não inversor, para obter o ganho $G = 13$, a razão $R_f/R_g$ deve ser exatamente $12$. Adotando o valor comercial $R_g = 820\text{ }\Omega$, determina-se $R_f = 10\text{ k}\Omega$. O ganho prático realizado é $G_{\text{real}} = 1 + \frac{10\text{k}}{820\text{}} = 13{,}195$, alcançando a especificação com desvio de ($1{,}50\%$).
 
 \end{itemize}
 
@@ -668,6 +668,211 @@ Para comprovar que o projeto atende às especificações apresentadas na seção
 
 \subsection{Montagem em bancada}
 
+A montagem em bancada foi realizada de acordo com a especificação da Equipe 2, que estabelece ganho baixo $G_1=13$, amplitude de pico $V_p=2{,}5$~V para o ensaio de \textit{slew rate} e ganho alto igual a 101. Os amplificadores operacionais foram alimentados com tensão simétrica de $\pm15$~V, utilizando capacitores de desacoplamento de 100~nF entre as alimentações e o terra, conforme especificado no roteiro.
+
+Antes da montagem dos circuitos, os resistores utilizados foram medidos individualmente. Os valores obtidos foram utilizados posteriormente na simulação da montagem.
+
+\begin{table}[H]
+\centering
+\caption{Valores dos resistores medidos antes da montagem.}
+\label{tab:resistores_bancada}
+\begin{tabular}{c c c}
+\hline
+\textbf{Componente} & \textbf{Valor nominal} & \textbf{Valor medido} \\
+\hline
+$R_f$ & $100~\mathrm{k}\Omega$ & $101~\mathrm{k}\Omega$ \\
+$R_g$ & $1~\mathrm{k}\Omega$ & $983~\Omega$ \\
+$R_f'$ & $10~\mathrm{k}\Omega$ & $9{,}816~\mathrm{k}\Omega$ \\
+$R_g'$ & $820~\Omega$ & $807~\Omega$ \\
+$R_s$ & $100~\mathrm{k}\Omega$ & $98{,}770~\mathrm{k}\Omega$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Tensão de offset}
+
+Inicialmente, foi montado o amplificador não inversor com ganho nominal 101, utilizando $R_f=100~\mathrm{k}\Omega$ e $R_g=1~\mathrm{k}\Omega$. A entrada não inversora foi conectada diretamente ao terra, de modo que qualquer tensão contínua observada na saída estivesse associada principalmente à tensão de offset do amplificador operacional.
+
+Para o LM741, foi medida uma tensão contínua de saída de $169$~mV. Considerando o ganho de 101 utilizado no ensaio, a tensão de offset correspondente é
+
+$$
+V_{OS}=\frac{V_O}{101}
+=\frac{169~\mathrm{mV}}{101}
+\approx1{,}67~\mathrm{mV}.
+$$
+
+Na sequência, o LM741 foi substituído pelo TL064, mantendo-se a mesma configuração de ensaio. Para o TL064, foi medida uma tensão de saída de $-49{,}5$~mV, resultando em
+
+$$
+V_{OS}=\frac{-49{,}5~\mathrm{mV}}{101}
+\approx-0{,}490~\mathrm{mV}.
+$$
+
+\begin{table}[H]
+\centering
+\caption{Tensão de offset medida para os amplificadores operacionais.}
+\label{tab:offset_bancada}
+\begin{tabular}{c c c}
+\hline
+\textbf{Amplificador} & \textbf{$V_O$ medido} & \textbf{$V_{OS}=V_O/101$} \\
+\hline
+LM741 & $169$~mV & $1{,}67$~mV \\
+TL064 & $-49{,}5$~mV & $-0{,}490$~mV \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a fotografia da montagem utilizada no ensaio de tensão de offset.
+\includegraphics[width=0.65\textwidth]{imgs/montagem/3.3tensaooffset.jpg}
+\caption{LM741: Montagem em bancada utilizada para a medição da tensão de offset.}
+\label{fig:montagem_offset}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a fotografia da montagem utilizada no ensaio de tensão de offset.
+\includegraphics[width=0.65\textwidth]{imgs/montagem/3.3tensaooffset2.jpg}
+\caption{TL064: Montagem em bancada utilizada para a medição da tensão de offset.}
+\label{fig:montagem_offset}
+\end{figure}
+
+\subsubsection{Corrente de polarização}
+
+Para a medição da corrente de polarização, o fio que conectava a entrada não inversora ao terra foi substituído pelo resistor $R_s=98{,}770~\mathrm{k}\Omega$. A tensão de saída foi então medida novamente, permitindo determinar a variação de tensão causada pela corrente de polarização.
+
+Para o LM741, a tensão de saída passou de $169$~mV, obtida no ensaio de offset, para $2{,}7$~mV. Assim,
+
+$$
+\Delta V_O=2{,}7-169=-166{,}3~\mathrm{mV}.
+$$
+
+A corrente de polarização resulta em
+
+$$
+I_B=
+\frac{\Delta V_O}{101R_s}
+=
+\frac{-166{,}3~\mathrm{mV}}
+{101\cdot98{,}770~\mathrm{k}\Omega}
+\approx-16{,}7~\mathrm{nA}.
+$$
+
+A redução da tensão de saída indica que, nesse ensaio, a corrente de polarização do LM741 possui sentido compatível com uma corrente entrando pela entrada do amplificador operacional.
+
+Para o TL064, a tensão de saída passou de $-49{,}5$~mV para $32{,}598$~mV. Portanto,
+
+$$
+\Delta V_O=32{,}598-(-49{,}5)
+=82{,}098~\mathrm{mV},
+$$
+
+e
+
+$$
+I_B=
+\frac{82{,}098~\mathrm{mV}}
+{101\cdot98{,}770~\mathrm{k}\Omega}
+\approx8{,}23~\mathrm{nA}.
+$$
+
+Nesse caso, o aumento da tensão de saída indica um sentido de corrente de polarização oposto ao observado no ensaio com o LM741.
+
+\begin{table}[H]
+\centering
+\caption{Medição da corrente de polarização dos amplificadores operacionais.}
+\label{tab:polarizacao_bancada}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Amplificador} & \textbf{$V_O$ com $R_s$} & \textbf{$\Delta V_O$} & \textbf{$I_B$} \\
+\hline
+LM741 & $2{,}7$~mV & $-166{,}3$~mV & $-16{,}7$~nA \\
+TL064 & $32{,}598$~mV & $82{,}098$~mV & $8{,}23$~nA \\
+\hline
+\end{tabular}
+\end{table}
+
+A diferença entre os degraus observados para o LM741 e o TL064 está associada às características distintas dos estágios de entrada dos dois amplificadores operacionais. O LM741 possui entrada bipolar, enquanto o TL064 utiliza entrada JFET, resultando em correntes de polarização de ordens de grandeza e sentidos diferentes.
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a fotografia da montagem com o resistor Rs.
+\includegraphics[width=0.65\textwidth]{imgs/montagem/3.4LM741.jpg}
+\caption{LM741: Montagem utilizada para a medição da corrente de polarização.}
+\label{fig:montagem_polarizacao}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a fotografia da montagem com o resistor Rs.
+\includegraphics[width=0.65\textwidth]{imgs/montagem/3.4TL064.jpg}
+\caption{TL064: Montagem utilizada para a medição da corrente de polarização.}
+\label{fig:montagem_polarizacao}
+\end{figure}
+
+\subsubsection{Resposta em frequência}
+
+Para a análise da resposta em frequência, foi utilizado o amplificador não inversor de ganho baixo da Equipe 2. Os resistores escolhidos foram $R_f'=10~\mathrm{k}\Omega$ e $R_g'=820~\Omega$, cujos valores medidos foram, respectivamente, $9{,}816~\mathrm{k}\Omega$ e $807~\Omega$.
+
+O ganho efetivamente realizado pela razão entre os valores medidos é
+
+$$
+G_1=
+1+\frac{R_f'}{R_g'}
+=
+1+\frac{9{,}816}{0{,}807}
+\approx13{,}17.
+$$
+
+Também foi analisado o estágio de ganho alto, utilizando os valores medidos $R_f=101~\mathrm{k}\Omega$ e $R_g=983~\Omega$. Com esses valores, o ganho resistivo correspondente é
+
+$$
+G_{101,\mathrm{med}}=
+1+\frac{101}{0{,}983}
+\approx103{,}75.
+$$
+
+A resposta em frequência foi obtida mantendo a amplitude de entrada constante e aumentando progressivamente a frequência do sinal. Os valores medidos são apresentados nas tabelas a seguir.
+
+
+
+
+\begin{figure}[H]
+\centering
+% Inserir aqui o gráfico de ganho em função da frequência, com eixo de frequência logarítmico.
+\includegraphics[width=0.85\textwidth]{imgs/montagem/3.5montagem.png}
+\caption{Montagem do circuito de resposta em frequência.}
+\label{fig:resposta_frequencia}
+\end{figure}
+
+A frequência de corte de cada estágio e o respectivo produto ganho--banda serão determinados a partir das curvas experimentais, considerando a frequência na qual o ganho cai para aproximadamente $0{,}707$ do valor de referência.
+
+\subsubsection{Slew rate}
+
+O ensaio de \textit{slew rate} foi realizado configurando o amplificador operacional como seguidor de tensão. Para a Equipe 2, a senoide aplicada possui amplitude de pico $V_p=2{,}5$~V. A frequência foi aumentada progressivamente até que a saída deixasse de apresentar comportamento senoidal e passasse a apresentar formato aproximadamente triangular.
+
+
+
+A frequência limite pode ser relacionada ao \textit{slew rate} pela expressão
+
+$$
+SR=2\pi f V_p.
+$$
+
+Assim, após a determinação do \textit{slew rate} a partir da inclinação da rampa medida no osciloscópio, pode-se calcular a frequência teórica correspondente e compará-la com a frequência observada experimentalmente.
+
+
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura do osciloscópio para o TL064.
+\includegraphics[width=0.75\textwidth]{imgs/montagem/3.6slewrate.jpg}
+\caption{Montagem do circuito para o ensaio de \textit{slew rate}.}
+\label{fig:slew_tl064}
+\end{figure}
+
+
 % Para a realização dos ensaios físicos, a equipe montou a especificação geral de bancada para a \textbf{Equipe 2} (detalhada na Seção 3). A designação da equipe foi dada pelo próprio roteiro. 
 
 % \vspace{0.3cm}
@@ -742,6 +947,150 @@ Para comprovar que o projeto atende às especificações apresentadas na seção
 % \end{figure}
 
 \subsection{Simulação da montagem}
+
+Nesta etapa, os circuitos utilizados na bancada foram reconstruídos no LTspice utilizando os valores reais dos componentes medidos antes da montagem. Dessa forma, buscou-se reproduzir nas simulações as mesmas condições utilizadas experimentalmente, permitindo posteriormente confrontar os resultados de projeto, simulação e medição.
+
+\subsubsection{Tensão de offset}
+
+O circuito do amplificador não inversor de ganho 101 foi reconstruído utilizando os valores medidos de $R_f$ e $R_g$. A entrada não inversora foi conectada ao terra, reproduzindo a condição utilizada na bancada para a determinação da tensão de offset.
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura do circuito de offset no LTspice.
+%\includegraphics[width=0.75\textwidth]{simulacoes/item_1.png}
+\caption{Simulação do circuito utilizado para determinação da tensão de offset.}
+\label{fig:sim_offset}
+\end{figure}
+
+A tensão de saída obtida na simulação foi de \_\_\_\_\_\_~V, correspondendo a uma tensão de offset de
+
+$$
+V_{OS,\mathrm{sim}}=
+\frac{V_{O,\mathrm{sim}}}{101}
+=\_\_\_\_\_\_~\mathrm{V}.
+$$
+
+Esse valor será comparado posteriormente ao resultado obtido na bancada.
+
+\subsubsection{Corrente de polarização}
+
+Para a simulação da corrente de polarização, o resistor $R_s=98{,}770~\mathrm{k}\Omega$ foi inserido entre a entrada não inversora e o terra. A diferença entre a tensão de saída dessa configuração e a tensão obtida no ensaio de offset permite determinar a corrente de polarização simulada.
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura da simulação de corrente de polarização.
+%\includegraphics[width=0.75\textwidth]{simulacoes/item_2.png}
+\caption{Simulação da corrente de polarização com o resistor de entrada.}
+\label{fig:sim_polarizacao}
+\end{figure}
+
+Para o LM741,
+
+$$
+\Delta V_{O,\mathrm{sim}}=\_\_\_\_\_\_~\mathrm{V}
+$$
+
+e
+
+$$
+I_{B,\mathrm{sim}}=
+\frac{\Delta V_{O,\mathrm{sim}}}
+{101R_s}
+=\_\_\_\_\_\_~\mathrm{A}.
+$$
+
+O mesmo procedimento foi realizado para o TL064.
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura da simulação do TL064.
+%\includegraphics[width=0.75\textwidth]{simulacoes/item_5.png}
+\caption{Simulação da corrente de polarização do TL064.}
+\label{fig:sim_polarizacao_tl064}
+\end{figure}
+
+\subsubsection{Resposta em frequência}
+
+A resposta em frequência dos dois amplificadores não inversores foi simulada utilizando os valores reais dos resistores medidos em bancada. Para o estágio de ganho baixo, foram utilizados $R_f'=9{,}816~\mathrm{k}\Omega$ e $R_g'=807~\Omega$, resultando em
+
+$$
+G_{1,\mathrm{sim}}
+=
+1+\frac{9{,}816}{0{,}807}
+\approx13{,}17.
+$$
+
+Para o estágio de ganho alto, foram utilizados $R_f=101~\mathrm{k}\Omega$ e $R_g=983~\Omega$, resultando em
+
+$$
+G_{2,\mathrm{sim}}
+=
+1+\frac{101}{0{,}983}
+\approx103{,}75.
+$$
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura do circuito de resposta em frequência.
+%\includegraphics[width=0.80\textwidth]{simulacoes/item_3.png}
+\caption{Circuitos utilizados na simulação da resposta em frequência.}
+\label{fig:sim_resposta_frequencia}
+\end{figure}
+
+A resposta em frequência simulada apresentou frequências de corte de aproximadamente \_\_\_\_\_\_~Hz para o ganho baixo e \_\_\_\_\_\_~Hz para o ganho alto.
+
+Os respectivos produtos ganho--banda são
+
+$$
+GBW_1=G_{1,\mathrm{sim}}f_{c1}
+=\_\_\_\_\_\_~\mathrm{Hz}
+$$
+
+e
+
+$$
+GBW_2=G_{2,\mathrm{sim}}f_{c2}
+=\_\_\_\_\_\_~\mathrm{Hz}.
+$$
+
+\begin{figure}[H]
+\centering
+% Inserir aqui o gráfico/captura da resposta em frequência simulada.
+%\includegraphics[width=0.85\textwidth]{simulacoes/resposta_frequencia.png}
+\caption{Resposta em frequência simulada dos estágios de ganho baixo e ganho alto.}
+\label{fig:sim_gbw}
+\end{figure}
+
+\subsubsection{Slew rate}
+
+O ensaio de \textit{slew rate} foi reproduzido no LTspice utilizando o LM741 configurado como seguidor de tensão e uma senoide com amplitude de pico $V_p=2{,}5$~V. A frequência foi variada para identificar a condição em que a saída deixa de acompanhar a forma senoidal e passa a apresentar comportamento aproximadamente triangular.
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura da simulação do slew rate do LM741.
+%\includegraphics[width=0.80\textwidth]{simulacoes/item_4.png}
+\caption{Simulação do \textit{slew rate} do LM741.}
+\label{fig:sim_slew_lm741}
+\end{figure}
+
+Para o TL064, o mesmo procedimento foi repetido utilizando o modelo correspondente.
+
+\begin{figure}[H]
+\centering
+% Inserir aqui a captura da simulação do slew rate do TL064.
+%\includegraphics[width=0.80\textwidth]{simulacoes/item_6.png}
+\caption{Simulação do \textit{slew rate} do TL064.}
+\label{fig:sim_slew_tl064}
+\end{figure}
+
+Para uma senoide de amplitude $V_p=2{,}5$~V, a frequência limite associada ao \textit{slew rate} pode ser obtida por
+
+$$
+f_{\mathrm{SR}}=\frac{SR}{2\pi V_p}.
+$$
+
+Os valores obtidos na simulação serão posteriormente confrontados com as frequências observadas na bancada e com os valores especificados nos \textit{datasheets} dos componentes.
+
 
 % Nesta etapa, os esquemáticos foram reconstruídos no LTspice com os valores reais dos resistores medidos antes da montagem. O objetivo é reproduzir a bancada em condições equivalentes e separar, na medida do possível, o efeito da tolerância dos componentes dos efeitos associados ao amplificador operacional e à instrumentação.
 
