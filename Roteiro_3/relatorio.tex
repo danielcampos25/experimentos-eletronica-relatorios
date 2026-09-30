@@ -956,18 +956,41 @@ O circuito do amplificador não inversor de ganho 101 foi reconstruído utilizan
 
 \begin{figure}[H]
 \centering
-% Inserir aqui a captura do circuito de offset no LTspice.
-%\includegraphics[width=0.75\textwidth]{simulacoes/item_1.png}
-\caption{Simulação do circuito utilizado para determinação da tensão de offset.}
-\label{fig:sim_offset}
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.3circuitosimuladoLM741.png}
+\caption{Simulação do circuito do LM741 utilizado para determinação da tensão de offset.}
+\label{fig:sim_offset_lm741}
 \end{figure}
 
-A tensão de saída obtida na simulação foi de \_\_\_\_\_\_~V, correspondendo a uma tensão de offset de
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.3resultadosimuladoLM741.png}
+\caption{Resultados da simulação da tensão de offset para o LM741.}
+\label{fig:sim_res_offset_lm741}
+\end{figure}
+
+O mesmo procedimento e análise foram realizados para o TL064:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.3circuitosimuladoTL064.png}
+\caption{Simulação do circuito do TL064 utilizado para determinação da tensão de offset.}
+\label{fig:sim_offset_tl064}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.3resultadosimuladoTL064.png}
+\caption{Resultados da simulação da tensão de offset para o TL064.}
+\label{fig:sim_res_offset_tl064}
+\end{figure}
+
+A tensão de saída obtida na simulação foi de $0{,}113975~\mathrm{V}$, correspondendo a uma tensão de offset de
 
 $$
 V_{OS,\mathrm{sim}}=
 \frac{V_{O,\mathrm{sim}}}{101}
-=\_\_\_\_\_\_~\mathrm{V}.
+=\frac{0{,}113975}{101}
+\approx 1{,}13\times 10^{-3}~\mathrm{V}.
 $$
 
 Esse valor será comparado posteriormente ao resultado obtido na bancada.
@@ -978,16 +1001,22 @@ Para a simulação da corrente de polarização, o resistor $R_s=98{,}770~\mathr
 
 \begin{figure}[H]
 \centering
-% Inserir aqui a captura da simulação de corrente de polarização.
-%\includegraphics[width=0.75\textwidth]{simulacoes/item_2.png}
-\caption{Simulação da corrente de polarização com o resistor de entrada.}
-\label{fig:sim_polarizacao}
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.4circuitosimuladoLM741.png}
+\caption{Simulação do circuito de corrente de polarização com o LM741.}
+\label{fig:sim_polarizacao_lm741}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.4resultadosimuladoLM741.png}
+\caption{Resultados da simulação da corrente de polarização para o LM741.}
+\label{fig:sim_res_polarizacao_lm741}
 \end{figure}
 
 Para o LM741,
 
 $$
-\Delta V_{O,\mathrm{sim}}=\_\_\_\_\_\_~\mathrm{V}
+\Delta V_{O,\mathrm{sim}}=-0{,}592477~\mathrm{V}
 $$
 
 e
@@ -996,17 +1025,25 @@ $$
 I_{B,\mathrm{sim}}=
 \frac{\Delta V_{O,\mathrm{sim}}}
 {101R_s}
-=\_\_\_\_\_\_~\mathrm{A}.
+=\frac{-0{,}592477}
+{101\cdot 98{,}770\times 10^3}
+\approx -5{,}94\times 10^{-8}~\mathrm{A}.
 $$
 
 O mesmo procedimento foi realizado para o TL064.
 
 \begin{figure}[H]
 \centering
-% Inserir aqui a captura da simulação do TL064.
-%\includegraphics[width=0.75\textwidth]{simulacoes/item_5.png}
-\caption{Simulação da corrente de polarização do TL064.}
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.4circuitosimuladoTL064.png}
+\caption{Simulação do circuito de corrente de polarização com o TL064.}
 \label{fig:sim_polarizacao_tl064}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{imgs/simulacao/3.4resultadosimuladoTL064.png}
+\caption{Resultados da simulação da corrente de polarização para o TL064.}
+\label{fig:sim_res_polarizacao_tl064}
 \end{figure}
 
 \subsubsection{Resposta em frequência}
@@ -1031,32 +1068,30 @@ $$
 
 \begin{figure}[H]
 \centering
-% Inserir aqui a captura do circuito de resposta em frequência.
-%\includegraphics[width=0.80\textwidth]{simulacoes/item_3.png}
-\caption{Circuitos utilizados na simulação da resposta em frequência.}
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.5circuitosimulado.png}
+\caption{Circuito utilizado na simulação da resposta em frequência.}
 \label{fig:sim_resposta_frequencia}
 \end{figure}
 
-A resposta em frequência simulada apresentou frequências de corte de aproximadamente \_\_\_\_\_\_~Hz para o ganho baixo e \_\_\_\_\_\_~Hz para o ganho alto.
+A resposta em frequência simulada apresentou frequências de corte de aproximadamente $95{,}0~\mathrm{kHz}$ para o ganho baixo e $10{,}0~\mathrm{kHz}$ para o ganho alto.
 
 Os respectivos produtos ganho--banda são
 
 $$
 GBW_1=G_{1,\mathrm{sim}}f_{c1}
-=\_\_\_\_\_\_~\mathrm{Hz}
+=1{,}25\times 10^6~\mathrm{Hz}
 $$
 
 e
 
 $$
 GBW_2=G_{2,\mathrm{sim}}f_{c2}
-=\_\_\_\_\_\_~\mathrm{Hz}.
+=1{,}04\times 10^6~\mathrm{Hz}.
 $$
 
 \begin{figure}[H]
 \centering
-% Inserir aqui o gráfico/captura da resposta em frequência simulada.
-%\includegraphics[width=0.85\textwidth]{simulacoes/resposta_frequencia.png}
+\includegraphics[width=0.85\textwidth]{imgs/simulacao/3.5resultadosimulado.png}
 \caption{Resposta em frequência simulada dos estágios de ganho baixo e ganho alto.}
 \label{fig:sim_gbw}
 \end{figure}
@@ -1067,20 +1102,55 @@ O ensaio de \textit{slew rate} foi reproduzido no LTspice utilizando o LM741 con
 
 \begin{figure}[H]
 \centering
-% Inserir aqui a captura da simulação do slew rate do LM741.
-%\includegraphics[width=0.80\textwidth]{simulacoes/item_4.png}
-\caption{Simulação do \textit{slew rate} do LM741.}
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6circuitosimuladoLM741.png}
+\caption{Simulação do circuito para o ensaio de \textit{slew rate} do LM741.}
 \label{fig:sim_slew_lm741}
+\end{figure}
+
+Resultados obtidos para diferentes frequências no LM741:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6resultadosimuladoLM74110Hz.png}
+\caption{Simulação do \textit{slew rate} do LM741 a 10~Hz.}
+\label{fig:sim_slew_lm741_10hz}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6resultadosimuladoLM74125Hz.png}
+\caption{Simulação do \textit{slew rate} do LM741 a 25~Hz.}
+\label{fig:sim_slew_lm741_25hz}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6resultadosimuladoLM74150Hz.png}
+\caption{Simulação do \textit{slew rate} do LM741 a 50~Hz.}
+\label{fig:sim_slew_lm741_50hz}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6resultadosimuladoLM7411kHz.png}
+\caption{Simulação do \textit{slew rate} do LM741 a 1~kHz.}
+\label{fig:sim_slew_lm741_1khz}
 \end{figure}
 
 Para o TL064, o mesmo procedimento foi repetido utilizando o modelo correspondente.
 
 \begin{figure}[H]
 \centering
-% Inserir aqui a captura da simulação do slew rate do TL064.
-%\includegraphics[width=0.80\textwidth]{simulacoes/item_6.png}
-\caption{Simulação do \textit{slew rate} do TL064.}
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6circuitosimuladoTL064.png}
+\caption{Simulação do circuito para o ensaio de \textit{slew rate} do TL064.}
 \label{fig:sim_slew_tl064}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{imgs/simulacao/3.6resultadosimuladoTL064.png}
+\caption{Simulação do \textit{slew rate} do TL064.}
+\label{fig:sim_res_slew_tl064}
 \end{figure}
 
 Para uma senoide de amplitude $V_p=2{,}5$~V, a frequência limite associada ao \textit{slew rate} pode ser obtida por
@@ -1090,97 +1160,6 @@ f_{\mathrm{SR}}=\frac{SR}{2\pi V_p}.
 $$
 
 Os valores obtidos na simulação serão posteriormente confrontados com as frequências observadas na bancada e com os valores especificados nos \textit{datasheets} dos componentes.
-
-
-% Nesta etapa, os esquemáticos foram reconstruídos no LTspice com os valores reais dos resistores medidos antes da montagem. O objetivo é reproduzir a bancada em condições equivalentes e separar, na medida do possível, o efeito da tolerância dos componentes dos efeitos associados ao amplificador operacional e à instrumentação.
-
-% \subsubsection{Seguidor de tensão}
-
-% No modelo da montagem, foram utilizados $R_1=0{,}981\,\mathrm{k}\Omega$, $R_2=0{,}986\,\mathrm{k}\Omega$ e $R_L=0{,}978\,\mathrm{k}\Omega$. Para reproduzir a condição registrada na bancada, a entrada foi ajustada para $1{,}9$~V de pico. Como o valor da tensão aplicada diretamente à entrada do divisor não foi registrado separadamente no conjunto de dados de bancada, essa escolha é utilizada apenas para reproduzir a condição numérica observada, não constituindo uma determinação independente da incerteza da medição.
-
-% Para o divisor em vazio, a tensão calculada com os valores medidos é
-% \[
-% V_{\text{vazio}}=1{,}9\frac{0{,}986}{0{,}981+0{,}986}\approx0{,}9524\text{ V},
-% \]
-% em concordância com o valor simulado de $0{,}952415$~V. Com a carga conectada diretamente, a simulação resultou em $0{,}633757$~V. Com o seguidor inserido entre o divisor e a carga, a saída foi $0{,}953411$~V, praticamente igual à tensão de entrada do seguidor. Esses resultados mostram que, para os valores reais dos componentes, o modelo reproduz o efeito de carregamento e a função de isolamento do seguidor.
-
-% \subsubsection{Amplificador não inversor}
-
-% Foram utilizados os valores medidos $R_g=9{,}78\,\mathrm{k}\Omega$ e $R_f=14{,}50\,\mathrm{k}\Omega$. O ganho esperado exclusivamente pela razão resistiva é
-% \[
-% G_{\text{med}}=1+\frac{14{,}50}{9{,}78}\approx2{,}48.
-% \]
-% A simulação da montagem e a captura correspondente são apresentadas nas Figuras~\ref{fig:circ_sim_bancada_nao_inversor} e~\ref{fig:vout_nao_inversor}. A comparação com a bancada, em que foi medido $G=2{,}46$, é feita na Seção~6.
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.8\linewidth]{sim_bancada/circ_nao_inversor.png}
-% \caption{Circuito do amplificador não inversor reconstruído com os valores medidos dos resistores.}
-% \label{fig:circ_sim_bancada_nao_inversor}
-% \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.8\linewidth]{sim_bancada/vout_non_inversor.png}
-% \caption{Saída simulada do amplificador não inversor com os valores medidos dos componentes.}
-% \label{fig:vout_nao_inversor}
-% \end{figure}
-
-% \subsubsection{Somador inversor}
-
-% Para a simulação da montagem foram empregados $R_1=9{,}66\,\mathrm{k}\Omega$, $R_2=3{,}21\,\mathrm{k}\Omega$ e $R_f=9{,}63\,\mathrm{k}\Omega$. Os pesos resultantes são
-% \[
-% k_1=\frac{9{,}63}{9{,}66}\approx0{,}997,
-% \qquad
-% k_2=\frac{9{,}63}{3{,}21}=3{,}000.
-% \]
-% A simulação reconstruída e a reta de transferência são apresentadas nas Figuras~\ref{fig:circ_sim_bancada_somador_inversor} e~\ref{fig:reta_dc_somador_montagem}. A comparação dos valores simulados com os sinais efetivamente aplicados na bancada é discutida na Seção~6.
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.8\linewidth]{sim_bancada/circ_somador.png}
-% \caption{Circuito do somador inversor reconstruído com os valores medidos dos resistores.}
-% \label{fig:circ_sim_bancada_somador_inversor}
-% \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.8\linewidth]{sim_bancada/reta_dc_somador.png}
-% \caption{Reta de transferência simulada do somador inversor com os valores medidos dos componentes.}
-% \label{fig:reta_dc_somador_montagem}
-% \end{figure}
-
-% \subsubsection{Amplificador de diferença}
-
-% Na reconstrução da montagem foram utilizados $R_1=5{,}46\,\mathrm{k}\Omega$, $R_2=11{,}35\,\mathrm{k}\Omega$, $R_3=5{,}43\,\mathrm{k}\Omega$ e $R_4=11{,}28\,\mathrm{k}\Omega$. Com esses valores, o ganho diferencial resistivo é
-% \[
-% A_d=\frac{11{,}35}{5{,}46}\approx2{,}079,
-% \]
-% enquanto o ganho de modo comum devido exclusivamente ao descasamento, pela Equação~\ref{eq:acm}, é aproximadamente
-% \[
-% A_{cm}\approx-4{,}57\times10^{-4}.
-% \]
-% O módulo desse ganho prevê, para uma entrada comum de $5$~V$_{pk}$, uma saída residual da ordem de $2{,}29$~mV$_{pk}$. A rejeição correspondente prevista a partir dos resistores medidos é, em módulo,
-% \[
-% CMRR_{dB}\approx73{,}2\text{ dB}.
-% \]
-% As formas de onda da simulação da montagem são apresentadas nas Figuras~\ref{fig:circ_sim_amplificador_diff} e~\ref{fig:vouts_amp_diff_montagem}.
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.8\linewidth]{sim_bancada/circ_amp_diff.png}
-% \caption{Circuito do amplificador de diferença reconstruído com os valores medidos dos resistores.}
-% \label{fig:circ_sim_amplificador_diff}
-% \end{figure}
-
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.40\linewidth]{sim_bancada/vout_diff.png} \hspace{0.1\linewidth}
-% \includegraphics[width=0.40\linewidth]{sim_bancada/vout_cmm.png}
-% \caption{Saídas simuladas da montagem no modo diferencial (esquerda) e no modo comum (direita).}
-% \label{fig:vouts_amp_diff_montagem}
-% \end{figure}
-
 \section{Resultados}
 
 \subsection{Projeto de cada integrante}
