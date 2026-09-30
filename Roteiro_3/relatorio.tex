@@ -249,6 +249,59 @@ Ganho $G_2$ (Ganho alto) & $101{,}000$ & $101{,}000$ & $0{,}00\%$ \\
 \end{tabular}
 \end{center}
 
+% Daniel Campos Silva
+\begin{espec}
+
+\textbf{Matrícula \mat{23/1036775}.} Considerando os nove dígitos na forma ABCDEFGHI,
+
+\begin{equation}
+    A=2,\; B=3,\; C=1,\; D=0,\; E=3,\; F=6,\; G=7,\; H=7,\; I=5
+\end{equation}
+
+De modo que $EF=36$ e $GH=77$. A partir desses valores, as especificações individuais exigidas pelo roteiro são:
+
+\begin{itemize}
+    \item \textbf{Seção 2.3 (Resposta em frequência):} \\
+    \textbf{\textit{Ganhos}} \\
+    $G_1=20+(\,EF\bmod 21)=20+(\,36\bmod 21)=20+15=35$ \\
+    $G_2=80+(\,GH\bmod 41)=80+(\,77\bmod 41)=80+36=116$
+
+    \vspace{0.3cm}
+    
+    \item \textbf{Seção 2.4 (Slew rate):} \\
+    \textbf{\textit{Amplitude de pico}} \\
+    $V_{\text{p}}=2+\frac{I}{2}=2+\frac{5}{2}=2+2{,}5=4{,}5\text{ V}$
+\end{itemize}
+
+\end{espec}
+
+Os componentes E12 correspondentes para a especificação apresentada e o desvio de cada escolha em relação ao valor teórico são apresentados a seguir:
+
+\begin{itemize}
+
+    \item \textbf{Resposta em frequência:} 
+    \begin{itemize}
+    
+        \item Para obter o primeiro ganho $G_1=35$, adotou-se $R_g=1{,}5\text{ k}\Omega$ e, para a realimentação, $R_f=51\text{ k}\Omega$ (ou associação adequada da série E12). O ganho realizado é $G_{\text{real}}=1+\frac{51\text{k}}{1{,}5\text{k}} = 35$ representando um desvio de $0{,}00\%$.
+        
+        \item Para obter o segundo ganho $G_2=116$, adotou-se $R_g=1\text{ k}\Omega$ e, para a realimentação, uma associação em série de $100\text{ k}\Omega$ e $15\text{ k}\Omega$, totalizando $R_f=115\text{ k}\Omega$ (ou $116\text{ k}\Omega$ via associação). O ganho realizado aproxima-se de $116$, com desvio mínimo dentro da tolerância E12.
+        
+    \end{itemize}
+\end{itemize}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} & \textbf{Desvio} \\
+\midrule
+Ganho $G_1$ (Ganho baixo) & $35{,}000$ & $35{,}000$ & $0{,}00\%$ \\
+Ganho $G_2$ (Ganho alto) & $116{,}000$ & $116{,}000$ & $0{,}00\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
 % \begin{espec}
 % \label{espec:luri}
 
@@ -548,6 +601,71 @@ Para comprovar que o projeto atende às especificações apresentadas na seção
 
 \caption{Esquemáticos projetados para a matrícula 23/1038626, contendo os resistores E12 dimensionados e as diretivas de simulação aplicadas.}
 \label{fig:circs_guilherme}
+\end{figure}
+
+\subsubsection{Daniel Campos Silva (23/1036775)}
+
+\textbf{Configuração e Simulação dos Circuitos}
+
+Para comprovar que o projeto atende às especificações apresentadas na seção 2 (referentes às não idealidades dos amplificadores operacionais), os seis circuitos foram desenhados e simulados, conforme a Figura~\ref{fig:circs_daniel}. As análises no LTspice foram configuradas da seguinte forma:
+
+\begin{itemize}
+    \item \textbf{Tensão de Offset (Fig.~\ref{fig:circs_daniel}a):} Para medir a tensão de offset, montou-se um amplificador não inversor com um ganho de 101, empregando resistências de $R_f=100\text{ k}\Omega$ e $R_g=1\text{ k}\Omega$, e com a entrada inversora ligada diretamente ao terra. Utilizou-se a diretiva de ponto de operação (\texttt{.op}) para medir a tensão em corrente contínua amplificada na saída do componente LM741.
+    
+    \item \textbf{Corrente de Polarização (Fig.~\ref{fig:circs_daniel}b e \ref{fig:circs_daniel}c):} O circuito da seção anterior foi alterado mediante a adição de uma resistência $R_s=100\text{ k}\Omega$ entre o terra e a entrada não inversora. A análise de ponto de operação \texttt{.op} foi realizada em dois esquemáticos distintos, sendo o primeiro com o amplificador LM741 e o segundo utilizando o TL064. A diferença obtida entre os dois ensaios (com e sem $R_s$) permite a determinação analítica da corrente de polarização.
+
+    \item \textbf{Resposta em Frequência (Fig.~\ref{fig:circs_daniel}d):} Dois amplificadores não inversores baseados no LM741 foram montados no mesmo esquemático e alimentados por uma fonte de sinal alternado (\texttt{AC 1}). Para o primeiro estágio, adotou-se o ganho de projeto $G_1 = 35$ utilizando $R_g=1{,}5\text{ k}\Omega$ e $R_f=51\text{ k}\Omega$. Para o segundo estágio, implementou-se o ganho $G_2 = 116$ com $R_g=1\text{ k}\Omega$ e uma associação em série de $100\text{ k}\Omega$ e $15\text{ k}\Omega$ para compor $R_f=115\text{ k}\Omega$. Aplicou-se a análise em frequência (\texttt{.ac dec 50 10 10meg}), através de uma varredura decádica de 10 Hz a 10 MHz com 50 pontos por década.     
+    
+    \item \textbf{Slew Rate (Fig.~\ref{fig:circs_daniel}e e \ref{fig:circs_daniel}f):} O circuito foi configurado como um seguidor de tensão e alimentado por um sinal senoidal com a amplitude de pico especificada pela matrícula ($V_p=4{,}5\text{ V}$). Utilizou-se a análise de regime transitório (\texttt{.tran}) combinada com uma varredura paramétrica de frequência (\texttt{.step param f\_var}). No ensaio com o LM741 e com o TL064, ajustaram-se as frequências adequadas para evidenciar a transição do sinal senoidal para o comportamento triangular. 
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/daniel/daniel_simulacao/item_1_tensão_offset.png}
+    \vspace{2pt}
+    {\small (a) Tensão de Offset}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/daniel/daniel_simulacao/item_2_corrente_de_polarização_LM741.png}
+    \vspace{2pt}
+    {\small (b) Corrente de Polarização (LM741)}
+\end{minipage}
+
+\vspace{12pt}
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/daniel/daniel_simulacao/item_5_corrente_de_polarização_TL064.png}
+    \vspace{2pt}
+    {\small (c) Corrente de Polarização (TL064)}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/daniel/daniel_simulacao/item_3_resposta_em_frequência.png}
+    \vspace{2pt}
+    {\small (d) Resposta em Frequência}
+\end{minipage}
+
+\vspace{12pt}
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/daniel/daniel_simulacao/item_4_slew_rate_LM741.png}
+    \vspace{2pt}
+    {\small (e) Slew Rate (LM741)}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/daniel/daniel_simulacao/item_6_slew_rate_TL064.png}
+    \vspace{2pt}
+    {\small (f) Slew Rate (TL064)}
+\end{minipage}
+
+\caption{Esquemáticos projetados para a matrícula 23/1036775, contendo os resistores E12 dimensionados e as diretivas de simulação aplicadas.}
+\label{fig:circs_daniel}
 \end{figure}
 
 % \subsubsection{Lurian Lima (22/2005395)}
@@ -1236,6 +1354,75 @@ A partir das curvas de resposta em frequência (Figuras~\ref{fig:graficos_cardos
 No que tange à distorção por \textit{Slew Rate} (SR), o limite de frequência teórica a partir da qual uma senoide de amplitude $V_p = 5\text{ V}$ sofre ceifamento triangular é calculado por $f_{max} = \frac{SR}{2\pi V_p}$. Através da inclinação da rampa medida com os cursores no LTspice, o SR simulado do LM741 foi de $0{,}315\text{ V/}\mu\text{s}$, projetando uma distorção limite a partir de $f_{max} \approx 10{,}0\text{ kHz}$. Em contrapartida, a medição da rampa para o TL064 resultou num SR de $3{,}286\text{ V/}\mu\text{s}$ (próximo aos $3{,}0\text{ V/}\mu\text{s}$ nominais de \textit{datasheet}), o que eleva a frequência máxima sem distorção para $f_{max} \approx 104{,}6\text{ kHz}$. A comparação evidencia de forma prática que o modelo JFET (TL064) é substancialmente mais veloz que o modelo bipolar (LM741) para lidar com variações abruptas de tensão. 
 
 \subsubsection{Daniel Campos Silva (23/1036775)}
+
+A Tabela~\ref{tab:resultados_daniel} apresenta os parâmetros de não idealidades em corrente contínua (tensão de offset e corrente de polarização) calculados analiticamente a partir dos pontos de operação (\texttt{.op}) simulados no LTspice.
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados simulados de tensão de offset e corrente de polarização (Matrícula 23/1036775).}
+    \label{tab:resultados_daniel}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    \textbf{Grandeza} & \textbf{Analítico (E12)} & \textbf{Simulado} & \textbf{Erro (\%)} \\
+    \midrule    
+    Ganho $G_1$ & $35{,}00$ & $35{,}02$ & $0{,}06\%$ \\
+    Ganho $G_2$ & $116{,}00$ & $115{,}88$ & $0{,}10\%$ \\
+    Tensão de Offset $V_{os}$ (LM741)* & $1{,}00\text{ mV}$ & $1{,}05\text{ mV}$ & $5{,}00\%$ \\
+    Corrente de Polarização $I_b$ (LM741)* & $80{,}00\text{ nA}$ & $59{,}10\text{ nA}$ & $26{,}12\%$ \\
+    \textit{Slew Rate} (LM741)* & $0{,}50\text{ V/}\mu\text{s}$ & $0{,}320\text{ V/}\mu\text{s}$ & $36{,}00\%$ \\
+    \textit{Slew Rate} (TL064)* & $3{,}00\text{ V/}\mu\text{s}$ & $3{,}250\text{ V/}\mu\text{s}$ & $8{,}33\%$ \\
+    \bottomrule
+    \multicolumn{4}{l}{\footnotesize * Para as grandezas não ideais, o valor analítico reflete o típico de \textbf{datasheet}.}
+    \end{tabular}
+\end{table}
+
+\paragraph{Análise Analítica DC:}
+A tensão de offset do LM741 foi calculada refletindo a tensão de saída para a entrada do amplificador não inversor de ganho $116$, resultando em $V_{os}=\frac{121{,}80\text{ mV}}{116}=1{,}05\text{ mV}$. Este valor encontra-se perfeitamente dentro da faixa típica informada no \textit{datasheet} do componente. 
+
+A corrente de polarização foi determinada através da variação da tensão de saída ($\Delta V_o$) ao inserir o resistor $R_s=100\text{ k}\Omega$. Para o LM741, a diferença medida foi de $\Delta V_o=|-565{,}40\text{ mV}-121{,}80\text{ mV}|=687{,}20\text{ mV}.$ Pela relação $I_b=\frac{\Delta V_o}{116 \cdot R_s}$, obteve-se $I_b=59{,}10\text{ nA}$, compatível com a tecnologia bipolar do AmpOp. O mesmo procedimento aplicado ao TL064 (tecnologia JFET) resultou em uma variação de saída quase nula, comprovando que a sua corrente de polarização é da ordem dos picoamperes (pA), sendo desprezível na simulação e resultando numa razão $\frac{I_{b(LM741)}}{I_{b(TL064)}} \to \infty$.
+
+A Figura~\ref{fig:graficos_daniel} exibe as formas de onda resultantes das simulações dinâmicas em frequência (\texttt{.ac}) e de regime transiente (\texttt{.tran}), evidenciando as limitações de largura de banda para os diferentes ganhos e as distorções causadas pela taxa de subida (\textit{slew rate}).
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/daniel/daniel_resultados/simulacao_item_3_ganho_g1.png}
+        \vspace{2pt}
+        {\small (a) Resposta em Frequência (Ganho $G_1=35$).}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/daniel/daniel_resultados/simulacao_item_3_ganho_g2.png}
+        \vspace{2pt}
+        {\small (b) Resposta em Frequência (Ganho $G_2=116$).}
+    \end{minipage}
+
+    \vspace{12pt}
+
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/daniel/daniel_resultados/simulacao_item_4_slew_rate_LM741.png}
+        \vspace{2pt}
+        {\small (c) \textit{Slew Rate} (LM741).}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/daniel/daniel_resultados/simulacao_item_6_slew_rate_TL064.png}
+        \vspace{2pt}
+        {\small (d) \textit{Slew Rate} (TL064).}
+    \end{minipage}
+    \caption{Resultados gráficos das simulações de projeto (matrícula 23/1036775).}
+    \label{fig:graficos_daniel}
+\end{figure}
+
+\paragraph{Análise Analítica AC e Transiente:}
+A partir das curvas de resposta em frequência (Figuras~\ref{fig:graficos_daniel}a e \ref{fig:graficos_daniel}b), determinou-se analiticamente o Produto Ganho-Banda (GBW) de cada configuração. Para o ganho real de malha fechada $G_1=35$ (realizado com os resistores $R_g = 1{,}5\text{ k}\Omega$ e $R_f = 51\text{ k}\Omega$), a frequência de corte a $-3\text{ dB}$ medida foi de $f_{c1} \approx 28{,}45\text{ kHz}$, o que acarreta em um produto $GBW_1=35{,}02 \times 28{,}45\text{ kHz} \approx 996{,}3\text{ kHz}$. Para o ganho $G_2=116$ (utilizando $R_g = 1\text{ k}\Omega$ e $R_f = 115\text{ k}\Omega$), obteve-se $f_{c2} \approx 8{,}62\text{ kHz}$, gerando um produto $GBW_2=115{,}88 \times 8{,}62\text{ kHz} \approx 998{,}9\text{ kHz}$.
+
+No que tange à distorção por \textit{Slew Rate} (SR), o limite de frequência teórica a partir da qual uma senoide de amplitude $V_p = 5\text{ V}$ sofre ceifamento triangular é calculado por $f_{max} = \frac{SR}{2\pi V_p}$. Através da inclinação da rampa medida com os cursores no LTspice, o SR simulado do LM741 foi de $0{,}320\text{ V/}\mu\text{s}$, projetando uma distorção limite a partir de $f_{max} \approx 10{,}19\text{ kHz}$. Em contrapartida, a medição da rampa para o TL064 resultou em um SR de $3{,}250\text{ V/}\mu\text{s}$ (próximo aos $3{,}0\text{ V/}\mu\text{s}$ nominais de \textit{datasheet}), o que eleva a frequência máxima sem distorção para $f_{max} \approx 103{,}46\text{ kHz}$. A comparação evidencia de forma prática que o modelo JFET (TL064) é substancialmente mais veloz que o modelo bipolar (LM741) para lidar com variações abruptas de tensão.
 % \begin{table}[H]
 %     \centering
 %     \caption{Comparação entre valores analíticos e simulados para Daniel Campos Silva.}
