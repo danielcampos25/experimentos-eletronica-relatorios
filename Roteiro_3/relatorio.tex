@@ -53,148 +53,74 @@
 
 \section{Introdução}
 
-% Um sensor de alta impedância, um sinal que precisa ser amplificado sem inversão de fase, dois níveis de tensão que devem ser combinados com pesos diferentes e dois fios que transportam o mesmo sinal de interesse contaminado por uma interferência comum representam quatro problemas distintos de engenharia. Todos podem ser tratados com amplificadores operacionais em malha fechada e realimentação negativa, mas cada aplicação exige uma topologia adequada. A principal diferença entre esses estágios está na rede de resistores que estabelece a realimentação e, consequentemente, o comportamento elétrico do circuito.
+Sistemas de instrumentação e controle frequentemente exigem a amplificação de sinais elétricos na casa dos milivolts, provenientes de transdutores físicos (como termopares ou pontes de Wheatstone), para níveis de tensão adequados à conversão analógico-digital ou ao processamento analógico. A topologia fundamental para suprir essa necessidade de engenharia é o amplificador operacional. Em equipamentos reais, como eletrocardiógrafos ou condicionadores de sinal industriais, a precisão da amplificação é crítica. Sem uma topologia de amplificação confiável e bem compreendida, ruídos e características construtivas do próprio componente podem dominar o sinal. Se um projeto for feito assumindo um componente perfeitamente ideal, uma pequena tensão contínua indesejada na entrada pode ser multiplicada até saturar a saída, e uma senoide rápida pode sofrer distorções severas que mascaram a informação original do sensor.
 
-% Sem esses estágios, um sinal fraco de um sensor pode ser afetado pelo carregamento da etapa seguinte, uma combinação direta de fontes pode permitir que uma entrada influencie a outra e uma medição diferencial pode conservar parte da interferência comum presente nos dois condutores. O seguidor de tensão atua como elemento de isolamento entre uma fonte de alta impedância e a carga; o amplificador não inversor fornece ganho sem inversão de fase; o somador inversor combina sinais com pesos definidos pelas razões entre resistores; e o amplificador de diferença amplifica a diferença entre duas entradas enquanto procura rejeitar o componente comum.
+Para evitar essas falhas, este relatório restringe o foco à investigação das não idealidades de corrente contínua (tensão de offset e corrente de polarização) e das limitações dinâmicas em corrente alternada (produto ganho-banda e \textit{slew rate}). A investigação compara duas tecnologias de fabricação distintas: o LM741 (estágio de entrada com transistores bipolares) e o TL064 (entrada JFET). O roteiro do experimento impõe algumas restrições de projeto que, à primeira vista, parecem arbitrárias, como a adoção de um ganho estático excepcionalmente alto ($G=101$) e o uso de um resistor de base bastante elevado ($100~\mathrm{k}\Omega$). Essas restrições possuem uma razão prática: não idealidades de entrada são ordens de grandeza muito pequenas (milivolts ou nanoamperes). O ganho de $101$ serve unicamente para amplificar a tensão de offset a um nível facilmente mensurável por multímetros de bancada comuns, enquanto o resistor de $100~\mathrm{k}\Omega$ atua para converter a ínfima corrente de polarização em uma queda de tensão que também possa ser lida sem instrumentos de alta precisão.
 
-% Neste relatório, esses quatro estágios são analisados a partir do modelo ideal do amplificador operacional e posteriormente confrontados com simulações no LTspice e com uma montagem física em bancada. A comparação torna-se especialmente relevante quando os resistores comerciais da série E12 são substituídos, na simulação da montagem, pelos valores efetivamente medidos. O roteiro também estabelece duas condições de projeto: as simulações individuais são determinadas pelos nove dígitos da matrícula de cada integrante, enquanto a montagem física segue a especificação correspondente ao número da equipe.
-
-% O objetivo é dimensionar os quatro circuitos, verificar as especificações por simulação e avaliar experimentalmente o efeito do carregamento, dos valores reais dos componentes, da saturação e do descasamento resistivo. A Seção~2 apresenta a fundamentação teórica; a Seção~3 apresenta as especificações e o dimensionamento; a Seção~4 descreve as simulações e a montagem; a Seção~5 reúne os resultados; a Seção~6 discute as diferenças entre cálculo, simulação e medição; a Seção~7 apresenta a conclusão; e a Seção~8 reúne as referências.
+O objetivo deste relatório é medir essas não idealidades na prática, situá-las dentro das faixas nominais fornecidas pelos \textit{datasheets} e distinguir experimentalmente a limitação linear de banda da limitação não linear por \textit{slew rate}. O texto está organizado da seguinte forma: a Seção 2 apresenta as deduções teóricas das não idealidades a partir das leis de circuitos; a Seção 3 traz as especificações e o dimensionamento; a Seção 4 descreve a metodologia de simulação e de montagem; a Seção 5 consolida os resultados obtidos; a Seção 6 discute as divergências encontradas entre projeto, simulação e medição; a Seção 7 conclui o trabalho; e a Seção 8 lista as referências bibliográficas.
 
 \section{Fundamentação teórica}
 
-% \subsection{Divisor de tensão com carga}
+\subsection{Hipóteses assumidas e o modelo ideal}
 
-% Considere um divisor formado por $R_1$ e $R_2$ alimentado por uma tensão $V_{in}$. Em vazio, a corrente no ramo é
-% \begin{equation}
-% I=\frac{V_{in}}{R_1+R_2},
-% \label{eq:divisor_corrente}
-% \end{equation}
-% e a tensão no resistor inferior é
-% \begin{equation}
-% V_{\text{vazio}}=IR_2=V_{in}\frac{R_2}{R_1+R_2}.
-% \label{eq:divisor_vazio}
-% \end{equation}
+Todas as deduções partem de uma hipótese fundamental: o amplificador operacional na configuração não inversora opera na região ativa, sem saturar nas tensões de alimentação. Assume-se primeiramente um modelo ideal, caracterizado por ganho de malha aberta infinito, impedância de entrada infinita (correntes nulas nos terminais) e resposta instantânea (banda infinita). Pelo princípio do curto virtual, as tensões nos terminais inversor ($V_-$) e não inversor ($V_+$) são iguais ($V_+ = V_-$). A aplicação da Lei de Kirchhoff das Correntes (LKC) no nó inversor leva ao ganho ideal clássico:
+\begin{equation}
+G = 1 + \frac{R_f}{R_g}
+\label{eq:ganho_ni}
+\end{equation}
+em que $R_f$ é a resistência de realimentação e $R_g$ é a resistência conectada ao terra. Caso a linearidade ou essas idealidades não se sustentem no experimento prático, essas premissas serão retomadas e justificadas na discussão dos resultados. As seções seguintes acrescentam as imperfeições reais a este modelo.
 
-% Quando uma carga $R_L$ é conectada em paralelo com $R_2$, a resistência equivalente do ramo inferior passa a ser
-% \begin{equation}
-% R_p=R_2\parallel R_L=\frac{R_2R_L}{R_2+R_L},
-% \label{eq:paralelo}
-% \end{equation}
-% e a tensão sobre a carga torna-se
-% \begin{equation}
-% V_{\text{carga}}=V_{in}\frac{R_p}{R_1+R_p}.
-% \label{eq:divisor_carga}
-% \end{equation}
+\subsection{Efeitos contínuos: Tensão de offset e Corrente de polarização}
 
-% A queda percentual causada pelo carregamento é definida por
-% \begin{equation}
-% \Delta V(\%)=\left(1-\frac{V_{\text{carga}}}{V_{\text{vazio}}}\right)\times100.
-% \label{eq:queda_percentual}
-% \end{equation}
+Fisicamente, a tensão de offset de entrada ($V_{os}$) representa o desequilíbrio intrínseco na fabricação dos transistores do par diferencial de entrada. Ela é modelada como uma pequena fonte de tensão contínua em série com o terminal não inversor. Assumindo as correntes nulas e ligando a entrada ao terra, o modelo ideal enxerga $V_+ = V_{os}$. Pelo curto virtual, $V_- = V_{os}$. Aplicando a LKC no nó inversor:
+\begin{equation}
+\frac{V_{os}}{R_g} + \frac{V_{os} - V_o}{R_f} = 0 \quad\Rightarrow\quad V_o = \left(1 + \frac{R_f}{R_g}\right)V_{os}
+\label{eq:vos}
+\end{equation}
+em que $V_o$ é a tensão física medida na saída. 
 
-% O divisor também pode ser representado pelo equivalente de Thévenin, cuja resistência vista pela carga é
-% \begin{equation}
-% R_{th}=R_1\parallel R_2.
-% \label{eq:rth}
-% \end{equation}
-% Quanto menor for $R_{th}$ em relação a $R_L$, menor será a influência do carregamento.
+A corrente de polarização ($I_B$), por sua vez, é a corrente contínua física que precisa circular pelos terminais de entrada para polarizar os transistores internos (corrente de base nos bipolares, ou corrente de fuga da porta nos JFETs). Adotando a convenção de que $I_B$ é positiva ao sair do amplificador, e inserindo um resistor $R_s$ entre a entrada não inversora e o terra, a tensão no pino fica $V_+ = V_{os} + I_BR_s$. Aplicando a LKC no nó inversor e considerando que a corrente $I_B$ também sai desse pino para a malha:
+\begin{equation}
+I_B + \frac{V_o - V_-}{R_f} = \frac{V_-}{R_g} 
+\quad\Rightarrow\quad 
+V_o = \left(1 + \frac{R_f}{R_g}\right)(V_{os} + I_BR_s) - I_BR_f
+\label{eq:vo_rs}
+\end{equation}
 
-% \subsection{O amplificador operacional ideal}
+Se a entrada for aterrada diretamente ($R_s=0$), a saída é $V_{o,0} = (1+R_f/R_g)V_{os} - I_BR_f$. Subtraindo $V_{o,0}$ da saída com $R_s$, isola-se o efeito exclusivo da corrente sobre o resistor de teste:
+\begin{equation}
+\Delta V_o = 101\,I_BR_s \quad\Rightarrow\quad I_B = \frac{\Delta V_o}{101\,R_s}
+\label{eq:ib}
+\end{equation}
+O sinal de $\Delta V_o$ revela o sentido físico da corrente: valores negativos indicam corrente entrando no CI (típico do LM741), enquanto positivos indicam corrente saindo (típico da fuga no TL064).
 
-% O amplificador operacional ideal é modelado com ganho de malha aberta infinito, impedância de entrada infinita e impedância de saída nula. Em uma configuração com realimentação negativa e operação linear, essas hipóteses levam às condições
-% \begin{equation}
-% V_+=V_-,\qquad i_+=i_-=0,
-% \label{eq:opamp_ideal}
-% \end{equation}
-% que serão utilizadas nas deduções seguintes. A igualdade de potenciais entre as entradas é chamada de curto virtual: não existe ligação elétrica direta entre os terminais, mas a realimentação faz com que seus potenciais sejam aproximadamente iguais.
+\subsection{Dinâmica e regimes de operação}
 
-% O modelo ideal não representa os limites de saída do componente real. Com alimentação de $\pm15$~V, o sinal de saída pode atingir a saturação antes de alcançar exatamente os trilhos de alimentação, razão pela qual os ensaios de saturação devem ser avaliados experimentalmente.
+Frente a estímulos de corrente alternada (CA), o circuito apresenta dois regimes de operação distintos, separados pela amplitude e frequência do sinal exigido.
 
-% \subsection{Seguidor de tensão}
+\textbf{1. Regime Linear (Limitado pela Largura de Banda):}
+Fisicamente, o ganho interno cai com a frequência devido aos capacitores de compensação internos. Modelando o ganho de malha aberta como um filtro passa-baixas de primeira ordem genérico, temos $A(s) = A_0 / (1 + s/\omega_p)$, onde $A_0$ é o ganho estático e $\omega_p$ é o polo dominante. A frequência de corte final em malha fechada ($f_c$) deduz-se como:
+\begin{equation}
+f_c = \frac{A_0 f_p}{G} = \frac{GBW}{G} \quad\Rightarrow\quad GBW \approx G \cdot f_c
+\label{eq:fc_gbw}
+\end{equation}
+em que $GBW$ é o Produto Ganho-Banda, uma constante do componente físico. Neste regime linear, a saída preserva o formato senoidal perfeito, sofrendo apenas atenuação (queda de $-3\,\text{dB}$ na frequência $f_c$) e atraso de fase.
 
-% No seguidor, a saída é realimentada diretamente à entrada inversora, de modo que $V_-=V_o$. Pela Equação~\ref{eq:opamp_ideal},
-% \begin{equation}
-% V_o=V_+=V_i,
-% \label{eq:seguidor}
-% \end{equation}
-% portanto o ganho de tensão ideal é unitário. A importância dessa configuração está nas impedâncias: a entrada praticamente não drena corrente da fonte e a saída apresenta baixa impedância, permitindo alimentar uma carga sem alterar significativamente a tensão produzida pela etapa anterior.
+\textbf{2. Regime Não Linear (Limitado pelo Slew Rate):}
+Fisicamente, o \textit{slew rate} ($SR$) é a limitação da corrente interna disponível para carregar os capacitores de compensação, impondo uma taxa máxima de variação à tensão de saída:
+\begin{equation}
+SR = \max\left|\frac{dv_o}{dt}\right|
+\label{eq:sr}
+\end{equation}
+A derivada máxima de uma senoide $v_o(t) = V_p\sin(2\pi ft)$ ocorre no cruzamento por zero, valendo $2\pi f V_p$. Se o circuito exigir uma taxa maior que o componente suporta, a senoide vira uma rampa triangular. 
 
-% \subsection{Amplificador não inversor}
-
-% No amplificador não inversor, $V_i$ é aplicado à entrada não inversora e o divisor $R_g$--$R_f$ fornece a realimentação. Pelo curto virtual, a tensão na entrada inversora é igual a $V_i$. Como não há corrente entrando no terminal inversor, a corrente através de $R_g$ é a mesma corrente através de $R_f$:
-% \begin{equation}
-% \frac{V_i}{R_g}=\frac{V_o-V_i}{R_f}.
-% \label{eq:kcl_nao_inv}
-% \end{equation}
-% Rearranjando,
-% \begin{equation}
-% G=\frac{V_o}{V_i}=1+\frac{R_f}{R_g}.
-% \label{eq:ganho_nao_inversor}
-% \end{equation}
-% O ganho é positivo e maior ou igual a um. Quando se utiliza um limite de saída $V_{o,\max}$ antes da saturação, a amplitude máxima aproximada de entrada na região linear é
-% \begin{equation}
-% V_{i,\max}\approx\frac{V_{o,\max}}{G}.
-% \label{eq:vinmax}
-% \end{equation}
-
-% \subsection{Somador inversor}
-
-% No somador inversor, o nó conectado à entrada inversora permanece próximo de zero devido ao curto virtual. Aplicando a lei das correntes de Kirchhoff nesse nó,
-% \begin{equation}
-% \frac{V_1}{R_1}+\frac{V_2}{R_2}+\frac{V_o}{R_f}=0.
-% \label{eq:kcl_somador}
-% \end{equation}
-% Logo,
-% \begin{equation}
-% V_o=-\left(\frac{R_f}{R_1}V_1+\frac{R_f}{R_2}V_2\right)
-% =-\left(k_1V_1+k_2V_2\right),
-% \qquad k_i=\frac{R_f}{R_i}.
-% \label{eq:somador}
-% \end{equation}
-% Assim, cada entrada contribui para a saída de acordo com o seu peso resistivo.
-
-% \subsection{Amplificador de diferença}
-
-% No amplificador de diferença, a entrada inversora recebe $V_-$ por meio de $R_1$ e a saída é realimentada por $R_2$. Na entrada não inversora, $V_+$ é aplicado ao divisor formado por $R_3$ e $R_4$. Pela ausência de corrente na entrada do amplificador,
-% \begin{equation}
-% V_n=V_+\frac{R_4}{R_3+R_4},
-% \label{eq:vplusdiv}
-% \end{equation}
-% e, pelo curto virtual, a tensão no nó inversor é a mesma. Aplicando a lei das correntes nesse nó,
-% \begin{equation}
-% \frac{V_- - V_n}{R_1}+\frac{V_o-V_n}{R_2}=0.
-% \label{eq:kcl_diff}
-% \end{equation}
-% Substituindo a Equação~\ref{eq:vplusdiv}, obtém-se a expressão geral
-% \begin{equation}
-% V_o=\left(1+\frac{R_2}{R_1}\right)\frac{R_4}{R_3+R_4}V_+
-% -\frac{R_2}{R_1}V_-.
-% \label{eq:diff_geral}
-% \end{equation}
-% Quando os resistores são casados, $R_3=R_1$ e $R_4=R_2$, essa expressão se reduz a
-% \begin{equation}
-% V_o=\frac{R_2}{R_1}(V_+-V_-)=A_d(V_+-V_-).
-% \label{eq:diferenca}
-% \end{equation}
-
-% Para avaliar o ensaio de modo comum, define-se $V_+=V_-=V_{cm}$. A partir da Equação~\ref{eq:diff_geral}, o ganho de modo comum devido ao descasamento resistivo é
-% \begin{equation}
-% A_{cm}=\left(1+\frac{R_2}{R_1}\right)\frac{R_4}{R_3+R_4}-\frac{R_2}{R_1}.
-% \label{eq:acm}
-% \end{equation}
-% A rejeição de modo comum é descrita pela razão entre o ganho diferencial e o ganho de modo comum,
-% \begin{equation}
-% CMRR=\left|\frac{A_d}{A_{cm}}\right|,
-% \label{eq:cmrr}
-% \end{equation}
-% e, em decibéis,
-% \begin{equation}
-% CMRR_{dB}=20\log_{10}\left|\frac{A_d}{A_{cm}}\right|.
-% \label{eq:cmrrdb}
-% \end{equation}
-% Para resistores perfeitamente casados, $A_{cm}=0$ no modelo ideal e o CMRR tende ao infinito.
-
+\textbf{Fronteira entre os Regimes:}
+O que separa o regime linear do não linear é a equação da taxa de variação. O circuito abandona o regime linear e entra em distorção por \textit{slew rate} sempre que a frequência do sinal ultrapassa a fronteira limitante $f_{SR}$:
+\begin{equation}
+f \ge f_{SR} = \frac{SR}{2\pi V_p}
+\label{eq:fsr}
+\end{equation}
+Essa fronteira demonstra que o limite não linear depende fortemente da amplitude exigida na saída ($V_p$), enquanto a limitação linear (corte de banda) depende estritamente da relação de resistores do projeto ($G$).
 \section{Especificação e projeto}
 
 % Cardoso
