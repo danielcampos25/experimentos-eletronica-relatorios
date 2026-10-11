@@ -1,0 +1,622 @@
+% ===========================================================================
+% MODELO DE RELATORIO  ·  ENE0046 Laboratorio de Eletronica  ·  2026/2
+%
+% Como usar
+%   1. Preencha o bloco IDENTIFICACAO logo abaixo.
+%   2. Deixe comentados os autores que nao existirem. Um autor fica centralizado,
+%      dois dividem a linha, tres ocupam tercos.
+%   3. Substitua o texto de cada secao pelo seu. As orientacoes que estao la
+%      dizem o que se espera em cada uma.
+%   4. Compile com pdflatex duas vezes, ou com latexmk -pdf.
+%
+% Estrutura
+%   Roteiro 1 nao tem bancada: use so a subsecao 4.1 e a 5.1, e compare o calculo
+%   analitico com a simulacao de projeto.
+%   Roteiros 2 a 7 usam a estrutura inteira.
+%
+% O arquivo estilo-relatorio.tex deve estar na mesma pasta deste arquivo. A logo
+% e as figuras ficam organizadas na subpasta imgs/, como no relatorio preenchido.
+% ===========================================================================
+\documentclass[11pt,a4paper]{article}
+\input{estilo-relatorio}
+
+% --------------------------- IDENTIFICACAO ---------------------------------
+\roteiro{1}{Simulação de Circuitos: Introdução ao LTspice}
+\aturma{03}
+
+\autorum{Lurian Correia Lima}{22/2005395} 
+\autordois{Guilherme Cardoso Oliveira da Silva Júnior}{23/1038626}
+\autortres{Daniel Campos Silva}{23/1036775}
+% ---------------------------------------------------------------------------
+
+\begin{document}
+\capa
+
+\begin{resumo}
+Escreva este parágrafo por último, com 100 a 150 palavras. Diga o que você projetou, sob
+qual especificação, o que simulou ou mediu, o principal resultado numérico e a que
+conclusão chegou. Quem ler só este parágrafo deve saber o que você fez e o que encontrou.
+\end{resumo}
+
+```latex
+\section{Introdução}
+
+A aquisição de sinais bioelétricos apresenta um desafio importante para a instrumentação eletrônica: os sinais de interesse possuem amplitudes reduzidas e precisam ser extraídos em meio a interferências que podem ser significativamente maiores. No eletrocardiograma (ECG), a diferença de potencial medida entre eletrodos posicionados na pele apresenta amplitude da ordem de milivolts, enquanto os potenciais de contato entre os eletrodos e a pele podem introduzir componentes contínuas que deslocam a linha de base do sinal. Além disso, a interferência eletromagnética proveniente da rede elétrica pode ser captada pelo corpo e pelos cabos de medição, aparecendo predominantemente na frequência de 60 Hz. Sem o condicionamento adequado, essas perturbações podem comprometer a identificação das características do sinal cardíaco e dificultar sua análise (WEBSTER, 2009).
+
+Problemas semelhantes estão presentes em equipamentos de monitoramento cardíaco, sistemas de aquisição de sinais fisiológicos e instrumentos de medição de grandezas elétricas de baixa amplitude. Para obter uma representação adequada do sinal, é necessário utilizar uma cadeia de condicionamento que combine amplificação diferencial, rejeição de interferências comuns às entradas e filtragem em frequência. O amplificador de instrumentação desempenha um papel fundamental nesse processo, pois permite amplificar a diferença de potencial entre os eletrodos com elevada rejeição de modo comum. Em seguida, os filtros passa-altas e passa-baixas permitem reduzir, respectivamente, os efeitos das componentes contínuas e das componentes de frequência elevada que não são necessárias à análise. A utilização de um estágio adicional de ganho permite elevar a amplitude do sinal condicionado para facilitar sua observação e medição.
+
+Neste experimento, investiga-se o funcionamento de uma cadeia de condicionamento destinada à aquisição de um eletrocardiograma, composta por um amplificador de instrumentação INA118, um filtro passa-altas RC, um amplificador não inversor baseado no TL064 e um filtro passa-baixas RC. Inicialmente, analisa-se também uma implementação do amplificador de instrumentação com três amplificadores operacionais, a fim de compreender a origem da amplificação diferencial e da rejeição de modo comum. O projeto dos estágios considera resistores da série comercial E12, capacitores de $1\,\mu\mathrm{F}$ na etapa de simulação, alimentação simétrica de $\pm 15\,\mathrm{V}$ e frequências de corte determinadas pelas especificações do roteiro. Essas condições permitem relacionar as limitações práticas de seleção dos componentes ao comportamento esperado da cadeia.
+
+A análise também considera a influência do carregamento entre estágios, do descasamento entre as impedâncias das entradas e da interferência da rede elétrica sobre o sinal de saída. Esses aspectos são relevantes porque o comportamento real do circuito pode diferir do modelo ideal, principalmente quando as impedâncias dos eletrodos são distintas ou quando os componentes apresentam tolerâncias. Assim, o objetivo deste relatório é projetar, simular, montar e caracterizar os estágios de condicionamento de sinais, comparando os ganhos e as frequências de corte calculados com os resultados obtidos experimentalmente e avaliando a capacidade da cadeia de recuperar o eletrocardiograma em presença de interferências. O relatório está organizado da seguinte forma: a Seção 2 apresenta os fundamentos teóricos e as equações utilizadas no projeto; a Seção 3 descreve o dimensionamento e as simulações dos circuitos; a Seção 4 apresenta a montagem experimental e os procedimentos de medição; e a Seção 5 reúne a análise dos resultados e as conclusões do trabalho.
+
+\section{Fundamentação teórica}
+
+\subsection{Modelo do sinal eletrocardiográfico}
+
+O eletrocardiograma é obtido a partir da diferença de potencial entre eletrodos posicionados na superfície do corpo. Para fins de análise, o sinal diferencial pode ser representado por
+
+\begin{equation}
+v_d(t)=v_+(t)-v_-(t),
+\label{eq:sinal_diferencial}
+\end{equation}
+
+em que $v_+(t)$ e $v_-(t)$ são os potenciais medidos nas duas entradas do circuito. O sinal de modo comum é definido como a média desses potenciais:
+
+\begin{equation}
+v_{cm}(t)=\frac{v_+(t)+v_-(t)}{2}.
+\label{eq:sinal_modo_comum}
+\end{equation}
+
+A distinção entre essas grandezas é essencial para o condicionamento do ECG. O sinal diferencial contém a informação de interesse, enquanto uma interferência captada de maneira semelhante pelos dois eletrodos aparece predominantemente como sinal de modo comum. A tensão efetivamente presente nas entradas pode, portanto, ser expressa por
+
+\begin{equation}
+v_+(t)=v_{cm}(t)+\frac{v_d(t)}{2},
+\qquad
+v_-(t)=v_{cm}(t)-\frac{v_d(t)}{2}.
+\label{eq:decomposicao_entradas}
+\end{equation}
+
+De acordo com o roteiro, a amplitude do complexo QRS é da ordem de $1\,\mathrm{mV}$ de pico, e o conteúdo espectral considerado para o ECG estende-se aproximadamente de $0{,}05$ a $150\,\mathrm{Hz}$. A interferência da rede elétrica, por sua vez, aparece em $60\,\mathrm{Hz}$, podendo apresentar amplitude muito superior à do sinal cardíaco. Além disso, os potenciais de contato dos eletrodos podem introduzir componentes contínuas de dezenas a centenas de milivolts. Essas características justificam a utilização conjunta de amplificação diferencial e filtragem.
+
+\subsection{Amplificador de instrumentação}
+
+O amplificador de instrumentação é empregado quando se deseja amplificar a diferença entre duas entradas, reduzindo a contribuição de sinais presentes simultaneamente em ambas. Na implementação clássica com três amplificadores operacionais, os dois primeiros estágios são não inversores e compartilham o resistor $R_g$. O terceiro estágio é um amplificador diferencial, responsável por subtrair os sinais intermediários e referenciar a saída ao terra.
+
+Considerando amplificadores operacionais ideais, com correntes de entrada nulas e realimentação negativa, as tensões nos terminais inversores dos dois primeiros amplificadores acompanham as respectivas tensões de entrada. Pela aplicação da lei das correntes de Kirchhoff ao resistor compartilhado $R_g$, obtém-se a diferença entre as saídas dos dois primeiros estágios:
+
+\begin{equation}
+v_{o2}-v_{o1}
+=
+\left(1+\frac{R_1+R_2}{R_g}\right)
+(v_+-v_-).
+\label{eq:ganho_primeiro_estagio}
+\end{equation}
+
+O terceiro amplificador operacional realiza a subtração das tensões anteriores. Quando os resistores do estágio diferencial apresentam razões perfeitamente iguais, seu ganho diferencial é unitário. Assim, o ganho diferencial total da configuração é
+
+\begin{equation}
+G_1=\frac{v_o}{v_d}
+=
+1+\frac{R_1+R_2}{R_g}.
+\label{eq:ganho_instrumentacao}
+\end{equation}
+
+Na montagem especificada no roteiro, $R_1=R_2=10\,\mathrm{k}\Omega$, de modo que a Equação \ref{eq:ganho_instrumentacao} se reduz a
+
+\begin{equation}
+G_1=1+\frac{20\,\mathrm{k}\Omega}{R_g}.
+\label{eq:ganho_tres_opamps}
+\end{equation}
+
+A expressão mostra que o ganho pode ser ajustado por meio de $R_g$, sem a necessidade de alterar os resistores dos demais estágios. Entretanto, a rejeição de modo comum depende também da correspondência entre as razões dos resistores do amplificador diferencial. Diferenças entre essas razões fazem com que parte do sinal comum seja convertida em uma tensão diferencial na saída.
+
+Para quantificar esse comportamento, define-se o ganho de modo comum como a razão entre a componente de saída e a tensão comum aplicada às entradas:
+
+\begin{equation}
+A_{cm}=\frac{v_{o,cm}}{v_{cm}}.
+\label{eq:ganho_modo_comum}
+\end{equation}
+
+O ganho diferencial e o ganho de modo comum permitem determinar a razão de rejeição de modo comum, ou CMRR (Common-Mode Rejection Ratio):
+
+\begin{equation}
+\mathrm{CMRR}
+=
+\left|\frac{G_1}{A_{cm}}\right|.
+\label{eq:cmrr}
+\end{equation}
+
+Expressa em decibéis, essa grandeza é dada por
+
+\begin{equation}
+\mathrm{CMRR}_{\mathrm{dB}}
+=
+20\log_{10}\left|\frac{G_1}{A_{cm}}\right|.
+\label{eq:cmrr_db}
+\end{equation}
+
+Quanto maior a CMRR, menor é a contribuição relativa de uma interferência de modo comum na saída. Em um circuito real, essa rejeição é limitada pelas tolerâncias dos resistores, pelas características dos amplificadores operacionais e pelas diferenças entre as impedâncias vistas pelas duas entradas.
+
+\subsection{Amplificador de instrumentação INA118}
+
+O INA118 integra em um único encapsulamento os estágios necessários à amplificação diferencial. Sua utilização reduz a dependência do casamento de resistores externos, uma vez que os componentes internos são projetados para proporcionar elevada rejeição de modo comum. O ganho é ajustado por um resistor externo $R_G$, conectado aos terminais específicos do componente.
+
+Segundo a relação de ganho especificada para o INA118,
+
+\begin{equation}
+G_1=1+\frac{50\,\mathrm{k}\Omega}{R_G}.
+\label{eq:ganho_ina118}
+\end{equation}
+
+A Equação \ref{eq:ganho_ina118} permite dimensionar $R_G$ a partir do ganho diferencial desejado. O terminal de referência do componente determina o nível de referência da saída e, neste experimento, é conectado ao terra. Dessa forma, a saída representa o sinal diferencial amplificado em relação a esse ponto.
+
+Apesar da elevada rejeição de modo comum, o circuito integrado não elimina todas as interferências. O descasamento entre as impedâncias dos eletrodos pode transformar parte de uma perturbação comum em uma componente diferencial, que passa a ser amplificada pelo INA118. Além disso, a amplitude de saída permanece limitada pela alimentação e pela faixa de excursão de saída do componente.
+
+\subsection{Filtro passa-altas RC}
+
+O filtro passa-altas é utilizado para atenuar componentes de baixa frequência, incluindo a componente contínua associada ao potencial de contato dos eletrodos. No circuito considerado, um capacitor $C$ é conectado em série com a entrada, enquanto um resistor $R$ é ligado entre a saída do filtro e o terra.
+
+Considerando a impedância complexa do capacitor,
+
+\begin{equation}
+Z_C=\frac{1}{j\omega C},
+\label{eq:impedancia_capacitor}
+\end{equation}
+
+e aplicando o divisor de tensão entre o capacitor e o resistor, obtém-se a função de transferência do filtro:
+
+\begin{equation}
+H_{HP}(j\omega)
+=
+\frac{V_o}{V_i}
+=
+\frac{j\omega RC}{1+j\omega RC},
+\label{eq:funcao_passa_altas}
+\end{equation}
+
+em que $V_i$ e $V_o$ representam, respectivamente, as tensões de entrada e saída do filtro, $j$ é a unidade imaginária e $\omega=2\pi f$ é a frequência angular, com $f$ representando a frequência do sinal.
+
+O módulo da função de transferência é
+
+\begin{equation}
+\left|H_{HP}(j\omega)\right|
+=
+\frac{\omega RC}{\sqrt{1+(\omega RC)^2}}.
+\label{eq:modulo_passa_altas}
+\end{equation}
+
+A frequência de corte é definida como aquela em que o módulo do ganho corresponde a $1/\sqrt{2}$ do ganho em banda passante, equivalente a uma atenuação de aproximadamente $3\,\mathrm{dB}$. Aplicando essa condição à Equação \ref{eq:modulo_passa_altas}, obtém-se
+
+\begin{equation}
+f_{HP}=\frac{1}{2\pi RC}.
+\label{eq:corte_passa_altas}
+\end{equation}
+
+Abaixo dessa frequência, o módulo do ganho diminui à medida que a frequência se aproxima de zero. Em corrente contínua, o capacitor ideal se comporta como um circuito aberto, impedindo a transmissão da componente contínua para a saída. Acima da frequência de corte, o ganho tende à unidade, permitindo a passagem das componentes do sinal situadas na banda passante.
+
+A Equação \ref{eq:corte_passa_altas} também permite determinar o resistor necessário para uma frequência de corte especificada:
+
+\begin{equation}
+R=\frac{1}{2\pi f_{HP}C}.
+\label{eq:resistor_passa_altas}
+\end{equation}
+
+Como o roteiro utiliza um capacitor de $1\,\mu\mathrm{F}$ na etapa de simulação e exige resistores da série comercial E12, o valor calculado deve ser aproximado por uma combinação de resistores permitida pela especificação. Na bancada, o passa-altas é implementado com $R=330\,\mathrm{k}\Omega$ e $C=1\,\mu\mathrm{F}$, correspondendo a uma frequência de corte nominal de aproximadamente $0{,}482\,\mathrm{Hz}$.
+
+\subsection{Carregamento do filtro e seguidor de tensão}
+
+A frequência de corte calculada pela Equação \ref{eq:corte_passa_altas} pressupõe que o resistor do filtro não seja carregado significativamente pelo estágio seguinte. Quando a entrada do próximo estágio apresenta uma resistência finita $R_{in}$ conectada ao terra, a resistência efetiva observada pelo capacitor passa a ser, no modelo resistivo simplificado,
+
+\begin{equation}
+R_{eq}=R\parallel R_{in}
+=\frac{RR_{in}}{R+R_{in}}.
+\label{eq:resistencia_equivalente_hp}
+\end{equation}
+
+Nessas condições, a frequência de corte efetiva passa a ser
+
+\begin{equation}
+f_{HP,\mathrm{ef}}
+=
+\frac{1}{2\pi R_{eq}C}.
+\label{eq:corte_efetivo_hp}
+\end{equation}
+
+Como $R_{eq}$ é menor que $R$ quando existe carregamento significativo, a frequência de corte aumenta. Além disso, a amplitude na banda passante pode diminuir devido ao divisor de tensão formado pela resistência do filtro e pela impedância de entrada do estágio seguinte.
+
+Para reduzir esse efeito, utiliza-se um seguidor de tensão, cuja configuração não inversora apresenta ganho nominal unitário. Admitindo um amplificador operacional ideal, sua impedância de entrada é infinita e sua impedância de saída é nula. Assim, o seguidor oferece elevada impedância ao filtro e baixa impedância ao estágio seguinte, isolando os dois circuitos e reduzindo o carregamento.
+
+Na prática, essas impedâncias não são ideais, mas o TL064 permite implementar o estágio de isolamento. O resultado depende das características reais do amplificador operacional e das condições de medição.
+
+\subsection{Amplificador não inversor}
+
+Após a remoção da componente contínua, o sinal precisa ser amplificado para que sua amplitude seja adequada à observação. Para isso, utiliza-se um amplificador não inversor baseado no TL064, com um resistor $R_f$ entre a saída e a entrada inversora e um resistor $R_g$ entre essa entrada e o terra.
+
+Sob as hipóteses de amplificador operacional ideal e operação em realimentação negativa, a tensão na entrada inversora é igual à tensão na entrada não inversora. Como a corrente de entrada é nula, a aplicação da lei das correntes de Kirchhoff ao divisor resistivo da realimentação fornece
+
+\begin{equation}
+\frac{V_o-V_i}{R_f}=\frac{V_i}{R_g}.
+\label{eq:kirchhoff_nao_inversor}
+\end{equation}
+
+Reorganizando a expressão, obtém-se o ganho de tensão do estágio:
+
+\begin{equation}
+G_2=\frac{V_o}{V_i}=1+\frac{R_f}{R_g}.
+\label{eq:ganho_nao_inversor}
+\end{equation}
+
+A Equação \ref{eq:ganho_nao_inversor} é utilizada para selecionar os resistores de modo que o ganho total da cadeia fique próximo do valor desejado. Na etapa de simulação, o ganho adicional é escolhido para que o produto $G_1G_2$ se aproxime de $1000$. Na bancada, os valores de $R_f$ e $R_g$ são definidos pela especificação da equipe.
+
+O ganho calculado pressupõe que o amplificador opere na região linear. Se a tensão de saída exigida ultrapassar os limites de excursão permitidos pela alimentação, o sinal poderá sofrer saturação e distorção. Portanto, o ganho realizável depende tanto dos resistores quanto da amplitude do sinal de entrada e dos limites elétricos do TL064.
+
+\subsection{Filtro passa-baixas RC}
+
+O filtro passa-baixas é utilizado para atenuar componentes de frequência elevada e limitar a banda de passagem da cadeia de condicionamento. Na configuração RC de primeira ordem, um resistor $R$ é conectado em série com a entrada e um capacitor $C$ é ligado entre a saída e o terra.
+
+Aplicando o divisor de tensão entre o resistor e a impedância do capacitor, obtém-se
+
+\begin{equation}
+H_{LP}(j\omega)
+=
+\frac{V_o}{V_i}
+=
+\frac{1}{1+j\omega RC}.
+\label{eq:funcao_passa_baixas}
+\end{equation}
+
+O módulo da função de transferência é dado por
+
+\begin{equation}
+\left|H_{LP}(j\omega)\right|
+=
+\frac{1}{\sqrt{1+(\omega RC)^2}}.
+\label{eq:modulo_passa_baixas}
+\end{equation}
+
+Aplicando a condição de corte de $1/\sqrt{2}$ do ganho em banda passante, obtém-se
+
+\begin{equation}
+f_{LP}=\frac{1}{2\pi RC}.
+\label{eq:corte_passa_baixas}
+\end{equation}
+
+Assim, a resistência necessária para uma frequência de corte especificada é
+
+\begin{equation}
+R=\frac{1}{2\pi f_{LP}C}.
+\label{eq:resistor_passa_baixas}
+\end{equation}
+
+Abaixo da frequência de corte, o ganho do filtro permanece próximo da unidade. Acima dela, o ganho diminui à medida que a frequência aumenta, com uma inclinação assintótica de aproximadamente $-20\,\mathrm{dB/década}$. Como o filtro é de primeira ordem, sua atenuação em $60\,\mathrm{Hz}$ depende da relação entre essa frequência e a frequência de corte selecionada.
+
+Para um passa-baixas ideal de primeira ordem, a atenuação relativa em decibéis pode ser calculada por
+
+\begin{equation}
+A_{LP,\mathrm{dB}}(f)
+=
+20\log_{10}
+\left[
+\frac{1}{\sqrt{1+(f/f_{LP})^2}}
+\right].
+\label{eq:atenuacao_passa_baixas}
+\end{equation}
+
+Essa relação permite avaliar quanto da interferência da rede elétrica permanece na saída. Entretanto, o filtro não distingue a origem dos sinais: componentes do próprio ECG situadas na região atenuada também sofrem redução de amplitude.
+
+\subsection{Função de transferência da cadeia completa}
+
+Considerando os quatro estágios da cadeia — amplificador de instrumentação, passa-altas, ganho adicional e passa-baixas —, a função de transferência total pode ser aproximada pelo produto das funções de transferência individuais, desde que o carregamento entre estágios seja desprezível e que os amplificadores operacionais permaneçam na região linear.
+
+Sob essas hipóteses, a função de transferência total é
+
+\begin{equation}
+H_T(j\omega)
+=
+G_1G_2
+\frac{j\omega R_{HP}C_{HP}}
+{1+j\omega R_{HP}C_{HP}}
+\frac{1}{1+j\omega R_{LP}C_{LP}},
+\label{eq:funcao_transferencia_total}
+\end{equation}
+
+em que $R_{HP}$ e $C_{HP}$ são os componentes do filtro passa-altas, enquanto $R_{LP}$ e $C_{LP}$ são os componentes do passa-baixas.
+
+O módulo do ganho total pode ser escrito como
+
+\begin{equation}
+|H_T(j\omega)|
+=
+G_1G_2
+\frac{\omega R_{HP}C_{HP}}
+{\sqrt{1+(\omega R_{HP}C_{HP})^2}}
+\frac{1}
+{\sqrt{1+(\omega R_{LP}C_{LP})^2}}.
+\label{eq:ganho_total_modulo}
+\end{equation}
+
+Na região em que o passa-altas já apresenta ganho próximo da unidade e o passa-baixas ainda não atenua significativamente o sinal, o ganho total aproxima-se de
+
+\begin{equation}
+G_T\approx G_1G_2.
+\label{eq:ganho_total}
+\end{equation}
+
+Consequentemente, para um sinal diferencial de amplitude suficientemente pequena e para operação linear da cadeia, a amplitude de saída pode ser estimada por
+
+\begin{equation}
+V_{o,p}\approx G_TV_{d,p},
+\label{eq:amplitude_saida}
+\end{equation}
+
+em que $V_{d,p}$ é a amplitude de pico do sinal diferencial de entrada e $V_{o,p}$ é a amplitude de pico na saída. Essa aproximação deve ser corrigida quando a frequência do sinal estiver próxima dos cortes ou quando houver saturação, carregamento ou outras limitações práticas.
+
+A resposta em frequência da cadeia apresenta, portanto, uma banda de passagem delimitada pelas frequências de corte inferior e superior. Na caracterização experimental, esses cortes podem ser identificados pelos pontos em que o ganho cai para aproximadamente $0{,}707$ do valor máximo, correspondentes a uma redução de $3\,\mathrm{dB}$ em relação ao ganho de referência.
+
+\subsection{Interferência de modo comum e descasamento das entradas}
+
+A rejeição de modo comum depende não apenas do amplificador de instrumentação, mas também das condições elétricas presentes nas entradas. Em uma situação ideal, uma interferência idêntica nos dois eletrodos é rejeitada, enquanto a diferença de potencial associada ao ECG é amplificada.
+
+Entretanto, se as impedâncias dos eletrodos ou dos cabos forem diferentes, a mesma interferência pode produzir tensões distintas nas entradas. Por exemplo, correntes de interferência que atravessam impedâncias diferentes provocam quedas de tensão diferentes, convertendo parte do sinal comum em uma componente diferencial. Essa componente não pode ser eliminada integralmente pela rejeição de modo comum, pois passa a fazer parte da diferença entre as entradas.
+
+No experimento, a simulação com resistências distintas em série com os eletrodos permite investigar esse efeito. Os capacitores conectados às entradas também representam, de maneira simplificada, a capacitância dos cabos. Em conjunto, esses elementos modificam a resposta elétrica de cada entrada e podem aumentar a parcela da interferência de $60\,\mathrm{Hz}$ observada na saída.
+
+O passa-baixas contribui para atenuar a interferência remanescente, mas não garante sua eliminação. A avaliação do circuito deve considerar simultaneamente a CMRR do amplificador de instrumentação, o equilíbrio das impedâncias de entrada, a frequência de corte do passa-baixas e a preservação das componentes do ECG necessárias à análise.
+
+\subsection{Hipóteses e limitações do modelo}
+
+As deduções apresentadas consideram resistores e capacitores ideais, amplificadores operacionais com ganho em malha aberta suficientemente elevado, correntes de entrada desprezíveis e operação linear com realimentação negativa. Também se pressupõe que as impedâncias de entrada dos estágios seguintes não alterem significativamente as funções de transferência dos filtros, exceto na análise específica de carregamento.
+
+Essas hipóteses permitem obter expressões analíticas para os ganhos e as frequências de corte, mas não representam integralmente o circuito físico. Na montagem experimental, tolerâncias dos componentes, impedâncias finitas, largura de banda dos amplificadores, tensões de offset, ruído e limites de excursão de saída podem causar divergências entre os valores calculados, simulados e medidos. Por essa razão, a comparação entre os três resultados é necessária para avaliar o desempenho efetivo da cadeia de condicionamento.
+
+
+\section{Especificação e projeto}
+
+
+\begin{especbancada}
+\textbf{Equipe 2}. A partir da equipe, as especificações apresentadas pelo roteiro são:
+
+\begin{itemize}
+    \item \textbf{Seção 4.3 (Amplificador de instrumentação):} \\
+    Resistor de ganho do INA118: $R_G = 10\,\text{k}\Omega$.
+
+    \vspace{0.3cm}
+    \item \textbf{Seção 4.4 (Passa-altas):} \\
+    Resistor $R = 330\,\text{k}\Omega$ e capacitor $C = 1\,\mu\text{F}$.
+
+    \vspace{0.3cm}
+    \item \textbf{Seção 4.5 (Ganho adicional):} \\
+    Resistores $R_f = 330\,\text{k}\Omega$ e $R_g = 2{,}2\,\text{k}\Omega$.
+
+    \vspace{0.3cm}
+    \item \textbf{Seção 4.6 (Passa-baixas):} \\
+    Resistor $R = 4{,}7\,\text{k}\Omega$ e capacitor $C = 1\,\mu\text{F}$.
+\end{itemize}
+\end{especbancada}
+
+Os ganhos e as frequências de corte teóricos correspondentes às especificações da equipe são calculados a seguir, utilizando as expressões apresentadas na fundamentação teórica.
+
+\begin{itemize}
+    \item \textbf{Seção 4.3 (Amplificador de instrumentação):}
+    
+    O ganho diferencial do INA118 é determinado pelo resistor externo $R_G$, conforme
+    \[
+    G_1 = 1 + \frac{50\,\text{k}\Omega}{R_G}.
+    \]
+    Substituindo $R_G = 10\,\text{k}\Omega$, obtém-se
+    \[
+    G_1 = 1 + \frac{50}{10} = 6.
+    \]
+
+    \vspace{0.3cm}
+    \item \textbf{Seção 4.4 (Passa-altas):}
+
+    A frequência de corte do filtro passa-altas é dada por
+    \[
+    f_{HP} = \frac{1}{2\pi RC}.
+    \]
+    Com $R = 330\,\text{k}\Omega$ e $C = 1\,\mu\text{F}$,
+    \[
+    f_{HP} = \frac{1}{2\pi(330\times10^3)(1\times10^{-6})}
+    \approx 0{,}482\,\text{Hz}.
+    \]
+
+    \vspace{0.3cm}
+    \item \textbf{Seção 4.5 (Ganho adicional):}
+
+    Para o amplificador não inversor, o ganho é calculado por
+    \[
+    G_2 = 1 + \frac{R_f}{R_g}.
+    \]
+    Substituindo os valores especificados,
+    \[
+    G_2 = 1 + \frac{330}{2{,}2} = 151.
+    \]
+
+    O ganho total teórico da cadeia, considerando os ganhos dos dois estágios de amplificação, é
+    \[
+    G_T = G_1G_2 = 6 \times 151 = 906.
+    \]
+
+    \vspace{0.3cm}
+    \item \textbf{Seção 4.6 (Passa-baixas):}
+
+    A frequência de corte do filtro passa-baixas é calculada por
+    \[
+    f_{LP} = \frac{1}{2\pi RC}.
+    \]
+    Com $R = 4{,}7\,\text{k}\Omega$ e $C = 1\,\mu\text{F}$,
+    \[
+    f_{LP} = \frac{1}{2\pi(4{,}7\times10^3)(1\times10^{-6})}
+    \approx 33{,}86\,\text{Hz}.
+    \]
+\end{itemize}
+
+Os valores teóricos obtidos são resumidos na tabela a seguir.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Valor teórico} & \textbf{Valor especificado} \\
+\midrule
+Ganho do INA118, $G_1$ & $6{,}000$ & $6{,}000$ \\
+Frequência de corte do passa-altas, $f_{HP}$ & $0{,}482\,\text{Hz}$ & $0{,}482\,\text{Hz}$ \\
+Ganho adicional, $G_2$ & $151{,}000$ & $151{,}000$ \\
+Ganho total, $G_T$ & $906{,}000$ & $906{,}000$ \\
+Frequência de corte do passa-baixas, $f_{LP}$ & $33{,}86\,\text{Hz}$ & $33{,}86\,\text{Hz}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+```
+
+
+\begin{espec}
+Matrícula \mat{00/0000000}. \\
+Preencha aqui os parâmetros calculados a partir dos dígitos, conforme o roteiro.
+\end{espec}
+
+Leve cada parâmetro até o valor de componente, deixando visível a expressão que você
+inverteu para chegar lá. Depois escolha o valor na série comercial e calcule o quanto essa
+escolha afasta você do valor ideal. A tabela abaixo organiza isso, e é ela que depois
+permite separar o que veio do projeto do que veio da montagem.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} & \textbf{Desvio} \\
+\midrule
+& & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Se mais de uma combinação atender à especificação, diga por que escolheu esta, mostrando
+que as outras ficavam mais distantes.
+
+\section{Metodologia}
+
+Conte o que você fez e com quais parâmetros, de modo que um colega consiga repetir sem
+precisar perguntar nada. Explique as escolhas que não são evidentes: por que essa faixa de
+varredura, por que esse passo de integração, por que esse intervalo de gravação.
+
+Inclua a figura do esquemático, com legenda que descreva o que ela mostra, e cite-a no
+texto, como na Figura~\ref{fig:exemplo}. Se uma figura não for mencionada em nenhum
+parágrafo, ela provavelmente não precisa estar aqui.
+
+\subsection{Simulação de projeto, uma por integrante}
+
+Cada integrante recebeu uma especificação diferente da própria matrícula, e portanto chegou
+a um dimensionamento diferente. Traga aqui \textbf{uma simulação por integrante}, cada uma
+com os componentes que aquela pessoa projetou. São elas que mostram se cada projeto cumpre
+o que foi pedido.
+
+\subsection{Montagem em bancada}
+
+A equipe monta um circuito só. Diga \textbf{de quem} é a especificação que vocês montaram e
+por que escolheram essa. Informe os valores \textbf{medidos} de cada componente que vocês
+usaram, e não os valores nominais impressos no corpo da peça, porque a diferença entre os
+dois explica boa parte do que vocês vão observar.
+
+\subsection{Simulação da montagem}
+
+Refaça a simulação usando os valores medidos dos componentes que estavam na bancada. Ela
+não substitui a simulação de projeto: é a comparação entre as duas que separa o efeito da
+tolerância dos componentes do restante.
+
+\begin{nota}{Três comparações, três causas diferentes}
+Ao longo do relatório vocês vão confrontar três pares de resultados. Cada um responde a uma
+pergunta distinta, e vale mantê-los separados na hora de discutir.
+
+\smallskip
+\textbf{Cálculo analítico contra simulação de projeto.} A conta está certa? Se aqui houver
+diferença, procure na álgebra ou no esquemático.
+
+\smallskip
+\textbf{Simulação de projeto contra simulação da montagem.} Quanto custou a tolerância dos
+componentes? A diferença aqui é a distância entre o valor nominal e o valor real da peça
+que vocês pegaram.
+
+\smallskip
+\textbf{Simulação da montagem contra medição.} O modelo descreve o circuito real? Diferença
+aqui aponta algo que o modelo não representa, como a resistência série do indutor, a
+impedância da ponta de prova ou a banda do instrumento.
+\end{nota}
+
+\begin{figure}[htb]
+\centering
+% \includegraphics[width=0.8\linewidth]{arquivo.png}
+\fbox{\parbox[c][3.2cm][c]{0.8\linewidth}{\centering\color{cinza}
+  substitua por \texttt{\textbackslash includegraphics}}}
+\caption{Legenda descritiva. Diga o que a figura mostra e o que nela é relevante, e não
+apenas o nome do circuito.}
+\label{fig:exemplo}
+\end{figure}
+
+\section{Resultados}
+
+Apresente o que vocês obtiveram, em tabela sempre que houver mais de dois números. Use o
+número de algarismos significativos que a medição sustenta, e não todos os que o programa
+imprime. Para cada leitura de bancada, informe o instrumento e a incerteza.
+
+Guarde a interpretação para a seção seguinte: aqui vocês mostram o que encontraram.
+
+\subsection{Projeto de cada integrante}
+
+Uma tabela por integrante, ou uma tabela única com uma coluna por integrante, confrontando
+o valor analítico e o simulado para cada grandeza pedida no roteiro.
+
+\subsection{Circuito montado}
+
+Para cada grandeza, o que o projeto do integrante montado previa, o que a simulação com os
+valores medidos devolveu, e o que vocês mediram na bancada. É desta tabela que sai a
+discussão.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Projeto} & \textbf{Sim. montagem} & \textbf{Medido} &
+\textbf{Erro} \\
+\midrule
+& & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Discussão}
+
+Percorra as três comparações na ordem em que aparecem no quadro da Seção~4: a conta contra
+a simulação de projeto, esta contra a simulação da montagem, e esta contra a medição. Cada
+passo isola uma causa, e a discussão fica bem mais curta quando eles não se misturam.
+
+Compare também os projetos dos integrantes entre si. Como as especificações são diferentes,
+os resultados diferem, e mostrar que essa diferença é a que a teoria previa vale mais do
+que repetir três vezes a mesma análise.
+
+Sempre que uma divergência for maior do que a incerteza esperada, aponte uma causa concreta
+e diga como ela poderia ser reduzida. Vale, por exemplo, a tolerância do componente, a
+resistência série do indutor, a impedância de entrada do osciloscópio, a banda do
+amplificador ou a resolução da varredura.
+
+Quando previsto e obtido coincidirem, explique por que era esperado que coincidissem, e o
+que essa coincidência não permite concluir.
+
+Por fim, retome as hipóteses que vocês declararam na fundamentação e diga quais se
+confirmaram. Se algo observado contrariar a previsão, resolva a contradição aqui.
+
+\section{Conclusão}
+
+Retome o objetivo que vocês anunciaram na introdução e responda se ele foi atingido,
+apoiando a resposta em um número. Aponte a principal limitação do que foi feito e o que
+ela impede de afirmar. Evite trazer resultado novo nesta seção.
+
+\section{Referências}
+
+\begin{referencias}
+\item SEDRA, A.~S.; SMITH, K.~C. \emph{Microeletrônica}. 5.~ed. São Paulo: Pearson
+      Prentice Hall, 2007.
+\item BOYLESTAD, R.~L.; NASHELSKY, L. \emph{Dispositivos Eletrônicos e Teoria de
+      Circuitos}. 11.~ed. São Paulo: Pearson Education do Brasil, 2013.
+\end{referencias}
+
+\end{document}
