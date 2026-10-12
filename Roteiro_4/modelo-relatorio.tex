@@ -468,28 +468,115 @@ Frequência de corte do passa-baixas, $f_{LP}$ & $33{,}86\,\text{Hz}$ & $33{,}86
 \bottomrule
 \end{tabular}
 \end{center}
-```
-
 
 \begin{espec}
-Matrícula \mat{00/0000000}. \\
-Preencha aqui os parâmetros calculados a partir dos dígitos, conforme o roteiro.
+Matrícula \mat{23/1036775}. \\
+Ganho diferencial: \(G_1=5+(36\bmod 16)=9\). \\
+Frequência de corte do passa-altas: \(f_{HP}=(1+(77\bmod 10))/10=0{,}8\,\text{Hz}\). \\
+Ganho adicional desejado: \(G_2=1000/9\approx111{,}11\). \\
+Frequência de corte do passa-baixas: \(f_{LP}=40+10(5)=90\,\text{Hz}\).
 \end{espec}
 
-Leve cada parâmetro até o valor de componente, deixando visível a expressão que você
-inverteu para chegar lá. Depois escolha o valor na série comercial e calcule o quanto essa
-escolha afasta você do valor ideal. A tabela abaixo organiza isso, e é ela que depois
-permite separar o que veio do projeto do que veio da montagem.
+Para o amplificador de instrumentação INA118, o ganho é dado por
+\[
+G_1=1+\frac{50\,\text{k}\Omega}{R_G}.
+\]
+Isolando \(R_G\), obtém-se
+\[
+R_G=\frac{50\,\text{k}\Omega}{G_1-1}
+=\frac{50\,\text{k}\Omega}{8}
+=6{,}25\,\text{k}\Omega.
+\]
+Foi adotada a associação \(R_G=5{,}6\,\text{k}\Omega+680\,\Omega
+=6{,}28\,\text{k}\Omega\), resultando em
+\[
+G_1=1+\frac{50}{6{,}28}\approx8{,}9618.
+\]
+
+Para o filtro passa-altas, considerando \(C_{HP}=1\,\mu\text{F}\),
+\[
+f_{HP}=\frac{1}{2\pi R_{HP}C_{HP}}
+\quad\Rightarrow\quad
+R_{HP}=\frac{1}{2\pi f_{HP}C_{HP}}.
+\]
+Substituindo os valores desejados,
+\[
+R_{HP}=\frac{1}{2\pi(0{,}8)(1\,\mu\text{F})}
+\approx198{,}94\,\text{k}\Omega.
+\]
+Foram adotados resistores de \(180\,\text{k}\Omega\) e
+\(18\,\text{k}\Omega\) em série, totalizando \(198\,\text{k}\Omega\).
+A frequência de corte resultante é
+\[
+f_{HP}=\frac{1}{2\pi(198\,\text{k}\Omega)(1\,\mu\text{F})}
+\approx0{,}804\,\text{Hz}.
+\]
+
+Para o estágio de ganho adicional, utiliza-se a configuração não inversora:
+\[
+G_2=1+\frac{R_f}{R_g}
+\quad\Rightarrow\quad
+R_f=(G_2-1)R_g.
+\]
+Considerando \(G_2=1000/9\) e \(R_g=1\,\text{k}\Omega\),
+\[
+R_f=(111{,}11-1)(1\,\text{k}\Omega)
+\approx110{,}11\,\text{k}\Omega.
+\]
+Foi adotada uma resistência equivalente de
+\(R_f=111\,\text{k}\Omega\), obtida pela associação de
+resistores comerciais em série. Dessa forma,
+\[
+G_2=1+\frac{111\,\text{k}\Omega}{1\,\text{k}\Omega}=112.
+\]
+Considerando o ganho realizado pelo INA118, o ganho total é
+\[
+G_1G_2\approx8{,}9618\times112\approx1003{,}72.
+\]
+
+Para o filtro passa-baixas, considerando \(C_{LP}=1\,\mu\text{F}\),
+\[
+f_{LP}=\frac{1}{2\pi R_{LP}C_{LP}}
+\quad\Rightarrow\quad
+R_{LP}=\frac{1}{2\pi f_{LP}C_{LP}}.
+\]
+Logo,
+\[
+R_{LP}=\frac{1}{2\pi(90)(1\,\mu\text{F})}
+\approx1{,}768\,\text{k}\Omega.
+\]
+Foi adotado \(R_{LP}=1{,}8\,\text{k}\Omega\), resultando em
+\[
+f_{LP}=\frac{1}{2\pi(1{,}8\,\text{k}\Omega)(1\,\mu\text{F})}
+\approx88{,}42\,\text{Hz}.
+\]
 
 \begin{center}
 \begin{tabular}{@{}lrrr@{}}
 \toprule
-\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} & \textbf{Desvio} \\
+\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} &
+\textbf{Desvio (\%)} \\
 \midrule
-& & & \\
+\(R_G\) & \(6{,}25\,\text{k}\Omega\) &
+\(6{,}28\,\text{k}\Omega\) & \(+0{,}48\) \\
+\(G_1\) & \(9\) & \(8{,}9618\) & \(-0{,}42\) \\
+\(R_{HP}\) & \(198{,}94\,\text{k}\Omega\) &
+\(198\,\text{k}\Omega\) & \(-0{,}47\) \\
+\(f_{HP}\) & \(0{,}8\,\text{Hz}\) &
+\(0{,}804\,\text{Hz}\) & \(+0{,}47\) \\
+\(R_f\) & \(110{,}11\,\text{k}\Omega\) &
+\(111\,\text{k}\Omega\) & \(+0{,}81\) \\
+\(G_2\) & \(111{,}11\) & \(112\) & \(+0{,}80\) \\
+\(G_1G_2\) & \(1000\) & \(1003{,}72\) & \(+0{,}37\) \\
+\(R_{LP}\) & \(1{,}768\,\text{k}\Omega\) &
+\(1{,}8\,\text{k}\Omega\) & \(+1{,}81\) \\
+\(f_{LP}\) & \(90\,\text{Hz}\) &
+\(88{,}42\,\text{Hz}\) & \(-1{,}76\) \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+As escolhas foram feitas buscando minimizar os desvios em relação aos valores teóricos, respeitando a série comercial E12. No estágio de ganho adicional, a resistência equivalente de \(111\,\text{k}\Omega\) produz um ganho total próximo de 1000. Nos filtros, as resistências adotadas também resultam em frequências de corte próximas às especificações.
 
 Se mais de uma combinação atender à especificação, diga por que escolheu esta, mostrando
 que as outras ficavam mais distantes.
