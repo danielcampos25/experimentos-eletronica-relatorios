@@ -576,10 +576,7 @@ f_{LP}=\frac{1}{2\pi(1{,}8\,\text{k}\Omega)(1\,\mu\text{F})}
 \end{tabular}
 \end{center}
 
-As escolhas foram feitas buscando minimizar os desvios em relação aos valores teóricos, respeitando a série comercial E12. No estágio de ganho adicional, a resistência equivalente de \(111\,\text{k}\Omega\) produz um ganho total próximo de 1000. Nos filtros, as resistências adotadas também resultam em frequências de corte próximas às especificações.
 
-Se mais de uma combinação atender à especificação, diga por que escolheu esta, mostrando
-que as outras ficavam mais distantes.
 
 \section{Metodologia}
 
@@ -597,6 +594,52 @@ Cada integrante recebeu uma especificação diferente da própria matrícula, e 
 a um dimensionamento diferente. Traga aqui \textbf{uma simulação por integrante}, cada uma
 com os componentes que aquela pessoa projetou. São elas que mostram se cada projeto cumpre
 o que foi pedido.
+
+\subsubsection{Daniel Campos Silva (23/1036775)}
+
+O projeto individual foi dimensionado a partir dos parâmetros determinados pela matrícula: ganho diferencial desejado \(G_1=9\), frequência de corte do filtro passa-altas \(f_{HP}=0{,}8\,\text{Hz}\), ganho adicional desejado \(G_2\approx111{,}11\) e frequência de corte do filtro passa-baixas \(f_{LP}=90\,\text{Hz}\).
+
+A cadeia foi constituída pelo amplificador de instrumentação INA118, responsável pela amplificação da diferença entre os sinais dos eletrodos, seguido pelo filtro passa-altas, pelo estágio de ganho adicional com amplificador operacional e pelo filtro passa-baixas. Os filtros foram dimensionados com capacitores de \(1\,\mu\text{F}\), enquanto os resistores foram escolhidos a partir da série comercial E12, utilizando associações em série quando necessário.
+
+A Figura~\ref{fig:daniel-cadeia-completa} apresenta o esquemático da cadeia completa utilizado na simulação individual. A organização dos estágios permite avaliar o comportamento conjunto do circuito e verificar se os ganhos e as frequências de corte obtidos se aproximam dos valores especificados.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{imgs/daniel/daniel_simulacao/cadeia_completa.png}
+    \caption{Esquemático da cadeia completa de condicionamento do sinal eletrocardiográfico no LTspice.}
+    \label{fig:daniel-cadeia-completa}
+\end{figure}
+
+Inicialmente, foi analisado o amplificador de instrumentação, verificando-se seu ganho diferencial e o comportamento diante de sinais aplicados às duas entradas. Em seguida, foi realizado o ensaio de modo comum, comparando-se o comportamento do circuito com resistores correspondentes iguais e com uma das resistências do estágio diferencial alterada. Esse procedimento permite observar a influência do casamento dos resistores sobre a rejeição de sinais comuns às duas entradas.
+
+A Figura~\ref{fig:daniel-instrumentacao} apresenta o esquemático do amplificador de instrumentação, enquanto a Figura~\ref{fig:daniel-modo-comum} apresenta o circuito utilizado no ensaio de modo comum.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imgs/daniel/daniel_simulacao/amplificador_de_instrumentacao.png}
+    \caption{Esquemático do amplificador de instrumentação utilizado na simulação individual.}
+    \label{fig:daniel-instrumentacao}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imgs/daniel/daniel_simulacao/ensaio_modo_comum.png}
+    \caption{Esquemático do ensaio de rejeição de modo comum.}
+    \label{fig:daniel-modo-comum}
+\end{figure}
+
+Na etapa seguinte, foi analisado o filtro passa-altas, responsável por atenuar as componentes de baixa frequência, incluindo o nível contínuo associado aos eletrodos. A Figura~\ref{fig:daniel-passa-altas} apresenta o esquemático correspondente. O dimensionamento foi realizado a partir da relação entre a frequência de corte, a resistência equivalente e a capacitância do filtro.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imgs/daniel/daniel_simulacao/passa_altas.png}
+    \caption{Esquemático do estágio de filtragem passa-altas.}
+    \label{fig:daniel-passa-altas}
+\end{figure}
+
+Por fim, a cadeia completa foi submetida à análise de resposta em frequência, permitindo avaliar o comportamento global do circuito e identificar as regiões de passagem e atenuação do sinal. A análise foi realizada por meio da varredura em frequência configurada no arquivo de simulação do LTspice. A resposta obtida deve ser confrontada com as especificações de projeto, especialmente quanto às frequências de corte inferior e superior e ao ganho total na faixa de interesse do eletrocardiograma.
+
+Para assegurar a reprodutibilidade dos ensaios, foram mantidos os componentes e os parâmetros de análise definidos nos respectivos esquemáticos. Os resultados das simulações individuais constituem a referência para a comparação posterior com a simulação da montagem utilizando os valores reais dos componentes e com as medições realizadas em bancada.
 
 \subsection{Montagem em bancada}
 
