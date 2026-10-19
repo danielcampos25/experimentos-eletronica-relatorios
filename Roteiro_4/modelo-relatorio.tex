@@ -32,11 +32,11 @@
 \begin{document}
 \capa
 
-\begin{resumo}
-Escreva este parágrafo por último, com 100 a 150 palavras. Diga o que você projetou, sob
-qual especificação, o que simulou ou mediu, o principal resultado numérico e a que
-conclusão chegou. Quem ler só este parágrafo deve saber o que você fez e o que encontrou.
-\end{resumo}
+% \begin{resumo}
+% Escreva este parágrafo por último, com 100 a 150 palavras. Diga o que você projetou, sob
+% qual especificação, o que simulou ou mediu, o principal resultado numérico e a que
+% conclusão chegou. Quem ler só este parágrafo deve saber o que você fez e o que encontrou.
+% \end{resumo}
 
 ```latex
 \section{Introdução}
@@ -576,24 +576,67 @@ f_{LP}=\frac{1}{2\pi(1{,}8\,\text{k}\Omega)(1\,\mu\text{F})}
 \end{tabular}
 \end{center}
 
+\begin{espec}
+Matrícula \mat{22/2005395}. \\
+Ganho diferencial: \(G_1=5+(05\bmod 16)=10\). \\
+Frequência de corte do passa-altas: \(f_{HP}=(1+(39\bmod 10))/10=1{,}0\,\text{Hz}\). \\
+Ganho adicional desejado: \(G_2=1000/10=100\). \\
+Frequência de corte do passa-baixas: \(f_{LP}=40+10(5)=90\,\text{Hz}\).
+\end{espec}
 
+Os componentes E12 correspondentes para a especificação apresentada e o desvio de cada escolha em relação ao valor teórico são apresentados a seguir:
+
+\begin{itemize}
+    \item \textbf{Amplificador de instrumentação:} $R_G=\dfrac{50\,\text{k}\Omega}{G_1-1}\approx5{,}556\,\text{k}\Omega$. Adotou-se $R_G=5{,}6\,\text{k}\Omega$, o que resulta em $G_1=1+\dfrac{50}{5{,}6}\approx9{,}929$, desvio de $-0{,}71\%$.
+
+    \item \textbf{Passa-altas:} com $C=1\,\mu\text{F}$, $R_{HP}=\dfrac{1}{2\pi f_{HP}C}\approx159{,}15\,\text{k}\Omega$. Adotou-se $120\,\text{k}\Omega+39\,\text{k}\Omega=159\,\text{k}\Omega$, o que resulta em $f_{HP}\approx1{,}001\,\text{Hz}$, desvio de $+0{,}10\%$.
+
+    \item \textbf{Ganho adicional:} com $R_g=1\,\text{k}\Omega$, $R_f=(G_2-1)R_g=99\,\text{k}\Omega$. Adotou-se $R_f=100\,\text{k}\Omega$, o que resulta em $G_2=101$, desvio de $+1{,}00\%$. O ganho total é $G_1G_2\approx1002{,}8$, desvio de $+0{,}28\%$ em relação a $1000$.
+
+    \item \textbf{Passa-baixas:} com $C=1\,\mu\text{F}$, $R_{LP}=\dfrac{1}{2\pi f_{LP}C}\approx1{,}768\,\text{k}\Omega$. Adotou-se $R_{LP}=1{,}8\,\text{k}\Omega$, o que resulta em $f_{LP}\approx88{,}42\,\text{Hz}$, desvio de $-1{,}76\%$.
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} &
+\textbf{Desvio (\%)} \\
+\midrule
+\(R_G\) & \(5{,}556\,\text{k}\Omega\) &
+\(5{,}6\,\text{k}\Omega\) & \(+0{,}80\) \\
+\(G_1\) & \(10\) & \(9{,}9286\) & \(-0{,}71\) \\
+\(R_{HP}\) & \(159{,}15\,\text{k}\Omega\) &
+\(159\,\text{k}\Omega\) & \(-0{,}10\) \\
+\(f_{HP}\) & \(1{,}0\,\text{Hz}\) &
+\(1{,}001\,\text{Hz}\) & \(+0{,}10\) \\
+\(R_f\) & \(99\,\text{k}\Omega\) &
+\(100\,\text{k}\Omega\) & \(+1{,}01\) \\
+\(G_2\) & \(100\) & \(101\) & \(+1{,}00\) \\
+\(G_1G_2\) & \(1000\) & \(1002{,}79\) & \(+0{,}28\) \\
+\(R_{LP}\) & \(1{,}768\,\text{k}\Omega\) &
+\(1{,}8\,\text{k}\Omega\) & \(+1{,}81\) \\
+\(f_{LP}\) & \(90\,\text{Hz}\) &
+\(88{,}42\,\text{Hz}\) & \(-1{,}76\) \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \section{Metodologia}
 
-Conte o que você fez e com quais parâmetros, de modo que um colega consiga repetir sem
-precisar perguntar nada. Explique as escolhas que não são evidentes: por que essa faixa de
-varredura, por que esse passo de integração, por que esse intervalo de gravação.
+% Conte o que você fez e com quais parâmetros, de modo que um colega consiga repetir sem
+% precisar perguntar nada. Explique as escolhas que não são evidentes: por que essa faixa de
+% varredura, por que esse passo de integração, por que esse intervalo de gravação.
 
-Inclua a figura do esquemático, com legenda que descreva o que ela mostra, e cite-a no
-texto, como na Figura~\ref{fig:exemplo}. Se uma figura não for mencionada em nenhum
-parágrafo, ela provavelmente não precisa estar aqui.
+% Inclua a figura do esquemático, com legenda que descreva o que ela mostra, e cite-a no
+% texto, como na Figura~\ref{fig:exemplo}. Se uma figura não for mencionada em nenhum
+% parágrafo, ela provavelmente não precisa estar aqui.
 
 \subsection{Simulação de projeto, uma por integrante}
 
-Cada integrante recebeu uma especificação diferente da própria matrícula, e portanto chegou
-a um dimensionamento diferente. Traga aqui \textbf{uma simulação por integrante}, cada uma
-com os componentes que aquela pessoa projetou. São elas que mostram se cada projeto cumpre
-o que foi pedido.
+% Cada integrante recebeu uma especificação diferente da própria matrícula, e portanto chegou
+% a um dimensionamento diferente. Traga aqui \textbf{uma simulação por integrante}, cada uma
+% com os componentes que aquela pessoa projetou. São elas que mostram se cada projeto cumpre
+% o que foi pedido.
 
 \subsubsection{Daniel Campos Silva (23/1036775)}
 
@@ -641,104 +684,171 @@ Por fim, a cadeia completa foi submetida à análise de resposta em frequência,
 
 Para assegurar a reprodutibilidade dos ensaios, foram mantidos os componentes e os parâmetros de análise definidos nos respectivos esquemáticos. Os resultados das simulações individuais constituem a referência para a comparação posterior com a simulação da montagem utilizando os valores reais dos componentes e com as medições realizadas em bancada.
 
+\subsubsection{Lurian Correia Lima (22/2005395)}
+
+O projeto individual foi dimensionado a partir dos parâmetros determinados pela matrícula: ganho diferencial \(G_1=10\), frequência de corte do passa-altas \(f_{HP}=1{,}0\,\text{Hz}\), ganho adicional \(G_2=100\) e frequência de corte do passa-baixas \(f_{LP}=90\,\text{Hz}\). Todas as simulações foram feitas no LTspice, com alimentação simétrica de \(\pm15\,\text{V}\), amplificadores operacionais TL064 e resistores da série E12. A tabela de componentes adotados está na Seção~3.
+
+Em todos os esquemáticos o nome e a matrícula estão anotados como comentário, e cada arquivo contém uma única análise ativa.
+
+\paragraph{Amplificador de instrumentação com três amplificadores operacionais.} O circuito da Figura~\ref{fig:lurian-instrumentacao} usa três TL064, com \(R_1\) a \(R_6\) de \(10\,\text{k}\Omega\) e \(R_g=2{,}2\,\text{k}\Omega\), o valor E12 mais próximo de \(R_g=20\,\text{k}\Omega/9\approx2{,}22\,\text{k}\Omega\), o que dá \(G_1=1+20/2{,}2\approx10{,}09\). Para medir o ganho diferencial, a entrada esquerda recebeu uma senoide de \(10\,\text{Hz}\) e \(0{,}5\,\text{mV}\) de pico, e a direita a mesma senoide defasada de \(180^\circ\), o que resulta em \(1\,\text{mV}\) de diferença. A análise foi uma transiente de \(200\,\text{ms}\) com passo máximo de \(100\,\mu\text{s}\).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.1-amplificador_de_instrumentacao.png}
+    \caption{Amplificador de instrumentação com três TL064 e \(R_g=2{,}2\,\text{k}\Omega\), alimentado por duas senoides de \(10\,\text{Hz}\) em oposição de fase.}
+    \label{fig:lurian-instrumentacao}
+\end{figure}
+
+\paragraph{Ensaio de modo comum.} A Figura \ref{fig:lurian-modo-comum} reúne dois circuitos no mesmo arquivo, com as duas entradas ligadas juntas a uma senoide de \(60\,\text{Hz}\) e \(1\,\text{V}\) de pico. No primeiro, os quatro resistores do estágio diferencial são iguais, de \(10\,\text{k}\Omega\). No segundo, \(R_6\) foi trocado por \(12\,\text{k}\Omega\), o que desfaz a igualdade das razões e permite observar o efeito do casamento dos resistores sobre a rejeição de modo comum.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.1-amplificador_instrumentacao_cmm.png}
+    \caption{Ensaio de modo comum com resistores iguais (esquerda) e com \(R_6=12\,\text{k}\Omega\) (direita).}
+    \label{fig:lurian-modo-comum}
+\end{figure}
+
+\paragraph{INA118.} O mesmo circuito integrado em um único encapsulamento foi representado por um símbolo próprio, construído com \emph{Prefix} X, \emph{ModelFile} \texttt{ene0046.lib} e \emph{Value} INA118. Os oito terminais foram nomeados e posicionados na ordem do cabeçalho do modelo na biblioteca, como mostra a Figura~\ref{fig:lurian-ina118}. Com \(R_G=5{,}6\,\text{k}\Omega\), o ganho é \(G_1=1+50/5{,}6\approx9{,}93\).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[height=4cm]{imgs/lurian/montagem/3.2-INA118.png}
+    \caption{Símbolo do INA118 criado para as simulações, com os terminais na ordem do modelo.}
+    \label{fig:lurian-ina118}
+\end{figure}
+
+\paragraph{Passa-altas e estágio seguinte.} A Figura~\ref{fig:lurian-passa-altas} mostra dois circuitos no mesmo arquivo, cada um com um capacitor de \(1\,\mu\text{F}\) em série e o resistor ao terra formado por \(120\,\text{k}\Omega+39\,\text{k}\Omega\). No primeiro, o filtro alimenta um amplificador não inversor de ganho \(G_2=101\), com \(R_f=100\,\text{k}\Omega\) e \(R_g=1\,\text{k}\Omega\). No segundo, o estágio é um inversor de mesmo ganho, com resistor de entrada de \(1\,\text{k}\Omega\) e realimentação de \(100\,\text{k}\Omega+1\,\text{k}\Omega\). A fonte tem amplitude AC de \(1\,\text{V}\) no lugar do amplificador de instrumentação, e a análise é uma resposta em frequência de \(10\,\text{mHz}\) a \(1\,\text{kHz}\), com 50 pontos por década. O inversor foi incluído para comparar o corte obtido quando a entrada do estágio seguinte carrega o filtro.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{imgs/lurian/montagem/3.3-passa-altas.png}
+    \caption{Passa-altas seguido do amplificador não inversor (acima) e do inversor (abaixo).}
+    \label{fig:lurian-passa-altas}
+\end{figure}
+
+\paragraph{Cadeia completa.} A cadeia da Figura~\ref{fig:lurian-cadeia-ac} liga o INA118 (\(R_G=5{,}6\,\text{k}\Omega\)), o passa-altas, o não inversor do TL064 (\(R_f=100\,\text{k}\Omega\), \(R_g=1\,\text{k}\Omega\)) e o passa-baixas com \(R_{LP}=1{,}8\,\text{k}\Omega\) e \(C_{LP}=1\,\mu\text{F}\), nessa ordem. A entrada inversora do INA118 foi aterrada e a fonte, de \(1\,\text{V}\) AC, aplicada à entrada não inversora, para levantar a resposta em frequência de \(10\,\text{mHz}\) a \(10\,\text{kHz}\) e ler o ganho em banda passante e os dois cortes.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.4-cadeia_completa_fonte_ac1.png}
+    \caption{Cadeia completa de condicionamento com fonte AC de \(1\,\text{V}\) para a análise de resposta em frequência.}
+    \label{fig:lurian-cadeia-ac}
+\end{figure}
+
+Em seguida, a mesma cadeia foi excitada pelos sinais dos dois eletrodos, com as fontes \texttt{PWL file=} lendo os arquivos \texttt{braco\_esquerdo.txt} e \texttt{braco\_direito.txt}, que trazem a rede de \(60\,\text{Hz}\) sobre um nível contínuo diferente em cada braço, com o eletrocardiograma de \(1\,\text{mV}\) de pico embutido (Figura~\ref{fig:lurian-eletrodos}). A análise foi uma transiente de \(3\,\text{s}\).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.4-cadeia_completa_eletrodos.png}
+    \caption{Cadeia completa alimentada pelos sinais dos eletrodos esquerdo e direito.}
+    \label{fig:lurian-eletrodos}
+\end{figure}
+
+Por fim, repetiu-se a transiente com os eletrodos desiguais (Figura~\ref{fig:lurian-eletrodos-desiguais}): uma resistência de \(100\,\text{k}\Omega\) em série com o eletrodo esquerdo, outra de \(1\,\text{k}\Omega\) em série com o direito, e um capacitor de \(10\,\text{pF}\) de cada entrada do INA118 ao terra, representando a capacitância do cabo. O descasamento transforma parte da rede, que chega igual aos dois eletrodos, em tensão diferencial, o que permite avaliar quanto dela sobra na saída e quanto o passa-baixas atenua.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.4-cadeia_completa_eletrodos_desiguais.png}
+    \caption{Cadeia completa com eletrodos desiguais: \(100\,\text{k}\Omega\) e \(1\,\text{k}\Omega\) em série e \(10\,\text{pF}\) de cada entrada ao terra.}
+    \label{fig:lurian-eletrodos-desiguais}
+\end{figure}
+
 \subsection{Montagem em bancada}
 
-A equipe monta um circuito só. Diga \textbf{de quem} é a especificação que vocês montaram e
-por que escolheram essa. Informe os valores \textbf{medidos} de cada componente que vocês
-usaram, e não os valores nominais impressos no corpo da peça, porque a diferença entre os
-dois explica boa parte do que vocês vão observar.
+% A equipe monta um circuito só. Diga \textbf{de quem} é a especificação que vocês montaram e
+% por que escolheram essa. Informe os valores \textbf{medidos} de cada componente que vocês
+% usaram, e não os valores nominais impressos no corpo da peça, porque a diferença entre os
+% dois explica boa parte do que vocês vão observar.
 
 \subsection{Simulação da montagem}
 
-Refaça a simulação usando os valores medidos dos componentes que estavam na bancada. Ela
-não substitui a simulação de projeto: é a comparação entre as duas que separa o efeito da
-tolerância dos componentes do restante.
+% Refaça a simulação usando os valores medidos dos componentes que estavam na bancada. Ela
+% não substitui a simulação de projeto: é a comparação entre as duas que separa o efeito da
+% tolerância dos componentes do restante.
 
 \begin{nota}{Três comparações, três causas diferentes}
-Ao longo do relatório vocês vão confrontar três pares de resultados. Cada um responde a uma
-pergunta distinta, e vale mantê-los separados na hora de discutir.
+% Ao longo do relatório vocês vão confrontar três pares de resultados. Cada um responde a uma
+% pergunta distinta, e vale mantê-los separados na hora de discutir.
 
 \smallskip
-\textbf{Cálculo analítico contra simulação de projeto.} A conta está certa? Se aqui houver
-diferença, procure na álgebra ou no esquemático.
+\textbf{Cálculo analítico contra simulação de projeto.}
+% A conta está certa? Se aqui houver diferença, procure na álgebra ou no esquemático.
 
 \smallskip
-\textbf{Simulação de projeto contra simulação da montagem.} Quanto custou a tolerância dos
-componentes? A diferença aqui é a distância entre o valor nominal e o valor real da peça
-que vocês pegaram.
+\textbf{Simulação de projeto contra simulação da montagem.}
+% Quanto custou a tolerância dos componentes? A diferença aqui é a distância entre o valor nominal e o valor real da peça que vocês pegaram.
 
 \smallskip
-\textbf{Simulação da montagem contra medição.} O modelo descreve o circuito real? Diferença
-aqui aponta algo que o modelo não representa, como a resistência série do indutor, a
-impedância da ponta de prova ou a banda do instrumento.
+\textbf{Simulação da montagem contra medição.} 
+% O modelo descreve o circuito real? Diferença aqui aponta algo que o modelo não representa, como a resistência série do indutor, a impedância da ponta de prova ou a banda do instrumento.
 \end{nota}
 
-\begin{figure}[htb]
-\centering
-% \includegraphics[width=0.8\linewidth]{arquivo.png}
-\fbox{\parbox[c][3.2cm][c]{0.8\linewidth}{\centering\color{cinza}
-  substitua por \texttt{\textbackslash includegraphics}}}
-\caption{Legenda descritiva. Diga o que a figura mostra e o que nela é relevante, e não
-apenas o nome do circuito.}
-\label{fig:exemplo}
-\end{figure}
+% \begin{figure}[htb]
+% \centering
+% % \includegraphics[width=0.8\linewidth]{arquivo.png}
+% \fbox{\parbox[c][3.2cm][c]{0.8\linewidth}{\centering\color{cinza}
+%   substitua por \texttt{\textbackslash includegraphics}}}
+% \caption{Legenda descritiva. Diga o que a figura mostra e o que nela é relevante, e não
+% apenas o nome do circuito.}
+% \label{fig:exemplo}
+% \end{figure}
 
-\section{Resultados}
+% \section{Resultados}
 
-Apresente o que vocês obtiveram, em tabela sempre que houver mais de dois números. Use o
-número de algarismos significativos que a medição sustenta, e não todos os que o programa
-imprime. Para cada leitura de bancada, informe o instrumento e a incerteza.
+% Apresente o que vocês obtiveram, em tabela sempre que houver mais de dois números. Use o
+% número de algarismos significativos que a medição sustenta, e não todos os que o programa
+% imprime. Para cada leitura de bancada, informe o instrumento e a incerteza.
 
-Guarde a interpretação para a seção seguinte: aqui vocês mostram o que encontraram.
+% Guarde a interpretação para a seção seguinte: aqui vocês mostram o que encontraram.
 
 \subsection{Projeto de cada integrante}
 
-Uma tabela por integrante, ou uma tabela única com uma coluna por integrante, confrontando
-o valor analítico e o simulado para cada grandeza pedida no roteiro.
+% Uma tabela por integrante, ou uma tabela única com uma coluna por integrante, confrontando
+% o valor analítico e o simulado para cada grandeza pedida no roteiro.
 
 \subsection{Circuito montado}
 
-Para cada grandeza, o que o projeto do integrante montado previa, o que a simulação com os
-valores medidos devolveu, e o que vocês mediram na bancada. É desta tabela que sai a
-discussão.
+% Para cada grandeza, o que o projeto do integrante montado previa, o que a simulação com os
+% valores medidos devolveu, e o que vocês mediram na bancada. É desta tabela que sai a
+% discussão.
 
-\begin{center}
-\begin{tabular}{@{}lrrrr@{}}
-\toprule
-\textbf{Grandeza} & \textbf{Projeto} & \textbf{Sim. montagem} & \textbf{Medido} &
-\textbf{Erro} \\
-\midrule
-& & & & \\
-\bottomrule
-\end{tabular}
-\end{center}
+% \begin{center}
+% \begin{tabular}{@{}lrrrr@{}}
+% \toprule
+% \textbf{Grandeza} & \textbf{Projeto} & \textbf{Sim. montagem} & \textbf{Medido} &
+% \textbf{Erro} \\
+% \midrule
+% & & & & \\
+% \bottomrule
+% \end{tabular}
+% \end{center}
 
 \section{Discussão}
 
-Percorra as três comparações na ordem em que aparecem no quadro da Seção~4: a conta contra
-a simulação de projeto, esta contra a simulação da montagem, e esta contra a medição. Cada
-passo isola uma causa, e a discussão fica bem mais curta quando eles não se misturam.
+% Percorra as três comparações na ordem em que aparecem no quadro da Seção~4: a conta contra
+% a simulação de projeto, esta contra a simulação da montagem, e esta contra a medição. Cada
+% passo isola uma causa, e a discussão fica bem mais curta quando eles não se misturam.
 
-Compare também os projetos dos integrantes entre si. Como as especificações são diferentes,
-os resultados diferem, e mostrar que essa diferença é a que a teoria previa vale mais do
-que repetir três vezes a mesma análise.
+% Compare também os projetos dos integrantes entre si. Como as especificações são diferentes,
+% os resultados diferem, e mostrar que essa diferença é a que a teoria previa vale mais do
+% que repetir três vezes a mesma análise.
 
-Sempre que uma divergência for maior do que a incerteza esperada, aponte uma causa concreta
-e diga como ela poderia ser reduzida. Vale, por exemplo, a tolerância do componente, a
-resistência série do indutor, a impedância de entrada do osciloscópio, a banda do
-amplificador ou a resolução da varredura.
+% Sempre que uma divergência for maior do que a incerteza esperada, aponte uma causa concreta
+% e diga como ela poderia ser reduzida. Vale, por exemplo, a tolerância do componente, a
+% resistência série do indutor, a impedância de entrada do osciloscópio, a banda do
+% amplificador ou a resolução da varredura.
 
-Quando previsto e obtido coincidirem, explique por que era esperado que coincidissem, e o
-que essa coincidência não permite concluir.
+% Quando previsto e obtido coincidirem, explique por que era esperado que coincidissem, e o
+% que essa coincidência não permite concluir.
 
-Por fim, retome as hipóteses que vocês declararam na fundamentação e diga quais se
-confirmaram. Se algo observado contrariar a previsão, resolva a contradição aqui.
+% Por fim, retome as hipóteses que vocês declararam na fundamentação e diga quais se
+% confirmaram. Se algo observado contrariar a previsão, resolva a contradição aqui.
 
 \section{Conclusão}
 
-Retome o objetivo que vocês anunciaram na introdução e responda se ele foi atingido,
-apoiando a resposta em um número. Aponte a principal limitação do que foi feito e o que
-ela impede de afirmar. Evite trazer resultado novo nesta seção.
+% Retome o objetivo que vocês anunciaram na introdução e responda se ele foi atingido,
+% apoiando a resposta em um número. Aponte a principal limitação do que foi feito e o que
+% ela impede de afirmar. Evite trazer resultado novo nesta seção.
 
 \section{Referências}
 
