@@ -19,6 +19,7 @@
 % ===========================================================================
 \documentclass[11pt,a4paper]{article}
 \input{estilo-relatorio}
+\usepackage{float}
 
 % --------------------------- IDENTIFICACAO ---------------------------------
 \roteiro{1}{Simulação de Circuitos: Introdução ao LTspice}
@@ -692,7 +693,7 @@ Em todos os esquemáticos o nome e a matrícula estão anotados como comentário
 
 \paragraph{Amplificador de instrumentação com três amplificadores operacionais.} O circuito da Figura~\ref{fig:lurian-instrumentacao} usa três TL064, com \(R_1\) a \(R_6\) de \(10\,\text{k}\Omega\) e \(R_g=2{,}2\,\text{k}\Omega\), o valor E12 mais próximo de \(R_g=20\,\text{k}\Omega/9\approx2{,}22\,\text{k}\Omega\), o que dá \(G_1=1+20/2{,}2\approx10{,}09\). Para medir o ganho diferencial, a entrada esquerda recebeu uma senoide de \(10\,\text{Hz}\) e \(0{,}5\,\text{mV}\) de pico, e a direita a mesma senoide defasada de \(180^\circ\), o que resulta em \(1\,\text{mV}\) de diferença. A análise foi uma transiente de \(200\,\text{ms}\) com passo máximo de \(100\,\mu\text{s}\).
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.1-amplificador_de_instrumentacao.png}
     \caption{Amplificador de instrumentação com três TL064 e \(R_g=2{,}2\,\text{k}\Omega\), alimentado por duas senoides de \(10\,\text{Hz}\) em oposição de fase.}
@@ -701,7 +702,7 @@ Em todos os esquemáticos o nome e a matrícula estão anotados como comentário
 
 \paragraph{Ensaio de modo comum.} A Figura \ref{fig:lurian-modo-comum} reúne dois circuitos no mesmo arquivo, com as duas entradas ligadas juntas a uma senoide de \(60\,\text{Hz}\) e \(1\,\text{V}\) de pico. No primeiro, os quatro resistores do estágio diferencial são iguais, de \(10\,\text{k}\Omega\). No segundo, \(R_6\) foi trocado por \(12\,\text{k}\Omega\), o que desfaz a igualdade das razões e permite observar o efeito do casamento dos resistores sobre a rejeição de modo comum.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.1-amplificador_instrumentacao_cmm.png}
     \caption{Ensaio de modo comum com resistores iguais (esquerda) e com \(R_6=12\,\text{k}\Omega\) (direita).}
@@ -710,7 +711,7 @@ Em todos os esquemáticos o nome e a matrícula estão anotados como comentário
 
 \paragraph{INA118.} O mesmo circuito integrado em um único encapsulamento foi representado por um símbolo próprio, construído com \emph{Prefix} X, \emph{ModelFile} \texttt{ene0046.lib} e \emph{Value} INA118. Os oito terminais foram nomeados e posicionados na ordem do cabeçalho do modelo na biblioteca, como mostra a Figura~\ref{fig:lurian-ina118}. Com \(R_G=5{,}6\,\text{k}\Omega\), o ganho é \(G_1=1+50/5{,}6\approx9{,}93\).
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[height=4cm]{imgs/lurian/montagem/3.2-INA118.png}
     \caption{Símbolo do INA118 criado para as simulações, com os terminais na ordem do modelo.}
@@ -719,7 +720,7 @@ Em todos os esquemáticos o nome e a matrícula estão anotados como comentário
 
 \paragraph{Passa-altas e estágio seguinte.} A Figura~\ref{fig:lurian-passa-altas} mostra dois circuitos no mesmo arquivo, cada um com um capacitor de \(1\,\mu\text{F}\) em série e o resistor ao terra formado por \(120\,\text{k}\Omega+39\,\text{k}\Omega\). No primeiro, o filtro alimenta um amplificador não inversor de ganho \(G_2=101\), com \(R_f=100\,\text{k}\Omega\) e \(R_g=1\,\text{k}\Omega\). No segundo, o estágio é um inversor de mesmo ganho, com resistor de entrada de \(1\,\text{k}\Omega\) e realimentação de \(100\,\text{k}\Omega+1\,\text{k}\Omega\). A fonte tem amplitude AC de \(1\,\text{V}\) no lugar do amplificador de instrumentação, e a análise é uma resposta em frequência de \(10\,\text{mHz}\) a \(1\,\text{kHz}\), com 50 pontos por década. O inversor foi incluído para comparar o corte obtido quando a entrada do estágio seguinte carrega o filtro.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{imgs/lurian/montagem/3.3-passa-altas.png}
     \caption{Passa-altas seguido do amplificador não inversor (acima) e do inversor (abaixo).}
@@ -728,7 +729,7 @@ Em todos os esquemáticos o nome e a matrícula estão anotados como comentário
 
 \paragraph{Cadeia completa.} A cadeia da Figura~\ref{fig:lurian-cadeia-ac} liga o INA118 (\(R_G=5{,}6\,\text{k}\Omega\)), o passa-altas, o não inversor do TL064 (\(R_f=100\,\text{k}\Omega\), \(R_g=1\,\text{k}\Omega\)) e o passa-baixas com \(R_{LP}=1{,}8\,\text{k}\Omega\) e \(C_{LP}=1\,\mu\text{F}\), nessa ordem. A entrada inversora do INA118 foi aterrada e a fonte, de \(1\,\text{V}\) AC, aplicada à entrada não inversora, para levantar a resposta em frequência de \(10\,\text{mHz}\) a \(10\,\text{kHz}\) e ler o ganho em banda passante e os dois cortes.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.4-cadeia_completa_fonte_ac1.png}
     \caption{Cadeia completa de condicionamento com fonte AC de \(1\,\text{V}\) para a análise de resposta em frequência.}
@@ -737,7 +738,7 @@ Em todos os esquemáticos o nome e a matrícula estão anotados como comentário
 
 Em seguida, a mesma cadeia foi excitada pelos sinais dos dois eletrodos, com as fontes \texttt{PWL file=} lendo os arquivos \texttt{braco\_esquerdo.txt} e \texttt{braco\_direito.txt}, que trazem a rede de \(60\,\text{Hz}\) sobre um nível contínuo diferente em cada braço, com o eletrocardiograma de \(1\,\text{mV}\) de pico embutido (Figura~\ref{fig:lurian-eletrodos}). A análise foi uma transiente de \(3\,\text{s}\).
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.4-cadeia_completa_eletrodos.png}
     \caption{Cadeia completa alimentada pelos sinais dos eletrodos esquerdo e direito.}
@@ -746,7 +747,7 @@ Em seguida, a mesma cadeia foi excitada pelos sinais dos dois eletrodos, com as 
 
 Por fim, repetiu-se a transiente com os eletrodos desiguais (Figura~\ref{fig:lurian-eletrodos-desiguais}): uma resistência de \(100\,\text{k}\Omega\) em série com o eletrodo esquerdo, outra de \(1\,\text{k}\Omega\) em série com o direito, e um capacitor de \(10\,\text{pF}\) de cada entrada do INA118 ao terra, representando a capacitância do cabo. O descasamento transforma parte da rede, que chega igual aos dois eletrodos, em tensão diferencial, o que permite avaliar quanto dela sobra na saída e quanto o passa-baixas atenua.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{imgs/lurian/montagem/3.4-cadeia_completa_eletrodos_desiguais.png}
     \caption{Cadeia completa com eletrodos desiguais: \(100\,\text{k}\Omega\) e \(1\,\text{k}\Omega\) em série e \(10\,\text{pF}\) de cada entrada ao terra.}
