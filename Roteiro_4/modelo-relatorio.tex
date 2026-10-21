@@ -20,6 +20,7 @@
 \documentclass[11pt,a4paper]{article}
 \input{estilo-relatorio}
 \usepackage{float}
+\usepackage{subcaption}
 
 % --------------------------- IDENTIFICACAO ---------------------------------
 \roteiro{1}{Simulação de Circuitos: Introdução ao LTspice}
@@ -686,6 +687,7 @@ Por fim, a cadeia completa foi submetida à análise de resposta em frequência,
 Para assegurar a reprodutibilidade dos ensaios, foram mantidos os componentes e os parâmetros de análise definidos nos respectivos esquemáticos. Os resultados das simulações individuais constituem a referência para a comparação posterior com a simulação da montagem utilizando os valores reais dos componentes e com as medições realizadas em bancada.
 
 \subsubsection{Lurian Correia Lima (22/2005395)}
+\label{sec:metodologia-lurian}
 
 O projeto individual foi dimensionado a partir dos parâmetros determinados pela matrícula: ganho diferencial \(G_1=10\), frequência de corte do passa-altas \(f_{HP}=1{,}0\,\text{Hz}\), ganho adicional \(G_2=100\) e frequência de corte do passa-baixas \(f_{LP}=90\,\text{Hz}\). Todas as simulações foram feitas no LTspice, com alimentação simétrica de \(\pm15\,\text{V}\), amplificadores operacionais TL064 e resistores da série E12. A tabela de componentes adotados está na Seção~3.
 
@@ -767,22 +769,22 @@ Por fim, repetiu-se a transiente com os eletrodos desiguais (Figura~\ref{fig:lur
 % não substitui a simulação de projeto: é a comparação entre as duas que separa o efeito da
 % tolerância dos componentes do restante.
 
-\begin{nota}{Três comparações, três causas diferentes}
+% \begin{nota}{Três comparações, três causas diferentes}
 % Ao longo do relatório vocês vão confrontar três pares de resultados. Cada um responde a uma
 % pergunta distinta, e vale mantê-los separados na hora de discutir.
 
-\smallskip
-\textbf{Cálculo analítico contra simulação de projeto.}
+% \smallskip
+% \textbf{Cálculo analítico contra simulação de projeto.}
 % A conta está certa? Se aqui houver diferença, procure na álgebra ou no esquemático.
 
-\smallskip
-\textbf{Simulação de projeto contra simulação da montagem.}
+% \smallskip
+% \textbf{Simulação de projeto contra simulação da montagem.}
 % Quanto custou a tolerância dos componentes? A diferença aqui é a distância entre o valor nominal e o valor real da peça que vocês pegaram.
 
-\smallskip
-\textbf{Simulação da montagem contra medição.} 
+% \smallskip
+% \textbf{Simulação da montagem contra medição.} 
 % O modelo descreve o circuito real? Diferença aqui aponta algo que o modelo não representa, como a resistência série do indutor, a impedância da ponta de prova ou a banda do instrumento.
-\end{nota}
+% \end{nota}
 
 % \begin{figure}[htb]
 % \centering
@@ -794,7 +796,7 @@ Por fim, repetiu-se a transiente com os eletrodos desiguais (Figura~\ref{fig:lur
 % \label{fig:exemplo}
 % \end{figure}
 
-% \section{Resultados}
+\section{Resultados}
 
 % Apresente o que vocês obtiveram, em tabela sempre que houver mais de dois números. Use o
 % número de algarismos significativos que a medição sustenta, e não todos os que o programa
@@ -806,6 +808,107 @@ Por fim, repetiu-se a transiente com os eletrodos desiguais (Figura~\ref{fig:lur
 
 % Uma tabela por integrante, ou uma tabela única com uma coluna por integrante, confrontando
 % o valor analítico e o simulado para cada grandeza pedida no roteiro.
+
+\subsubsection{Lurian Correia Lima (22/2005395)}
+
+Os valores simulados desta seção foram lidos diretamente dos gráficos do LTspice gerados pelos arquivos \texttt{item\_1.asc} a \texttt{item\_6.asc} (Seção~\ref{sec:metodologia-lurian}\footnote{Simulação de projeto, uma por integrante, Seção~3.1 a 3.4 do roteiro.}), com a amplitude lida no cursor ou estimada a partir da escala do gráfico.
+
+\paragraph{Amplificador de instrumentação (item\_1 e item\_2).} A Tabela~\ref{tab:lurian-instrumentacao} confronta o projeto com três TL064 (\(R_1=\dots=R_6=10\,\text{k}\Omega\), \(R_g=2{,}2\,\text{k}\Omega\)) com o que a simulação devolveu.
+
+\begin{table}[H]
+\centering
+\caption{Amplificador de instrumentação com três TL064: valor analítico contra valor simulado.}
+\label{tab:lurian-instrumentacao}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Valor analítico} & \textbf{Valor simulado} \\
+\midrule
+Ganho diferencial \(G_1\) & \(10{,}09\) & \(10{,}1\) \\
+Ganho de modo comum, resistores iguais \(|A_{cm}|\) & \(0\) (ideal) & \(\lesssim 0{,}003\) (abaixo da resolução do gráfico) \\
+Ganho de modo comum, \(R_6=12\,\text{k}\Omega\) \(|A_{cm}|\) & \(0{,}0909\) & \(0{,}0920\) \\
+Rejeição de modo comum, \(R_6=12\,\text{k}\Omega\) & \(40{,}9\,\text{dB}\) & \(40{,}8\,\text{dB}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+O ganho de modo comum com os resistores iguais ficou indistinguível de zero na escala do gráfico (Figura~\ref{fig:lurian-res-cmm}): a curva \(V(\text{vout\_ig})\) aparece como uma reta sobre o eixo de \SI{0}{\volt}. Com \(R_6=12\,\text{k}\Omega\), a razão \(R_6/R_5\) deixa de casar com \(R_4/R_3\) e surge um ganho de modo comum residual, cujo valor simulado reproduz o previsto pelo descasamento dos resistores do estágio de diferença.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{imgs/lurian/resultados/3.1-amp_instrumentacao_entradas_invertidas.png}
+        \caption{item\_1: \(V(\text{vout})\) para \SI{1}{\milli\volt} de diferença entre as entradas (\(10\,\text{Hz}\)).}
+        \label{fig:lurian-res-g1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{imgs/lurian/resultados/3.1_amp_instrumentacao_cmm.png}
+        \caption{item\_2: ensaio de modo comum (\(60\,\text{Hz}\), \SI{1}{\volt} de pico) com resistores iguais (\(V_{\text{vout\_ig}}\)) e com \(R_6=12\,\text{k}\Omega\) (\(V_{\text{vout\_des}}\)).}
+        \label{fig:lurian-res-cmm}
+    \end{subfigure}
+    \caption{Amplificador de instrumentação com três TL064: ganho diferencial (item\_1) e ensaio de modo comum (item\_2).}
+\end{figure}
+
+\paragraph{Passa-altas e cadeia completa (item\_3 e item\_4).} A Tabela~\ref{tab:lurian-filtros} confronta o passa-altas (\(R=159\,\text{k}\Omega\), \(C=1\,\mu\text{F}\)) seguido do não inversor e do inversor (Figura~\ref{fig:lurian-res-passaaltas}), e a cadeia completa INA118 + passa-altas + ganho + passa-baixas (Figura~\ref{fig:lurian-res-bode}).
+
+\begin{table}[H]
+\centering
+\caption{Passa-altas, estágio seguinte e cadeia completa: valor analítico contra valor simulado.}
+\label{tab:lurian-filtros}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Grandeza} & \textbf{Valor analítico} & \textbf{Valor simulado} \\
+\midrule
+\(f_{HP}\), estágio não inversor & \(1{,}00\,\text{Hz}\) & \(1{,}10\,\text{Hz}\) \\
+Ganho em banda, não inversor & \(101\) (\(40{,}1\,\text{dB}\)) & \(\approx100\) (\(40{,}0\,\text{dB}\)) \\
+\(f_{HP}\), estágio inversor (filtro carregado por \(1\,\text{k}\Omega\)) & \(160\,\text{Hz}\) & \(162\,\text{Hz}\) \\
+Ganho em banda, inversor & \(101\) (\(40{,}1\,\text{dB}\)) & \(\approx95\) (\(39{,}6\,\text{dB}\)) \\
+Ganho em banda passante, cadeia completa (\(G_1^{\text{INA}}G_2\)) & \(1003\) (\(60{,}0\,\text{dB}\)) & \(972\) (\(59{,}7\,\text{dB}\)) \\
+\(f_{HP}\) da cadeia completa & \(1{,}00\,\text{Hz}\) & \(0{,}98\,\text{Hz}\) \\
+\(f_{LP}\) da cadeia completa (\(R_{LP}=1{,}8\,\text{k}\Omega\), \(C_{LP}=1\,\mu\text{F}\)) & \(88{,}4\,\text{Hz}\) & \(88{,}2\,\text{Hz}\) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+O corte do passa-altas seguido do não inversor reproduz o projeto porque a entrada do TL064 não carrega o filtro. No inversor, o resistor de entrada de \(1\,\text{k}\Omega\) fica em paralelo com os \(159\,\text{k}\Omega\) do filtro, o que desloca o corte de \(1\,\text{Hz}\) para cerca de \(160\,\text{Hz}\): é a razão da diferença pedida no roteiro. Os dois cortes da cadeia completa, lidos do diagrama de Bode, também batem com o produto \(G_1^{\text{INA}}G_2\) e com \(f_{LP}=1/(2\pi R_{LP}C_{LP})\) dentro da tolerância de leitura do gráfico.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{imgs/lurian/resultados/3.3-passa-altas_cortes.png}
+        \caption{item\_3: resposta em frequência do passa-altas seguido do não inversor (\(V_{\text{vout\_ni}}\)) e do inversor (\(V_{\text{vout\_inv}}\)).}
+        \label{fig:lurian-res-passaaltas}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{imgs/lurian/resultados/3.4-diagrama_bode_cadeia_inteira.png}
+        \caption{item\_4: resposta em frequência da cadeia completa, \(V(\text{ecg\_out})\) para fonte AC de \(1\,\text{V}\) entre as entradas do INA118 (\(V(\text{ecg\_esq})\) é a referência de \SI{0}{\decibel}).}
+        \label{fig:lurian-res-bode}
+    \end{subfigure}
+    \caption{Resposta em frequência do passa-altas isolado (item\_3) e da cadeia completa (item\_4).}
+\end{figure}
+
+\paragraph{Eletrocardiograma pela cadeia (item\_5 e item\_6).} Com os dois eletrodos iguais (Figura~\ref{fig:lurian-res-qrs-normal}), os quatro complexos QRS simulados em \(3\,\text{s}\) têm pico entre \(0{,}82\,\text{V}\) e \(0{,}95\,\text{V}\) (média \(\approx0{,}88\,\text{V}\)), contra uma previsão de \(\approx1{,}00\,\text{V}\) obtida multiplicando o \SI{1}{\milli\volt} de pico do QRS pelo ganho de banda passante da cadeia (\(972\)); a diferença é coerente com o fato de o QRS ter conteúdo espectral mais alto que as outras ondas do eletrocardiograma, parcialmente atenuado pelo passa-baixas de \(f_{LP}\approx88\,\text{Hz}\). O intervalo entre picos R ficou em \(\approx0{,}833\,\text{s}\), o que corresponde a uma frequência cardíaca simulada de \(\approx72\,\text{bpm}\) — valor do sinal de teste em \texttt{braco\_esquerdo.txt}/\texttt{braco\_direito.txt}, não um resultado de projeto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imgs/lurian/resultados/3.4-amplitudeQRS_normal.png}
+    \caption{item\_5: \(V(\text{ecg\_out})\) na saída da cadeia completa com os eletrodos esquerdo e direito.}
+    \label{fig:lurian-res-qrs-normal}
+\end{figure}
+
+Com os eletrodos desiguais (Figura~\ref{fig:lurian-res-qrs-desiguais}), os picos R ficam entre \(0{,}99\,\text{V}\) e \(1{,}11\,\text{V}\) (média \(\approx1{,}04\,\text{V}\)) e a frequência cardíaca lida é a mesma (\(\approx72\,\text{bpm}\)), mas aparece uma interferência de \(60\,\text{Hz}\) de \(\approx0{,}77\,\text{V}\) de pico a pico entre os batimentos, ausente no caso com eletrodos iguais. As resistências desiguais em série com cada eletrodo (\(100\,\text{k}\Omega\) e \(1\,\text{k}\Omega\)) e os \(10\,\text{pF}\) de cada entrada do INA118 ao terra transformam parte da rede — que chega igual às duas entradas — em um sinal diferencial, que deixa de ser rejeitado pela entrada diferencial do INA118 e segue amplificado pelo resto da cadeia. Como \(60\,\text{Hz}\) está abaixo de \(f_{LP}\approx88\,\text{Hz}\), ainda dentro da banda passante, o passa-baixas atenua muito pouco essa componente: o fator teórico é \(1/\sqrt{1+(60/88{,}4)^2}\approx0{,}83\) (\(\approx-1{,}6\,\text{dB}\)), o que explica por que a interferência ainda aparece forte na saída. Não há, nos resultados disponíveis, uma captura do sinal antes do passa-baixas para medir diretamente quanto esse estágio atenuou o \(60\,\text{Hz}\); o valor acima é a estimativa analítica, não uma comparação com uma medida simulada.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{imgs/lurian/resultados/3.4-ecg_eletrodos_desiguaisQRS.png}
+    \caption{item\_6: \(V(\text{ecg\_out})\) com eletrodos desiguais (\(100\,\text{k}\Omega\) e \(1\,\text{k}\Omega\) em série, \(10\,\text{pF}\) de cada entrada ao terra).}
+    \label{fig:lurian-res-qrs-desiguais}
+\end{figure}
 
 \subsection{Circuito montado}
 
