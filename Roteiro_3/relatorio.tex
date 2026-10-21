@@ -279,38 +279,82 @@ $R_f$ para $G_2=119$ ($R_g=1\text{ k}\Omega$) & $118\text{ k}\Omega$ & $100\text
 \end{center}
 
 \begin{especbancada}
-\textbf{Equipe 2}. A partir da equipe as especificações apresentadas pelo roteiro são:
+\textbf{Equipe 2}. Conforme a especificação da Seção 4.1 do roteiro, os componentes para a montagem em bancada são:
 
 \begin{itemize}
-    \item \textbf{Seção 3.5 (Resposta em frequência):} \\
-    Ganho baixo $G_1=13$
+    \item \textbf{Seção 4.3 (Amplificador de instrumentação):}
+    \[
+        R_G=10\,\text{k}\Omega
+    \]
+    O ganho diferencial teórico do INA118 é:
+    \[
+        G_1=1+\frac{50\,\text{k}\Omega}{R_G}
+        =1+\frac{50}{10}=6
+    \]
 
-    \vspace{0.3cm}
-    
-    \item \textbf{Seção 3.6 (Slew rate):} \\
-    $V_{p}$ do slew rate $V_{p}=2{,}5 \text{ V}$
-    
+    \vspace{0.2cm}
+    \item \textbf{Seção 4.4 (Passa-altas):}
+    \[
+        R=330\,\text{k}\Omega,\qquad C=1\,\mu\text{F}
+    \]
+    O corte teórico é:
+    \[
+        f_{HP}=\frac{1}{2\pi RC}
+        =\frac{1}{2\pi\cdot330\,\text{k}\Omega\cdot1\,\mu\text{F}}
+        \approx0{,}482\,\text{Hz}
+    \]
+
+    \vspace{0.2cm}
+    \item \textbf{Seção 4.5 (Ganho adicional):}
+    \[
+        R_f=330\,\text{k}\Omega,\qquad R_g=2{,}2\,\text{k}\Omega
+    \]
+    Para o amplificador não inversor:
+    \[
+        G_2=1+\frac{R_f}{R_g}
+        =1+\frac{330}{2{,}2}=151
+    \]
+
+    \vspace{0.2cm}
+    \item \textbf{Seção 4.6 (Passa-baixas e resposta da cadeia):}
+    \[
+        R=4{,}7\,\text{k}\Omega,\qquad C=1\,\mu\text{F}
+    \]
+    O corte teórico é:
+    \[
+        f_{LP}=\frac{1}{2\pi RC}
+        =\frac{1}{2\pi\cdot4{,}7\,\text{k}\Omega\cdot1\,\mu\text{F}}
+        \approx33{,}86\,\text{Hz}
+    \]
 \end{itemize}
+
+O ganho total teórico da cadeia, considerando os ganhos do INA118 e do estágio adicional, é:
+\[
+    G_T=G_1G_2=6\cdot151=906
+\]
 \end{especbancada}
 
-Os componentes E12 correspondentes para a especificação da equipe apresentada e o desvio de cada escolha em relação ao valor teórico são apresentados a seguir:
-
-\begin{itemize}
-
-    \item \textbf{Seção 3.5 (Resposta em Frequência):} A partir da expressão do ganho do amplificador não inversor, para obter o ganho $G = 13$, a razão $R_f/R_g$ deve ser exatamente $12$. Adotando o valor comercial $R_g = 820\text{ }\Omega$, determina-se $R_f = 10\text{ k}\Omega$. O ganho prático realizado é $G_{\text{real}} = 1 + \frac{10\text{k}}{820\text{}} = 13{,}195$, alcançando a especificação com desvio de ($1{,}50\%$).
-
-\end{itemize}
+Os valores nominais dos componentes e os resultados teóricos correspondentes são resumidos na tabela a seguir.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}lrrr@{}}
+\begin{tabular}{@{}lrr@{}}
 \toprule
-\textbf{Grandeza} & \textbf{Teórico} & \textbf{Adotado} & \textbf{Desvio} \\
+\textbf{Grandeza} & \textbf{Valor teórico} & \textbf{Valor adotado} \\
 \midrule
-Ganho baixo $G_1$ & $13{,}000$ & $13{,}195$ & $1{,}50\%$ \\
+Resistor de ganho do INA118 ($R_G$) & $10\,\text{k}\Omega$ & $10\,\text{k}\Omega$ \\
+Ganho diferencial ($G_1$) & $6$ & $6$ \\
+Resistor de realimentação ($R_f$) & $330\,\text{k}\Omega$ & $330\,\text{k}\Omega$ \\
+Resistor de ganho ($R_g$) & $2{,}2\,\text{k}\Omega$ & $2{,}2\,\text{k}\Omega$ \\
+Ganho adicional ($G_2$) & $151$ & $151$ \\
+Ganho total ($G_T$) & $906$ & $906$ \\
+Corte do passa-altas ($f_{HP}$) & $0{,}482\,\text{Hz}$ & $0{,}482\,\text{Hz}$ \\
+Corte do passa-baixas ($f_{LP}$) & $33{,}86\,\text{Hz}$ & $33{,}86\,\text{Hz}$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+
 
 \section{Metodologia}
 
