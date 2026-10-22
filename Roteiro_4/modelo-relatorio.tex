@@ -1036,6 +1036,117 @@ A cadeia foi finalizada com a adição do filtro passa-baixas passivo na saída 
 % \label{fig:exemplo}
 % \end{figure}
 
+Nesta etapa, os esquemáticos foram reconstruídos no LTspice com os valores reais dos resistores e capacitores medidos antes da montagem na bancada. O objetivo é reproduzir o circuito físico em condições equivalentes e separar o efeito da tolerância dos componentes das limitações intrínsecas aos amplificadores operacionais.
+
+\subsubsection{Amplificador de instrumentação (INA118)}
+
+No modelo da montagem, foi utilizado $R_G = 9{,}857\,\mathrm{k}\Omega$. O ganho diferencial esperado exclusivamente por este resistor real é calculado por
+\[
+G_1 = 1 + \frac{50\,\mathrm{k}\Omega}{9{,}857\,\mathrm{k}\Omega} \approx 6{,}07.
+\]
+Esse valor diverge ligeiramente do ganho nominal ($G=6$ para $10\,\mathrm{k}\Omega$), refletindo o impacto prático do desvio de $-1{,}4\%$ medido no componente. A simulação correspondente a este estágio e as formas de onda (diferencial e de modo comum) são apresentadas nas Figuras~\ref{fig:circ_sim_bancada_ina118} e~\ref{fig:vout_ina118_montagem}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_ina118_montagem.png}
+\caption{Circuito do INA118 reconstruído com o resistor $R_G$ medido.}
+\label{fig:circ_sim_bancada_ina118}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{imgs/montagem/vout_ina118_diff.png} \hfill
+\includegraphics[width=0.48\linewidth]{imgs/montagem/vout_ina118_cmm.png}
+\caption{Saídas simuladas da montagem do INA118 no modo diferencial (esquerda) e no modo comum (direita).}
+\label{fig:vout_ina118_montagem}
+\end{figure}
+
+\subsubsection{Passa-altas}
+
+O filtro passa-altas foi reconstruído isoladamente utilizando os componentes medidos na bancada: $R = 326{,}92\,\mathrm{k}\Omega$ e $C = 1{,}02\,\mu\mathrm{F}$. Com esses valores, a frequência de corte inferior real esperada passa a ser:
+\[
+f_{HP} = \frac{1}{2\pi (326{,}92 \times 10^3)(1{,}02 \times 10^{-6})} \approx 0{,}477\text{ Hz}.
+\]
+A simulação correspondente a este estágio e a sua resposta em frequência são apresentadas nas Figuras~\ref{fig:circ_sim_bancada_passa_altas} e~\ref{fig:bode_passa_altas}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_passa_altas_montagem.png}
+\caption{Circuito do passa-altas reconstruído com os valores reais medidos.}
+\label{fig:circ_sim_bancada_passa_altas}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/bode_passa_altas.png}
+\caption{Resposta em frequência simulada do passa-altas, evidenciando o corte em aproximadamente $0{,}48\text{ Hz}$.}
+\label{fig:bode_passa_altas}
+\end{figure}
+
+\subsubsection{Divisor de tensão e ganho adicional}
+
+Para atenuar o sinal do gerador de funções sem saturar a cadeia, o divisor resistivo da entrada foi simulado com $R_{\text{série}} = 100{,}55\,\mathrm{k}\Omega$ e $R_{\text{paralelo}} = 0{,}822\,\mathrm{k}\Omega$. A atenuação teórica deste divisor é:
+\[
+V_{\text{div}} = V_{in} \frac{0{,}822}{100{,}55 + 0{,}822} \approx 0{,}0081 V_{in}.
+\]
+O estágio de ganho não inversor utilizou os resistores medidos $R_f = 326{,}92\,\mathrm{k}\Omega$ e $R_g = 2{,}12\,\mathrm{k}\Omega$. O ganho isolado deste estágio passa a ser:
+\[
+G_2 = 1 + \frac{326{,}92}{2{,}12} \approx 155{,}2.
+\]
+A simulação da cadeia atenuada e o sinal amplificado na saída do TL064 são apresentados nas Figuras~\ref{fig:circ_sim_bancada_ganho} e~\ref{fig:vout_ganho_montagem}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_ganho_adicional_montagem.png}
+\caption{Circuito do estágio de ganho e divisor reconstruído com os valores medidos.}
+\label{fig:circ_sim_bancada_ganho}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/vout_ganho_adicional.png}
+\caption{Sinal simulado na saída do estágio de ganho adicional.}
+\label{fig:vout_ganho_montagem}
+\end{figure}
+
+\subsubsection{Passa-baixas e cadeia completa}
+
+Para a simulação da montagem final, o filtro passa-baixas passivo inseriu os valores $R = 4{,}67\,\mathrm{k}\Omega$ e $C = 1{,}02\,\mu\mathrm{F}$. A frequência de corte superior resultante é
+\[
+f_{LP} = \frac{1}{2\pi (4{,}67 \times 10^3)(1{,}02 \times 10^{-6})} \approx 33{,}4\text{ Hz}.
+\]
+O ganho total em banda passante esperado da cadeia montada (desconsiderando a atenuação do divisor de teste) é o produto $G_1 \times G_2 \approx 6{,}07 \times 155{,}2 \approx 942{,}1$. O esquemático completo da cadeia reconstruída é apresentado na Figura~\ref{fig:circ_cadeia_montagem} e a sua simulação de resposta em frequência (diagrama de Bode) é apresentada na Figura~\ref{fig:bode_montagem}. 
+
+Para avaliar o comportamento da montagem diante do sinal biológico, o circuito foi modificado removendo-se o divisor de tensão inicial e injetando-se diretamente os dados dos eletrodos, conforme ilustra a Figura~\ref{fig:circ_ecg_montagem}. Na Figura~\ref{fig:ecg_montagem}, exibe-se a simulação do eletrocardiograma processado pela cadeia com a topologia e as não idealidades idênticas às da bancada.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_cadeia_completa_montagem.png}
+\caption{Circuito da cadeia completa reconstruído com os valores reais da bancada para a análise em frequência.}
+\label{fig:circ_cadeia_montagem}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/bode_cadeia_montagem.png}
+\caption{Diagrama de Bode simulado da cadeia completa reconstruída.}
+\label{fig:bode_montagem}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_ecg_montagem.png}
+\caption{Circuito da cadeia completa adaptado para a simulação do eletrocardiograma com os sinais dos eletrodos.}
+\label{fig:circ_ecg_montagem}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/ecg_cadeia_montagem.png}
+\caption{Eletrocardiograma simulado passando pelos componentes com valores reais da bancada.}
+\label{fig:ecg_montagem}
+\end{figure}
+
 \section{Resultados}
 
 % Apresente o que vocês obtiveram, em tabela sempre que houver mais de dois números. Use o
