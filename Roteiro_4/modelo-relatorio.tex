@@ -1161,6 +1161,154 @@ A injeção do sinal biológico na cadeia completa demonstrou a eficácia do con
     \label{fig:graficos_cardoso}
 \end{figure}
 
+```latex
+\subsubsection{Daniel Campos Silva}
+
+Nesta seção são apresentados os resultados das simulações de projeto
+realizadas no LTspice para o circuito de condicionamento do sinal de
+eletrocardiograma. A análise contempla o amplificador de instrumentação,
+a rejeição de sinais de modo comum, o filtro passa-altas, a resposta em
+frequência da cadeia completa e a influência das impedâncias dos eletrodos
+sobre o sinal de saída.
+
+\paragraph{Amplificador de instrumentação e rejeição de modo comum.}
+
+O amplificador de instrumentação constitui o primeiro estágio da cadeia
+de condicionamento e tem como objetivo amplificar a diferença de potencial
+entre os eletrodos, preservando a rejeição dos sinais presentes
+simultaneamente nas duas entradas. A Figura~\ref{fig:daniel-instrumentacao}
+apresenta o resultado da simulação desse estágio.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]
+    {imgs/daniel/daniel_resultado/amplificador_de_instrumentacao.png}
+    \caption{Simulação do amplificador de instrumentação.}
+    \label{fig:daniel-instrumentacao}
+\end{figure}
+
+Para avaliar a rejeição de modo comum, aplica-se o mesmo sinal às duas
+entradas do circuito. Idealmente, como a diferença entre as entradas é
+nula, a saída também deve ser nula. Na prática, eventuais diferenças entre
+os componentes e as características dos amplificadores operacionais podem
+produzir uma tensão residual na saída. A Figura~\ref{fig:daniel-modo-comum}
+apresenta o resultado desse ensaio.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]
+    {imgs/daniel/daniel_resultado/ensaio_modo_comum.png}
+    \caption{Ensaio de rejeição de modo comum do amplificador de
+    instrumentação.}
+    \label{fig:daniel-modo-comum}
+\end{figure}
+
+O resultado permite verificar o comportamento do circuito diante de
+sinais comuns às duas entradas. Uma saída residual indica que parte
+desse sinal foi convertida em componente diferencial, evidenciando que
+a rejeição de modo comum depende do casamento dos componentes e das
+características do circuito utilizado.
+
+\paragraph{Filtro passa-altas e resposta em frequência.}
+
+O filtro passa-altas é responsável por atenuar as componentes de baixa
+frequência, incluindo variações lentas da linha de base e componentes
+contínuas indesejadas. Sua frequência de corte depende dos valores de
+resistência e capacitância empregados, sendo determinada, para um filtro
+RC de primeira ordem, por
+
+\[
+    f_c = \frac{1}{2\pi RC}.
+\]
+
+A Figura~\ref{fig:daniel-passa-altas} apresenta a simulação do filtro
+passa-altas. A resposta permite observar a atenuação das componentes
+abaixo da frequência de corte e a passagem das componentes de frequência
+mais elevada.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]
+    {imgs/daniel/daniel_resultado/passa_altas.png}
+    \caption{Resposta do estágio passa-altas.}
+    \label{fig:daniel-passa-altas}
+\end{figure}
+
+A resposta em frequência da cadeia completa é apresentada na
+Figura~\ref{fig:daniel-resposta-frequencia}. A associação dos estágios
+de amplificação e filtragem permite estabelecer uma faixa de frequências
+na qual o sinal do eletrocardiograma é amplificado, enquanto componentes
+fora dessa faixa são atenuadas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]
+    {imgs/daniel/daniel_resultado/resposta_em_frequencia.png}
+    \caption{Resposta em frequência da cadeia completa de
+    condicionamento do sinal de eletrocardiograma.}
+    \label{fig:daniel-resposta-frequencia}
+\end{figure}
+
+A análise do gráfico permite verificar o comportamento global do
+circuito, considerando simultaneamente os estágios de amplificação e
+filtragem. A faixa de passagem é importante para preservar as
+componentes relevantes do sinal cardíaco, enquanto a atenuação fora
+dessa faixa contribui para reduzir componentes indesejadas.
+
+\paragraph{Sinal de eletrocardiograma com eletrodos iguais.}
+
+A Figura~\ref{fig:daniel-eletrodos} apresenta o resultado da simulação
+da cadeia completa com eletrodos de impedâncias iguais. Nessa condição,
+a interferência de modo comum tende a ser rejeitada de maneira mais
+eficiente pelo amplificador de instrumentação, permitindo observar o
+sinal cardíaco amplificado na saída.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]
+    {imgs/daniel/daniel_resultado/eletrodos.png}
+    \caption{Sinal de eletrocardiograma simulado com eletrodos de
+    impedâncias iguais.}
+    \label{fig:daniel-eletrodos}
+\end{figure}
+
+O sinal de saída permite observar os complexos QRS, associados à
+despolarização ventricular. A amplificação torna essas variações de
+tensão mais evidentes, enquanto o filtro passa-altas reduz as
+componentes de baixa frequência. O comportamento observado depende
+do ganho total da cadeia e da atenuação introduzida pelos filtros.
+
+\paragraph{Sinal de eletrocardiograma com eletrodos desiguais.}
+
+Para investigar a influência das impedâncias de contato, considera-se
+uma condição em que os eletrodos apresentam impedâncias diferentes.
+O resultado da simulação é apresentado na
+Figura~\ref{fig:daniel-eletrodos-desiguais}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]
+    {imgs/daniel/daniel_resultado/eletrodos_desiguais.png}
+    \caption{Sinal de eletrocardiograma simulado com eletrodos de
+    impedâncias desiguais.}
+    \label{fig:daniel-eletrodos-desiguais}
+\end{figure}
+
+A desigualdade entre as impedâncias dos eletrodos pode converter parte
+da interferência de modo comum da rede elétrica em um sinal diferencial.
+Esse efeito ocorre porque as impedâncias de entrada deixam de apresentar
+o mesmo comportamento diante do sinal de interferência. Como consequência,
+uma parcela do ruído pode ser amplificada juntamente com o sinal cardíaco,
+prejudicando a visualização dos complexos QRS.
+
+A comparação entre as condições com eletrodos iguais e desiguais
+evidencia a importância do equilíbrio das impedâncias de contato para
+a qualidade do sinal adquirido. Também demonstra que a rejeição de
+modo comum do amplificador, embora essencial, não elimina completamente
+a interferência quando há desequilíbrio entre as entradas do circuito.
+```
+
+
 \subsection{Circuito montado}
 
 % Para cada grandeza, o que o projeto do integrante montado previa, o que a simulação com os
