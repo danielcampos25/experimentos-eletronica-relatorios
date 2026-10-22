@@ -1171,6 +1171,26 @@ a rejeição de sinais de modo comum, o filtro passa-altas, a resposta em
 frequência da cadeia completa e a influência das impedâncias dos eletrodos
 sobre o sinal de saída.
 
+```latex
+\begin{table}[H]
+\centering
+\caption{Comparação dos parâmetros de projeto de Daniel Campos Silva.}
+\label{tab:daniel-parametros}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Grandeza} & \textbf{Especificado} &
+\textbf{Analítico} & \textbf{Estimativa} &
+\textbf{Desvio analítico (\%)} \\
+\midrule
+Ganho diferencial $G_1$ & 9,00 & 8,9618 & -- & $-0,42$ \\
+Corte passa-altas $f_{HP}$ & 0,800 Hz & 0,804 Hz & $\approx 0,8$ Hz & $+0,50$ \\
+Ganho adicional $G_2$ & 111,11 & 111,00 & -- & $-0,10$ \\
+Ganho total $G_T$ & 1000 & 994,76 & $\approx 891$ & $-0,52$ \\
+Corte passa-baixas $f_{LP}$ & 90,00 Hz & 88,42 Hz & A verificar & $-1,76$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Amplificador de instrumentação e rejeição de modo comum.}
 
 O amplificador de instrumentação constitui o primeiro estágio da cadeia
