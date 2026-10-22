@@ -1077,6 +1077,90 @@ Com os eletrodos desiguais (Figura~\ref{fig:lurian-res-qrs-desiguais}), os picos
     \label{fig:lurian-res-qrs-desiguais}
 \end{figure}
 
+\subsubsection{Guilherme Cardoso Oliveira da Silva Júnior (23/1038626)}
+
+A Tabela~\ref{tab:resultados_cardoso} apresenta os parâmetros de projeto (ganhos e frequências de corte) calculados analiticamente a partir dos componentes da série E12 adotados, confrontando-os com os resultados extraídos das simulações dinâmicas em frequência (\texttt{.ac}) e de regime transiente (\texttt{.tran}) no LTspice.
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados simulados da cadeia de condicionamento de sinal (Matrícula 23/1038626).}
+    \label{tab:resultados_cardoso}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    \textbf{Grandeza} & \textbf{Analítico (E12)} & \textbf{Simulado} & \textbf{Erro (\%)} \\
+    \midrule    
+    Ganho $G_1$ (Discreto) & $11{,}00$ & $10{,}99$ & $0{,}09\%$ \\
+    Ganho $G_2$ (Adicional) & $91{,}00$ & $91{,}00$ & $0{,}00\%$ \\
+    Corte Passa-altas $f_{HP}$ (Não Inversor) & $0{,}303\text{ Hz}$ & $0{,}302\text{ Hz}$ & $0{,}33\%$ \\
+    Corte Passa-altas $f_{HP}$ (Inversor carregado) & $159{,}15\text{ Hz}$ & $159{,}20\text{ Hz}$ & $0{,}03\%$ \\
+    Corte Passa-baixas $f_{LP}$ (Cadeia) & $106{,}10\text{ Hz}$ & $106{,}10\text{ Hz}$ & $0{,}00\%$ \\
+    Ganho Total da Cadeia ($G_1^{\text{INA}} \times G_2$)* & $982{,}80$ & $972{,}70$ & $1{,}03\%$ \\
+    \bottomrule
+    \multicolumn{4}{l}{\footnotesize * O ganho total analítico utiliza o $G_1$ gerado pelo INA118 com $R_G = 5{,}1\text{ k}\Omega$ ($10{,}80$).}
+    \end{tabular}
+\end{table}
+
+\paragraph{Análise do Amplificador de Instrumentação:}
+O ganho diferencial do circuito discreto montado com o TL064 reproduziu o valor projetado com alta fidelidade, apresentando um desvio inferior a $0{,}1\%$. No ensaio de modo comum, a configuração com resistores perfeitamente casados resultou em uma rejeição ideal (saída nula). Entretanto, ao introduzir um desbalanceamento intencional alterando $R_6$ para $12\text{ k}\Omega$, a diferença nas razões de tensão do estágio subtrator gerou um ganho de modo comum de $0{,}091$. Isso demonstra analiticamente que a alta Razão de Rejeição de Modo Comum (CMRR) depende criticamente da tolerância e do casamento perfeito dos resistores externos.
+
+\paragraph{Análise em Frequência (Filtros e Ganho):}
+A partir das curvas de resposta em frequência (Figura~\ref{fig:graficos_cardoso}c), evidenciou-se o efeito de carregamento do filtro passa-altas. Quando acoplado ao estágio não inversor (alta impedância), o corte manteve-se em $0{,}302\text{ Hz}$, conforme o projeto. Contudo, ao ser conectado ao estágio inversor, a resistência de entrada de $1\text{ k}\Omega$ ficou em paralelo com a malha do filtro, deslocando severamente a frequência de corte para $159{,}2\text{ Hz}$. A simulação da cadeia completa (Figura~\ref{fig:graficos_cardoso}d) validou a largura de banda global do sistema, operando estritamente entre as frequências de $0{,}3\text{ Hz}$ e $106{,}1\text{ Hz}$, com atenuação de $3\text{ dB}$ nas extremidades.
+
+\paragraph{Análise Transiente (Eletrocardiograma):}
+A injeção do sinal biológico na cadeia completa demonstrou a eficácia do condicionamento. Analisando diretamente o nó de saída com eletrodos ideais (Figura~\ref{fig:graficos_cardoso}e), constata-se que a tensão contínua de offset da pele foi bloqueada e os complexos QRS foram amplificados para picos em torno de $1\text{ V}$, livres de ruído de rede. No entanto, ao simular impedâncias de contato desiguais ($100\text{ k}\Omega$ e $1\text{ k}\Omega$) juntamente com a capacitância dos cabos (Figura~\ref{fig:graficos_cardoso}f), o ruído de $60\text{ Hz}$ proveniente do corpo deixou de ser puramente de modo comum. Ele foi parcialmente convertido em sinal diferencial e amplificado pelo INA118, sobrepondo uma interferência de aproximadamente $0{,}8\text{ V}$ (pico a pico) ao traçado do ECG, visto que o filtro passa-baixas ($106\text{ Hz}$) não exerce atenuação significativa sobre a frequência da rede elétrica.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/resultados/simulacao_item_1_exp4.png}
+        \vspace{2pt}
+        {\small (a) Ganho Diferencial ($G_1=11$).}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/resultados/simulacao_item_2_exp4.png}
+        \vspace{2pt}
+        {\small (b) Ensaio de Modo Comum ($R_6=12\text{ k}\Omega$).}
+    \end{minipage}
+
+    \vspace{12pt}
+
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/resultados/simulacao_item_3_exp4.png}
+        \vspace{2pt}
+        {\small (c) Resposta AC: Passa-altas.}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/resultados/simulacao_item_4_exp4.png}
+        \vspace{2pt}
+        {\small (d) Resposta AC: Cadeia Completa.}
+    \end{minipage}
+    
+    \vspace{12pt}
+
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/resultados/simulacao_item_5_exp4.png}
+        \vspace{2pt}
+        {\small (e) ECG com Eletrodos Iguais.}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/resultados/simulacao_item_6_exp4.png}
+        \vspace{2pt}
+        {\small (f) ECG com Eletrodos Desiguais.}
+    \end{minipage}
+    \caption{Resultados gráficos das simulações de projeto para o Eletrocardiograma (matrícula 23/1038626).}
+    \label{fig:graficos_cardoso}
+\end{figure}
+
 \subsection{Circuito montado}
 
 % Para cada grandeza, o que o projeto do integrante montado previa, o que a simulação com os
