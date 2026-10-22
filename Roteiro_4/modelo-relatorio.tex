@@ -930,6 +930,79 @@ Para comprovar que o projeto atende às especificações apresentadas na seção
 % usaram, e não os valores nominais impressos no corpo da peça, porque a diferença entre os
 % dois explica boa parte do que vocês vão observar.
 
+Para a realização dos ensaios físicos, a equipe montou a especificação geral de bancada designada para a \textbf{Equipe 2} (conforme detalhado na Seção 4.1 do roteiro). 
+
+\vspace{0.3cm}
+
+\textbf{Procedimento geral e instrumentação.} \\
+Antes da inserção na protoboard, todos os resistores e capacitores foram medidos individualmente com o multímetro de bancada, e esses valores reais foram utilizados nos cálculos de desvio e na simulação da montagem. Os circuitos integrados INA118 e TL064 foram alimentados com tensão simétrica de $\pm15\text{ V}$. Os sinais senoidais foram gerados por um gerador de funções Agilent 33220A, configurado para carga de alta impedância (\textit{High Z Load}), e as formas de onda foram observadas com um osciloscópio Agilent Technologies DSO1002A em acoplamento DC.
+
+\subsubsection{Amplificador de Instrumentação (INA118)}
+O circuito integrado INA118 foi montado inicialmente de forma isolada. O gerador de funções aplicou uma senoide de $10\text{ Hz}$ na entrada não inversora para aferição do ganho diferencial. Na sequência, sem desmontar o componente principal, as duas entradas do INA118 foram curto-circuitadas e ligadas simultaneamente ao gerador de funções (configurado para $60\text{ Hz}$ e $5\text{ V}_{\text{pk}}$) para a realização do ensaio de modo comum.
+
+\begin{itemize}
+    \item $R_G = 9{,}857\text{ k}\Omega$ (nominal: $10\text{ k}\Omega$)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/bancada/circuito_bancada_exp4_seção_4_3.jpeg}
+        \caption{Montagem do INA118 para o ensaio de ganho diferencial.}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/bancada/circuito_bancada_exp4_seção_4_3_modo_comum.jpeg}
+        \caption{Montagem do INA118 com entradas em curto para o ensaio de modo comum.}
+    \end{minipage}
+\end{figure}
+
+\subsubsection{Passa-altas e Ganho Adicional}
+Após o INA118, acrescentou-se à protoboard o filtro passa-altas seguido de um estágio seguidor de tensão (TL064) para evitar carregamento. Em seguida, montou-se o estágio de ganho adicional não inversor. Como esse ganho total da cadeia é elevado, construiu-se um divisor resistivo na entrada do INA118 para atenuar o sinal do gerador e permitir a medição sem saturar a saída dos amplificadores operacionais.
+
+\begin{itemize}
+    \item $R_{\text{série (divisor)}} = 100{,}55\text{ k}\Omega$ (nominal: $100\text{ k}\Omega$)
+    \item $R_{\text{paralelo (divisor)}} = 0{,}822\text{ k}\Omega$ (nominal: $0{,}82\text{ k}\Omega$)
+    \item $C_{\text{passa-altas}} = 1{,}017\text{ }\mu\text{F}$ (nominal: $1\text{ }\mu\text{F}$)
+    \item $R_{\text{passa-altas}} = 326{,}92\text{ k}\Omega$ (nominal: $330\text{ k}\Omega$)
+    \item $R_{f\text{ (ganho)}} = 100{,}55\text{ k}\Omega$ (nominal: $100\text{ k}\Omega$)
+    \item $R_{g\text{ (ganho)}} = 2{,}120\text{ k}\Omega$ (nominal: $2{,}2\text{ k}\Omega$)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/bancada/circuito_bancada_exp4_seção_4_4_ganho_adicional.jpeg}
+        \vspace{2pt}
+        {\small (a) Filtro passa-altas}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imgs/cardoso/bancada/circuito_bancada_exp4_seção_4_5.jpeg}
+        \vspace{2pt}
+        {\small (b) Estágio de ganho adicional}
+    \end{minipage}
+    \caption{Montagem parcial da cadeia contendo o divisor de tensão, INA118, filtro passa-altas e estágio de ganho.}
+\end{figure}
+
+\subsubsection{Cadeia Completa e Eletrocardiograma}
+A cadeia foi finalizada com a adição do filtro passa-baixas passivo na saída do último estágio do TL064, permitindo o levantamento experimental da resposta em frequência (diagrama de Bode) do circuito inteiro. Para a aquisição prática do eletrocardiograma (Seção 4.7), a topologia física da protoboard permaneceu exatamente a mesma ilustrada na Figura 17. A única modificação realizada foi a desconexão dos cabos do gerador de funções (e do divisor de tensão) das entradas do INA118, substituindo-os diretamente pelos cabos dos eletrodos fixados ao integrante da equipe. O sinal resultante foi lido diretamente no osciloscópio.
+
+\begin{itemize}
+    \item $R_{\text{passa-baixas}} = 4{,}67\text{ k}\Omega$ (nominal: $4{,}7\text{ k}\Omega$)
+    \item $C_{\text{passa-baixas}} = 1{,}015\text{ }\mu\text{F}$ (nominal: $1\text{ }\mu\text{F}$)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{imgs/cardoso/bancada/circuito_bancada_exp4_seção_4_6.jpeg}
+    \caption{Montagem da cadeia completa de condicionamento, cuja mesma estrutura física foi utilizada para a medição do eletrocardiograma mediante a troca da fonte de sinal pelos eletrodos.}
+\end{figure}
+
 \subsection{Simulação da montagem}
 
 % Refaça a simulação usando os valores medidos dos componentes que estavam na bancada. Ela
@@ -962,6 +1035,117 @@ Para comprovar que o projeto atende às especificações apresentadas na seção
 % apenas o nome do circuito.}
 % \label{fig:exemplo}
 % \end{figure}
+
+Nesta etapa, os esquemáticos foram reconstruídos no LTspice com os valores reais dos resistores e capacitores medidos antes da montagem na bancada. O objetivo é reproduzir o circuito físico em condições equivalentes e separar o efeito da tolerância dos componentes das limitações intrínsecas aos amplificadores operacionais.
+
+\subsubsection{Amplificador de instrumentação (INA118)}
+
+No modelo da montagem, foi utilizado $R_G = 9{,}857\,\mathrm{k}\Omega$. O ganho diferencial esperado exclusivamente por este resistor real é calculado por
+\[
+G_1 = 1 + \frac{50\,\mathrm{k}\Omega}{9{,}857\,\mathrm{k}\Omega} \approx 6{,}07.
+\]
+Esse valor diverge ligeiramente do ganho nominal ($G=6$ para $10\,\mathrm{k}\Omega$), refletindo o impacto prático do desvio de $-1{,}4\%$ medido no componente. A simulação correspondente a este estágio e as formas de onda (diferencial e de modo comum) são apresentadas nas Figuras~\ref{fig:circ_sim_bancada_ina118} e~\ref{fig:vout_ina118_montagem}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_ina118_montagem.png}
+\caption{Circuito do INA118 reconstruído com o resistor $R_G$ medido.}
+\label{fig:circ_sim_bancada_ina118}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\linewidth]{imgs/montagem/vout_ina118_diff.png} \hfill
+\includegraphics[width=0.48\linewidth]{imgs/montagem/vout_ina118_cmm.png}
+\caption{Saídas simuladas da montagem do INA118 no modo diferencial (esquerda) e no modo comum (direita).}
+\label{fig:vout_ina118_montagem}
+\end{figure}
+
+\subsubsection{Passa-altas}
+
+O filtro passa-altas foi reconstruído isoladamente utilizando os componentes medidos na bancada: $R = 326{,}92\,\mathrm{k}\Omega$ e $C = 1{,}02\,\mu\mathrm{F}$. Com esses valores, a frequência de corte inferior real esperada passa a ser:
+\[
+f_{HP} = \frac{1}{2\pi (326{,}92 \times 10^3)(1{,}02 \times 10^{-6})} \approx 0{,}477\text{ Hz}.
+\]
+A simulação correspondente a este estágio e a sua resposta em frequência são apresentadas nas Figuras~\ref{fig:circ_sim_bancada_passa_altas} e~\ref{fig:bode_passa_altas}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_passa_altas_montagem.png}
+\caption{Circuito do passa-altas reconstruído com os valores reais medidos.}
+\label{fig:circ_sim_bancada_passa_altas}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/bode_passa_altas.png}
+\caption{Resposta em frequência simulada do passa-altas, evidenciando o corte em aproximadamente $0{,}48\text{ Hz}$.}
+\label{fig:bode_passa_altas}
+\end{figure}
+
+\subsubsection{Divisor de tensão e ganho adicional}
+
+Para atenuar o sinal do gerador de funções sem saturar a cadeia, o divisor resistivo da entrada foi simulado com $R_{\text{série}} = 100{,}55\,\mathrm{k}\Omega$ e $R_{\text{paralelo}} = 0{,}822\,\mathrm{k}\Omega$. A atenuação teórica deste divisor é:
+\[
+V_{\text{div}} = V_{in} \frac{0{,}822}{100{,}55 + 0{,}822} \approx 0{,}0081 V_{in}.
+\]
+O estágio de ganho não inversor utilizou os resistores medidos $R_f = 326{,}92\,\mathrm{k}\Omega$ e $R_g = 2{,}12\,\mathrm{k}\Omega$. O ganho isolado deste estágio passa a ser:
+\[
+G_2 = 1 + \frac{326{,}92}{2{,}12} \approx 155{,}2.
+\]
+A simulação da cadeia atenuada e o sinal amplificado na saída do TL064 são apresentados nas Figuras~\ref{fig:circ_sim_bancada_ganho} e~\ref{fig:vout_ganho_montagem}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_ganho_adicional_montagem.png}
+\caption{Circuito do estágio de ganho e divisor reconstruído com os valores medidos.}
+\label{fig:circ_sim_bancada_ganho}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/vout_ganho_adicional.png}
+\caption{Sinal simulado na saída do estágio de ganho adicional.}
+\label{fig:vout_ganho_montagem}
+\end{figure}
+
+\subsubsection{Passa-baixas e cadeia completa}
+
+Para a simulação da montagem final, o filtro passa-baixas passivo inseriu os valores $R = 4{,}67\,\mathrm{k}\Omega$ e $C = 1{,}02\,\mu\mathrm{F}$. A frequência de corte superior resultante é
+\[
+f_{LP} = \frac{1}{2\pi (4{,}67 \times 10^3)(1{,}02 \times 10^{-6})} \approx 33{,}4\text{ Hz}.
+\]
+O ganho total em banda passante esperado da cadeia montada (desconsiderando a atenuação do divisor de teste) é o produto $G_1 \times G_2 \approx 6{,}07 \times 155{,}2 \approx 942{,}1$. O esquemático completo da cadeia reconstruída é apresentado na Figura~\ref{fig:circ_cadeia_montagem} e a sua simulação de resposta em frequência (diagrama de Bode) é apresentada na Figura~\ref{fig:bode_montagem}. 
+
+Para avaliar o comportamento da montagem diante do sinal biológico, o circuito foi modificado removendo-se o divisor de tensão inicial e injetando-se diretamente os dados dos eletrodos, conforme ilustra a Figura~\ref{fig:circ_ecg_montagem}. Na Figura~\ref{fig:ecg_montagem}, exibe-se a simulação do eletrocardiograma processado pela cadeia com a topologia e as não idealidades idênticas às da bancada.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_cadeia_completa_montagem.png}
+\caption{Circuito da cadeia completa reconstruído com os valores reais da bancada para a análise em frequência.}
+\label{fig:circ_cadeia_montagem}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/bode_cadeia_montagem.png}
+\caption{Diagrama de Bode simulado da cadeia completa reconstruída.}
+\label{fig:bode_montagem}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/circ_ecg_montagem.png}
+\caption{Circuito da cadeia completa adaptado para a simulação do eletrocardiograma com os sinais dos eletrodos.}
+\label{fig:circ_ecg_montagem}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{imgs/montagem/ecg_cadeia_montagem.png}
+\caption{Eletrocardiograma simulado passando pelos componentes com valores reais da bancada.}
+\label{fig:ecg_montagem}
+\end{figure}
 
 \section{Resultados}
 
