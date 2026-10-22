@@ -834,6 +834,95 @@ Por fim, repetiu-se a transiente com os eletrodos desiguais (Figura~\ref{fig:lur
     \label{fig:lurian-eletrodos-desiguais}
 \end{figure}
 
+\subsubsection{Guilherme Cardoso Oliveira da Silva Júnior (23/1038626)}
+
+\textbf{Configuração e Simulação dos Circuitos}
+
+Inicialmente, para a montagem dos esquemáticos, foi necessário construir o símbolo do amplificador de instrumentação INA118 e modificar o desenho do componente TL064 (criado em roteiros anteriores) para adequar a disposição dos terminais ao experimento atual, conforme ilustrado na Figura~\ref{fig:simbolos_guilherme}.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/cardoso/simulação/INA118.png}
+    \vspace{2pt}
+    {\small (a) Símbolo do INA118 construído}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/cardoso/simulação/TL064_modificado.png}
+    \vspace{2pt}
+    {\small (b) Símbolo do TL064 modificado}
+\end{minipage}
+\caption{Símbolos dos componentes ativos criados e atualizados no LTSPICE.}
+\label{fig:simbolos_guilherme}
+\end{figure}
+
+Para comprovar que o projeto atende às especificações apresentadas na seção 3 (referentes ao condicionamento de sinais do eletrocardiograma), os seis circuitos foram desenhados e simulados, conforme a Figura~\ref{fig:circs_guilherme}. As análises no LTSPICE foram configuradas da seguinte forma:
+
+\begin{itemize}
+    \item \textbf{Ganho Diferencial (Fig.~\ref{fig:circs_guilherme}a):} Montou-se um amplificador de instrumentação discreto utilizando três amplificadores operacionais TL064. O resistor de ganho adotado foi de $2\text{ k}\Omega$, implementado com duas resistências em série de $1\text{ k}\Omega$ (\texttt{Rg\_sup} e \texttt{Rg\_inf}). Aplicou-se a análise de regime transitório (\texttt{.tran 0 200m}) utilizando duas fontes senoidais de 10 Hz defasadas com amplitude de 0,5 mV cada, gerando um sinal diferencial de 1 mV.
+    
+    \item \textbf{Modo Comum (Fig.~\ref{fig:circs_guilherme}b):} O ensaio de rejeição de modo comum foi realizado ligando as duas entradas de dois circuitos de instrumentação a uma única fonte senoidal de 60 Hz e 1 V de amplitude. Um dos circuitos possui os resistores perfeitamente casados em $10\text{ k}\Omega$, enquanto o outro apresenta desbalanceamento intencional com $R_{6\_2}=12\text{ k}\Omega$, simulados simultaneamente por 200 ms.
+
+    \item \textbf{Passa-altas e Estágio de Ganho (Fig.~\ref{fig:circs_guilherme}c):} O filtro passa-altas foi dimensionado com um capacitor de $1\mu\text{F}$ e resistores em série de $470\text{ k}\Omega$ e $56\text{ k}\Omega$. A sua saída foi conectada paralelamente a dois estágios de ganho com TL064 (inversor e não inversor), ambos utilizando resistores de realimentação de $68\text{ k}\Omega$ e $22\text{ k}\Omega$, e $R_g=1\text{ k}\Omega$. Utilizou-se uma varredura de frequência (\texttt{.ac dec 50 10m 1k}).
+    
+    \item \textbf{Resposta em Frequência da Cadeia (Fig.~\ref{fig:circs_guilherme}d):} A cadeia completa foi interligada, iniciando pelo componente INA118 configurado com $R_G$ de $5{,}1\text{ k}\Omega$ (soma de $3{,}3\text{ k}\Omega$ e $1{,}8\text{ k}\Omega$). O estágio final incluiu o filtro passa-baixas com $R=1{,}5\text{ k}\Omega$ e $C=1\mu\text{F}$. Uma fonte de amplitude \texttt{AC 1} foi aplicada na entrada esquerda para a análise de varredura decádica de 10 mHz a 10 kHz (\texttt{.ac dec 50 10m 10k}).
+
+    \item \textbf{Cadeia Completa com ECG (Fig.~\ref{fig:circs_guilherme}e):} O circuito da cadeia completa foi alimentado por fontes de tensão configuradas para ler os dados dos eletrodos através dos arquivos \texttt{braco\_direito.txt} e \texttt{braco\_esquerdo.txt}. A simulação foi configurada no domínio do tempo para 3 segundos (\texttt{.tran 0 3 0 1m}) a fim de observar o condicionamento do sinal biológico.
+
+    \item \textbf{Eletrodos Desiguais (Fig.~\ref{fig:circs_guilherme}f):} Para avaliar o impacto da impedância de contato na rejeição da rede, o circuito anterior foi modificado mediante a inclusão de resistências em série de $100\text{ k}\Omega$ e $1\text{ k}\Omega$ nas entradas esquerda e direita, respectivamente, além de capacitores de $10\text{ pF}$ simulando os cabos. O transiente também foi avaliado em 3 segundos.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/cardoso/simulação/item_1_exp4.png}
+    \vspace{2pt}
+    {\small (a) Ganho Diferencial (TL064)}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/cardoso/simulação/item_2_exp4.png}
+    \vspace{2pt}
+    {\small (b) Ensaio de Modo Comum}
+\end{minipage}
+
+\vspace{12pt}
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/cardoso/simulação/item_3_exp4.png}
+    \vspace{2pt}
+    {\small (c) Passa-altas e Estágio de Ganho}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/cardoso/simulação/item_4_exp4.png}
+    \vspace{2pt}
+    {\small (d) Resposta em Frequência da Cadeia}
+\end{minipage}
+
+\vspace{12pt}
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/cardoso/simulação/item_5_exp4.png}
+    \vspace{2pt}
+    {\small (e) Cadeia Completa com ECG}
+\end{minipage}\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{imgs/cardoso/simulação/item_6_exp4.png}
+    \vspace{2pt}
+    {\small (f) Cadeia com Eletrodos Desiguais}
+\end{minipage}
+
+\caption{Esquemáticos projetados para a matrícula 23/1038626, contendo os resistores E12 dimensionados e as diretivas de simulação aplicadas para a cadeia de condicionamento de ECG.}
+\label{fig:circs_guilherme}
+\end{figure}
+
 \subsection{Montagem em bancada}
 
 % A equipe monta um circuito só. Diga \textbf{de quem} é a especificação que vocês montaram e
